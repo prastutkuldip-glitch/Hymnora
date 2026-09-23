@@ -3,843 +3,272 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Hymnora - Worship in Every Moment</title>
+    <title>HYMNORA - Premium Bible</title>
     <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-}
-
-:root {
-    --primary-blue: #4A90E2;
-    --soft-blue: #6BB6FF;
-    --golden-glow: #FFD700;
-    --pure-white: #FFFFFF;
-    --light-gray: #F8F9FA;
-    --dark-bg: #1A1A1D;
-    --card-white: #FFFFFF;
-}
-
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
-    background: linear-gradient(180deg, #F0F4F8 0%, #E8EEF5 100%);
-    overflow-x: hidden;
-    -webkit-font-smoothing: antialiased;
-}
-
-/* Dark Header */
-.top-header {
-    background: linear-gradient(135deg, #1A1A1D 0%, #2D2D30 100%);
-    padding: 16px 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-radius: 0 0 24px 24px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-}
-
-.header-left {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.brand-logo {
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
-    background: linear-gradient(135deg, var(--primary-blue), var(--soft-blue));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-}
-
-.brand-name {
-    font-size: 20px;
-    font-weight: 700;
-    color: white;
-    letter-spacing: -0.5px;
-}
-
-.header-right {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
-
-.header-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.header-icon:active {
-    transform: scale(0.9);
-    background: rgba(255, 255, 255, 0.15);
-}
-
-/* Main Content Container */
-.main-container {
-    max-width: 430px;
-    margin: 0 auto;
-    padding: 0 20px 120px 20px;
-}
-
-/* Hero Card */
-.hero-card {
-    background: linear-gradient(135deg, var(--card-white) 0%, #F5F9FF 100%);
-    border-radius: 30px;
-    padding: 32px 28px;
-    margin-top: 24px;
-    box-shadow: 0 12px 40px rgba(74, 144, 226, 0.12);
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.hero-card:active {
-    transform: scale(0.98);
-    box-shadow: 0 8px 30px rgba(74, 144, 226, 0.15);
-}
-
-.hero-illustration {
-    width: 100%;
-    height: 200px;
-    background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 24px;
-    position: relative;
-    animation: heroFloat 4s ease-in-out infinite;
-}
-
-@keyframes heroFloat {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-8px); }
-}
-
-.hero-book {
-    font-size: 80px;
-    filter: drop-shadow(0 8px 20px rgba(74, 144, 226, 0.3));
-}
-
-.hero-glow {
-    position: absolute;
-    width: 120px;
-    height: 120px;
-    background: radial-gradient(circle, rgba(74, 144, 226, 0.2) 0%, transparent 70%);
-    border-radius: 50%;
-    animation: glowPulse 3s ease-in-out infinite;
-}
-
-@keyframes glowPulse {
-    0%, 100% { transform: scale(1); opacity: 0.5; }
-    50% { transform: scale(1.2); opacity: 0.8; }
-}
-
-.hero-title {
-    font-size: 28px;
-    font-weight: 800;
-    color: #1A1A1D;
-    margin-bottom: 12px;
-    letter-spacing: -0.5px;
-    line-height: 1.2;
-}
-
-.hero-subtitle {
-    font-size: 16px;
-    color: #6B7280;
-    margin-bottom: 24px;
-    line-height: 1.6;
-    font-weight: 500;
-}
-
-.hero-buttons {
-    display: flex;
-    gap: 12px;
-}
-
-.btn-primary {
-    flex: 1;
-    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--soft-blue) 100%);
-    color: white;
-    border: none;
-    border-radius: 16px;
-    padding: 16px 24px;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    box-shadow: 0 8px 20px rgba(74, 144, 226, 0.3);
-    transition: all 0.3s;
-}
-
-.btn-primary:active {
-    transform: scale(0.96);
-    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.4);
-}
-
-.btn-secondary {
-    flex: 1;
-    background: white;
-    color: var(--primary-blue);
-    border: 2px solid var(--primary-blue);
-    border-radius: 16px;
-    padding: 16px 24px;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.btn-secondary:active {
-    transform: scale(0.96);
-    background: #F0F7FF;
-}
-
-/* Category Scroll Section */
-.section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 32px 0 16px;
-}
-
-.section-title {
-    font-size: 22px;
-    font-weight: 800;
-    color: #1A1A1D;
-    letter-spacing: -0.5px;
-}
-
-.see-all {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--primary-blue);
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.see-all:active {
-    opacity: 0.7;
-}
-
-.categories-scroll {
-    display: flex;
-    gap: 12px;
-    overflow-x: auto;
-    padding: 8px 0;
-    margin-bottom: 16px;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-}
-
-.categories-scroll::-webkit-scrollbar {
-    display: none;
-}
-
-.category-card {
-    min-width: 120px;
-    background: white;
-    border-radius: 20px;
-    padding: 20px 16px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-    border: 2px solid transparent;
-}
-
-.category-card:active {
-    transform: scale(0.95);
-    border-color: var(--primary-blue);
-}
-
-.category-icon {
-    font-size: 32px;
-    margin-bottom: 8px;
-    display: block;
-}
-
-.category-label {
-    font-size: 13px;
-    font-weight: 700;
-    color: #1A1A1D;
-}
-
-/* Featured Hymns */
-.featured-scroll {
-    display: flex;
-    gap: 16px;
-    overflow-x: auto;
-    padding: 8px 0;
-    margin-bottom: 24px;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-}
-
-.featured-scroll::-webkit-scrollbar {
-    display: none;
-}
-
-.hymn-featured-card {
-    min-width: 280px;
-    background: white;
-    border-radius: 24px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-}
-
-.hymn-featured-card:active {
-    transform: scale(0.97);
-}
-
-.hymn-artwork {
-    width: 100%;
-    height: 160px;
-    background: linear-gradient(135deg, #FFE5B4 0%, #FFD700 50%, #FFA500 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-}
-
-.hymn-artwork-icon {
-    font-size: 60px;
-    filter: drop-shadow(0 4px 12px rgba(255, 215, 0, 0.4));
-}
-
-.hymn-featured-info {
-    padding: 16px;
-}
-
-.hymn-featured-title {
-    font-size: 16px;
-    font-weight: 700;
-    color: #1A1A1D;
-    margin-bottom: 4px;
-}
-
-.hymn-featured-lang {
-    font-size: 13px;
-    color: #6B7280;
-    font-weight: 500;
-}
-
-.play-btn {
-    position: absolute;
-    bottom: 12px;
-    right: 12px;
-    width: 44px;
-    height: 44px;
-    background: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.play-btn:active {
-    transform: scale(0.9);
-}
-
-/* Daily Worship Card */
-.daily-worship-card {
-    background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
-    border-radius: 26px;
-    padding: 28px 24px;
-    margin-bottom: 24px;
-    text-align: center;
-    box-shadow: 0 8px 24px rgba(74, 144, 226, 0.15);
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.daily-worship-card:active {
-    transform: scale(0.98);
-}
-
-.daily-icon {
-    font-size: 56px;
-    margin-bottom: 16px;
-    filter: drop-shadow(0 4px 12px rgba(74, 144, 226, 0.3));
-    animation: gentleFloat 3s ease-in-out infinite;
-}
-
-@keyframes gentleFloat {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-6px); }
-}
-
-.daily-title {
-    font-size: 20px;
-    font-weight: 800;
-    color: #1A1A1D;
-    margin-bottom: 8px;
-}
-
-.daily-subtitle {
-    font-size: 14px;
-    color: #4B5563;
-    margin-bottom: 20px;
-    line-height: 1.5;
-}
-
-.daily-play-btn {
-    width: 64px;
-    height: 64px;
-    background: white;
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-    box-shadow: 0 8px 24px rgba(74, 144, 226, 0.25);
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.daily-play-btn:active {
-    transform: scale(0.92);
-}
-
-/* Language Pills */
-.language-pills {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 24px;
-}
-
-.language-pill {
-    flex: 1;
-    background: white;
-    border: 2px solid #E5E7EB;
-    border-radius: 20px;
-    padding: 14px 20px;
-    text-align: center;
-    font-size: 15px;
-    font-weight: 700;
-    color: #6B7280;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.language-pill.active {
-    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--soft-blue) 100%);
-    color: white;
-    border-color: var(--primary-blue);
-    box-shadow: 0 4px 16px rgba(74, 144, 226, 0.25);
-}
-
-.language-pill:active {
-    transform: scale(0.96);
-}
-
-/* Recently Played */
-.recently-item {
-    background: white;
-    border-radius: 20px;
-    padding: 16px;
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-}
-
-.recently-item:active {
-    transform: scale(0.98);
-}
-
-.recently-artwork {
-    width: 56px;
-    height: 56px;
-    background: linear-gradient(135deg, #FFF4E6 0%, #FFE5B4 100%);
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-    flex-shrink: 0;
-}
-
-.recently-info {
-    flex: 1;
-}
-
-.recently-title {
-    font-size: 15px;
-    font-weight: 700;
-    color: #1A1A1D;
-    margin-bottom: 4px;
-}
-
-.recently-meta {
-    font-size: 13px;
-    color: #6B7280;
-}
-
-.recently-play {
-    width: 40px;
-    height: 40px;
-    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--soft-blue) 100%);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    color: white;
-    flex-shrink: 0;
-    transition: all 0.3s;
-}
-
-.recently-play:active {
-    transform: scale(0.9);
-}
-
-/* Floating Bottom Navigation */
-.bottom-nav {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: calc(100% - 40px);
-    max-width: 390px;
-    background: linear-gradient(135deg, #1A1A1D 0%, #2D2D30 100%);
-    border-radius: 28px;
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
-    z-index: 1000;
-}
-
-.nav-item {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    color: #9CA3AF;
-    cursor: pointer;
-    transition: all 0.3s;
-    padding: 8px;
-    border-radius: 16px;
-}
-
-.nav-item.active {
-    color: white;
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.nav-item:active {
-    transform: scale(0.92);
-}
-
-.nav-icon {
-    font-size: 24px;
-}
-
-.nav-label {
-    font-size: 11px;
-    font-weight: 600;
-}
-
-/* Center Worship Button */
-.nav-worship {
-    width: 56px;
-    height: 56px;
-    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--soft-blue) 100%);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-    color: white;
-    box-shadow: 0 8px 24px rgba(74, 144, 226, 0.4);
-    cursor: pointer;
-    transition: all 0.3s;
-    margin-top: -28px;
-    border: 4px solid #1A1A1D;
-}
-
-.nav-worship:active {
-    transform: scale(0.9);
-}
-
-/* Smooth Animations */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.hero-card { animation: fadeInUp 0.6s ease-out; }
-.category-card { animation: fadeInUp 0.6s ease-out; }
-.hymn-featured-card { animation: fadeInUp 0.6s ease-out; }
-.daily-worship-card { animation: fadeInUp 0.8s ease-out; }
-
-/* Responsive */
-@media (max-width: 380px) {
-    .main-container {
-        padding: 0 16px 120px 16px;
-    }
-    
-    .hero-title {
-        font-size: 24px;
-    }
-    
-    .hero-card {
-        padding: 24px 20px;
-    }
-    
-    .hymn-featured-card {
-        min-width: 260px;
-    }
-}
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { width: 100%; height: 100%; overflow: hidden; position: fixed; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); }
+
+.glass-container { position: relative; max-width: 430px; margin: 0 auto; height: 100vh; background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(20px); display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 0 40px rgba(0, 0, 0, 0.2); }
+
+.status-bar { background: rgba(0, 0, 0, 0.25); backdrop-filter: blur(10px); color: white; padding: 6px 20px; display: flex; justify-content: space-between; font-size: 13px; font-weight: 500; flex-shrink: 0; }
+
+.header { background: linear-gradient(135deg, rgba(102, 126, 234, 0.95), rgba(118, 75, 162, 0.95)); backdrop-filter: blur(25px); padding: 16px 20px; position: sticky; top: 0; flex-shrink: 0; z-index: 999; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); display: flex; align-items: center; gap: 12px; }
+.header.scrolled { padding: 10px 20px; box-shadow: 0 6px 30px rgba(0, 0, 0, 0.25); }
+
+.header-logo { width: 32px; height: 32px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); transition: all 0.3s; flex-shrink: 0; }
+.header.scrolled .header-logo { width: 28px; height: 28px; }
+
+.header-text { flex: 1; }
+.header h1 { font-size: 22px; font-weight: 700; color: white; text-shadow: 0 2px 8px rgba(0,0,0,0.2); transition: all 0.3s; line-height: 1.2; }
+.header.scrolled h1 { font-size: 18px; }
+.header p { font-size: 12px; color: rgba(255, 255, 255, 0.9); font-weight: 500; transition: all 0.3s; }
+.header.scrolled p { font-size: 10px; opacity: 0.8; }
+
+.screen { display: none; padding: 16px; padding-bottom: 110px; animation: fadeIn 0.3s ease-in-out; overflow-y: auto; overflow-x: hidden; flex: 1; -webkit-overflow-scrolling: touch; }
+.screen.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Premium Glassmorphism Cards */
+.glass-card { background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08)); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1.5px solid rgba(255, 255, 255, 0.3); border-radius: 20px; padding: 18px; margin-bottom: 14px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15), 0 2px 8px rgba(255, 255, 255, 0.1) inset; position: relative; overflow: hidden; }
+.glass-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%); opacity: 0; transition: opacity 0.3s; }
+.glass-card:hover::before { opacity: 1; }
+.glass-card:active { transform: scale(0.98); box-shadow: 0 4px 16px rgba(31, 38, 135, 0.2); }
+
+/* Glowing Bubble Icons */
+.bubble-icon { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.15)); backdrop-filter: blur(10px); border: 2px solid rgba(255, 255, 255, 0.5); display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(255, 255, 255, 0.2) inset, 0 0 20px rgba(255, 255, 255, 0.3); margin-bottom: 10px; animation: float 3s ease-in-out infinite, glow 2s ease-in-out infinite; }
+@keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-6px); } }
+@keyframes glow { 0%, 100% { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(255, 255, 255, 0.2) inset, 0 0 20px rgba(255, 255, 255, 0.3); } 50% { box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2), 0 4px 10px rgba(255, 255, 255, 0.3) inset, 0 0 30px rgba(255, 255, 255, 0.5); } }
+
+.compact-hero { background: linear-gradient(135deg, rgba(255, 215, 0, 0.25), rgba(255, 165, 0, 0.25)); backdrop-filter: blur(20px); border: 2px solid rgba(255, 215, 0, 0.4); border-radius: 18px; padding: 20px; margin-bottom: 16px; text-align: center; box-shadow: 0 8px 32px rgba(255, 215, 0, 0.2), 0 2px 8px rgba(255, 255, 255, 0.15) inset; animation: heroGlow 3s ease-in-out infinite; }
+@keyframes heroGlow { 0%, 100% { box-shadow: 0 8px 32px rgba(255, 215, 0, 0.2), 0 2px 8px rgba(255, 255, 255, 0.15) inset; } 50% { box-shadow: 0 12px 40px rgba(255, 215, 0, 0.35), 0 4px 12px rgba(255, 255, 255, 0.25) inset; } }
+.compact-hero h2 { font-size: 20px; font-weight: 700; color: white; margin-bottom: 8px; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); }
+.compact-hero p { font-size: 13px; line-height: 1.5; color: rgba(255, 255, 255, 0.95); text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2); }
+
+.verse-of-day { background: linear-gradient(135deg, rgba(138, 43, 226, 0.3), rgba(75, 0, 130, 0.3)); backdrop-filter: blur(20px); border: 2px solid rgba(138, 43, 226, 0.5); border-radius: 18px; padding: 18px; margin-bottom: 16px; box-shadow: 0 8px 32px rgba(138, 43, 226, 0.25), 0 2px 8px rgba(255, 255, 255, 0.15) inset; }
+.verse-of-day-title { font-size: 15px; font-weight: 700; color: white; margin-bottom: 10px; text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); }
+.verse-of-day-text { font-size: 14px; line-height: 1.6; color: white; font-style: italic; margin-bottom: 8px; text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2); }
+.verse-of-day-ref { font-size: 13px; font-weight: 600; color: rgba(255, 255, 255, 0.9); text-align: right; }
+
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
+.stat-card { background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1)); backdrop-filter: blur(20px); border: 1.5px solid rgba(255, 255, 255, 0.3); border-radius: 16px; padding: 14px 10px; text-align: center; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(255, 255, 255, 0.1) inset; }
+.stat-num { font-size: 22px; font-weight: 700; color: white; margin-bottom: 4px; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); }
+.stat-label { font-size: 11px; color: rgba(255, 255, 255, 0.9); font-weight: 600; }
+
+.books-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
+.book-card { background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.1)); backdrop-filter: blur(15px); border: 1.5px solid rgba(255, 255, 255, 0.3); border-radius: 16px; padding: 16px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(255, 255, 255, 0.1) inset; }
+.book-card:active { transform: scale(0.96); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
+.book-name { font-size: 15px; font-weight: 600; color: white; text-shadow: 0 2px 6px rgba(0,0,0,0.2); margin-bottom: 5px; }
+.book-info { font-size: 12px; color: rgba(255, 255, 255, 0.85); font-weight: 500; }
+
+.section-title { font-size: 17px; font-weight: 700; margin: 20px 0 12px; color: white; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); display: flex; align-items: center; gap: 8px; }
+
+.chapters-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 16px; }
+.chapter-btn { aspect-ratio: 1; background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1)); backdrop-filter: blur(10px); border: 1.5px solid rgba(255, 255, 255, 0.3); border-radius: 12px; font-size: 15px; font-weight: 700; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(255, 255, 255, 0.1) inset; }
+.chapter-btn:active { transform: scale(0.94); background: rgba(255, 255, 255, 0.3); }
+
+.verse { background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08)); backdrop-filter: blur(15px); border-left: 4px solid rgba(255, 255, 255, 0.7); border-radius: 12px; padding: 14px; margin-bottom: 12px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(255, 255, 255, 0.1) inset; animation: slideIn 0.4s ease-out; }
+@keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+.verse-num { display: inline-flex; align-items: center; justify-content: center; min-width: 32px; height: 32px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.2)); backdrop-filter: blur(10px); border: 1.5px solid rgba(255, 255, 255, 0.5); border-radius: 50%; font-size: 14px; font-weight: 700; color: white; margin-right: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 1px 4px rgba(255, 255, 255, 0.2) inset; flex-shrink: 0; }
+.verse-text { font-size: 15px; line-height: 1.7; color: white; font-weight: 500; text-shadow: 0 1px 4px rgba(0, 0, 0, 0.15); }
+
+.glass-btn { background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1)); backdrop-filter: blur(15px); border: 1.5px solid rgba(255, 255, 255, 0.3); border-radius: 12px; padding: 12px 20px; font-weight: 600; color: white; cursor: pointer; margin-bottom: 14px; display: inline-flex; align-items: center; gap: 6px; transition: all 0.3s; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(255, 255, 255, 0.1) inset; font-size: 14px; border: none; }
+.glass-btn:active { transform: scale(0.96); }
+
+.toggle-btns { display: flex; gap: 8px; margin-bottom: 14px; }
+.toggle-btn { flex: 1; padding: 10px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08)); backdrop-filter: blur(10px); border: 1.5px solid rgba(255, 255, 255, 0.3); border-radius: 10px; color: rgba(255, 255, 255, 0.85); font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 13px; }
+.toggle-btn.active { background: linear-gradient(135deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.25)); color: white; border-color: rgba(255, 255, 255, 0.6); box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2) inset; }
+
+.search-box { width: 100%; padding: 12px 16px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08)); backdrop-filter: blur(10px); border: 1.5px solid rgba(255, 255, 255, 0.3); border-radius: 12px; color: white; font-size: 14px; font-weight: 500; margin-bottom: 14px; }
+.search-box::placeholder { color: rgba(255, 255, 255, 0.7); }
+
+/* ULTRA PREMIUM 3D FLOATING NAVIGATION */
+.nav { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 380px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.15)); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); border: 2px solid rgba(255, 255, 255, 0.5); border-radius: 28px; display: flex; z-index: 1000; padding: 10px 12px; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25), 0 4px 12px rgba(255, 255, 255, 0.15) inset, 0 -2px 8px rgba(0, 0, 0, 0.1) inset, 0 0 40px rgba(255, 255, 255, 0.2); animation: navFloat 4s ease-in-out infinite; }
+@keyframes navFloat { 0%, 100% { transform: translateX(-50%) translateY(0px); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25), 0 4px 12px rgba(255, 255, 255, 0.15) inset, 0 -2px 8px rgba(0, 0, 0, 0.1) inset, 0 0 40px rgba(255, 255, 255, 0.2); } 50% { transform: translateX(-50%) translateY(-5px); box-shadow: 0 16px 50px rgba(0, 0, 0, 0.35), 0 6px 16px rgba(255, 255, 255, 0.25) inset, 0 -4px 12px rgba(0, 0, 0, 0.15) inset, 0 0 50px rgba(255, 255, 255, 0.35); } }
+
+.nav-item { flex: 1; padding: 10px 6px; text-align: center; cursor: pointer; color: rgba(255, 255, 255, 0.75); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 10px; font-weight: 600; border-radius: 18px; position: relative; }
+.nav-item.active { color: white; background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2)); box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2), 0 2px 8px rgba(255, 255, 255, 0.3) inset, 0 0 20px rgba(255, 255, 255, 0.4); transform: scale(1.05); }
+.nav-item:active { transform: scale(0.95); }
+
+/* Glowing Premium Icons */
+.nav-icon { font-size: 20px; filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.3)); transition: all 0.3s ease; animation: iconGlow 2s ease-in-out infinite; }
+@keyframes iconGlow { 0%, 100% { filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.3)); } 50% { filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3)) drop-shadow(0 0 20px rgba(255, 255, 255, 0.5)); } }
+.nav-item.active .nav-icon { font-size: 22px; filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 15px rgba(255, 255, 255, 0.6)); }
+
+.hymn-card { background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.1)); backdrop-filter: blur(15px); border: 1.5px solid rgba(255, 255, 255, 0.3); border-radius: 16px; padding: 16px; margin-bottom: 12px; cursor: pointer; transition: all 0.3s; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(255, 255, 255, 0.1) inset; }
+.hymn-title { font-size: 16px; font-weight: 700; color: white; margin-bottom: 6px; text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); }
+.hymn-lyrics { font-size: 14px; line-height: 1.7; color: rgba(255, 255, 255, 0.95); white-space: pre-wrap; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.3); font-weight: 500; display: none; }
+.hymn-lyrics.show { display: block; }
+
+.loading { text-align: center; padding: 50px 20px; }
+.spinner { width: 48px; height: 48px; border: 4px solid rgba(255, 255, 255, 0.2); border-top-color: white; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px; box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2); }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { color: white; font-size: 15px; font-weight: 600; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); }
+
+.verse.highlighted-yellow { background: rgba(255, 255, 0, 0.3); border-left-color: #FFD700; }
+.verse.highlighted-green { background: rgba(0, 255, 0, 0.3); border-left-color: #90EE90; }
+.verse.highlighted-blue { background: rgba(0, 150, 255, 0.3); border-left-color: #87CEEB; }
+.verse.highlighted-pink { background: rgba(255, 105, 180, 0.3); border-left-color: #FFB6C1; }
+.verse.highlighted-orange { background: rgba(255, 165, 0, 0.3); border-left-color: #FFA500; }
+.verse-actions { position: absolute; top: -40px; right: 10px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 12px; padding: 6px; display: none; flex-direction: row; gap: 6px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); z-index: 10; }
+.verse-actions.show { display: flex; }
+.action-btn { width: 32px; height: 32px; border-radius: 50%; border: none; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: transform 0.2s; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); }
+.action-btn:active { transform: scale(0.9); }
+.action-btn.yellow { background: #FFD700; }
+.action-btn.green { background: #90EE90; }
+.action-btn.blue { background: #87CEEB; }
+.action-btn.pink { background: #FFB6C1; }
+.action-btn.orange { background: #FFA500; }
+.action-btn.bookmark { background: #FF6B6B; }
+.action-btn.favorite { background: #FF1493; }
     </style>
 </head>
 <body>
-    <!-- Dark Header -->
-    <div class="top-header">
-        <div class="header-left">
-            <div class="brand-logo">✝️</div>
-            <div class="brand-name">Hymnora</div>
-        </div>
-        <div class="header-right">
-            <div class="header-icon">🔔</div>
-            <div class="header-icon">👤</div>
-        </div>
-    </div>
-
-    <!-- Main Content -->
-    <div class="main-container">
-        <!-- Hero Card -->
-        <div class="hero-card">
-            <div class="hero-illustration">
-                <div class="hero-glow"></div>
-                <div class="hero-book">📖</div>
-            </div>
-            <h1 class="hero-title">Worship in Every Moment</h1>
-            <p class="hero-subtitle">Discover hymns, worship songs and timeless Christian melodies.</p>
-            <div class="hero-buttons">
-                <button class="btn-primary">Start Worshipping</button>
-                <button class="btn-secondary">Explore Hymns</button>
+    <div class="glass-container">
+        <div class="status-bar"><span>⏰ <span id="time"></span></span><span>📶 5G 🔋 100%</span></div>
+        <div class="header">
+            <img src="logo.png" alt="HYMNORA" class="header-logo" id="headerLogo" onerror="this.style.display='none'">
+            <div class="header-text">
+                <h1>HYMNORA</h1>
+                <p>Complete Bible & Worship</p>
             </div>
         </div>
 
-        <!-- Categories -->
-        <div class="section-header">
-            <div class="section-title">Quick Access</div>
-        </div>
-        <div class="categories-scroll">
-            <div class="category-card">
-                <span class="category-icon">🎵</span>
-                <div class="category-label">Hymns</div>
+        <!-- Home -->
+        <div class="screen active" id="homeScreen">
+            <div class="compact-hero">
+                <h2>✨ Welcome to God's Word</h2>
+                <p>Experience the complete Bible with beautiful design and powerful features</p>
             </div>
-            <div class="category-card">
-                <span class="category-icon">🙏</span>
-                <div class="category-label">Worship</div>
+            
+            <div class="verse-of-day">
+                <div class="verse-of-day-title">🌟 Verse of the Day</div>
+                <div class="verse-of-day-text">"For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life."</div>
+                <div class="verse-of-day-ref">— John 3:16</div>
             </div>
-            <div class="category-card">
-                <span class="category-icon">❤️</span>
-                <div class="category-label">Favorites</div>
+            
+            <div class="stats">
+                <div class="stat-card"><div class="stat-num">66</div><div class="stat-label">Books</div></div>
+                <div class="stat-card"><div class="stat-num">1189</div><div class="stat-label">Chapters</div></div>
+                <div class="stat-card"><div class="stat-num">31K+</div><div class="stat-label">Verses</div></div>
             </div>
-            <div class="category-card">
-                <span class="category-icon">🕒</span>
-                <div class="category-label">Recently Played</div>
-            </div>
+            
+            <button class="glass-card" style="width: 100%; border: none;" onclick="showTab('bible')">
+                <div class="bubble-icon">📚</div>
+                <div class="book-name" style="font-size: 17px;">Read the Bible</div>
+                <div class="book-info">Complete KJV with highlights & bookmarks</div>
+            </button>
+            
+            <button class="glass-card" style="width: 100%; border: none;" onclick="showTab('hymns')">
+                <div class="bubble-icon">🎵</div>
+                <div class="book-name" style="font-size: 17px;">Worship Hymns</div>
+                <div class="book-info">Classic Christian hymns & songs</div>
+            </button>
         </div>
 
-        <!-- Featured Hymns -->
-        <div class="section-header">
-            <div class="section-title">Featured Hymns</div>
-            <div class="see-all">See All</div>
-        </div>
-        <div class="featured-scroll">
-            <div class="hymn-featured-card">
-                <div class="hymn-artwork">
-                    <div class="hymn-artwork-icon">✝️</div>
-                    <div class="play-btn">▶️</div>
-                </div>
-                <div class="hymn-featured-info">
-                    <div class="hymn-featured-title">Amazing Grace</div>
-                    <div class="hymn-featured-lang">English • Traditional</div>
-                </div>
-            </div>
-            <div class="hymn-featured-card">
-                <div class="hymn-artwork" style="background: linear-gradient(135deg, #E8F5E9 0%, #A5D6A7 100%);">
-                    <div class="hymn-artwork-icon">🕊️</div>
-                    <div class="play-btn">▶️</div>
-                </div>
-                <div class="hymn-featured-info">
-                    <div class="hymn-featured-title">Holy, Holy, Holy</div>
-                    <div class="hymn-featured-lang">English • Classical</div>
-                </div>
-            </div>
-            <div class="hymn-featured-card">
-                <div class="hymn-artwork" style="background: linear-gradient(135deg, #E1F5FE 0%, #81D4FA 100%);">
-                    <div class="hymn-artwork-icon">🌟</div>
-                    <div class="play-btn">▶️</div>
-                </div>
-                <div class="hymn-featured-info">
-                    <div class="hymn-featured-title">How Great Thou Art</div>
-                    <div class="hymn-featured-lang">English • Worship</div>
-                </div>
-            </div>
-            <div class="hymn-featured-card">
-                <div class="hymn-artwork" style="background: linear-gradient(135deg, #FCE4EC 0%, #F48FB1 100%);">
-                    <div class="hymn-artwork-icon">🎶</div>
-                    <div class="play-btn">▶️</div>
-                </div>
-                <div class="hymn-featured-info">
-                    <div class="hymn-featured-title">Great Is Thy Faithfulness</div>
-                    <div class="hymn-featured-lang">English • Praise</div>
-                </div>
-            </div>
+        <!-- Bible -->
+        <div class="screen" id="bibleScreen">
+            <input type="text" class="search-box" id="searchBox" placeholder="🔍 Search books..." onkeyup="filterBooks()">
+            <div class="section-title">📜 Old Testament</div><div class="books-grid" id="otBooks"></div>
+            <div class="section-title">✝️ New Testament</div><div class="books-grid" id="ntBooks"></div>
         </div>
 
-        <!-- Daily Worship -->
-        <div class="daily-worship-card">
-            <div class="daily-icon">✨</div>
-            <div class="daily-title">Daily Worship</div>
-            <p class="daily-subtitle">Take a moment to praise, reflect and pray.</p>
-            <div class="daily-play-btn">▶️</div>
+        <!-- Chapters -->
+        <div class="screen" id="chaptersScreen">
+            <button class="glass-btn" onclick="showTab('bible')">← Back</button>
+            <div class="section-title" id="chapTitle">Chapters</div>
+            <div class="chapters-grid" id="chaptersGrid"></div>
         </div>
 
-        <!-- Languages -->
-        <div class="section-header">
-            <div class="section-title">Explore by Language</div>
-        </div>
-        <div class="language-pills">
-            <div class="language-pill active">English</div>
-            <div class="language-pill">Hindi</div>
-            <div class="language-pill">Assamese</div>
+        <!-- Verses -->
+        <div class="screen" id="versesScreen">
+            <button class="glass-btn" onclick="backToChapters()">← Back</button>
+            <div class="toggle-btns">
+                <button class="toggle-btn active" onclick="setViewMode('verse')">📖 Verse</button>
+                <button class="toggle-btn" onclick="setViewMode('paragraph')">📄 Paragraph</button>
+            </div>
+            <div class="section-title" id="verseTitle">Verses</div>
+            <div id="versesContainer"></div>
         </div>
 
-        <!-- Recently Played -->
-        <div class="section-header">
-            <div class="section-title">Continue Worshipping</div>
-            <div class="see-all">See All</div>
+        <!-- Hymns -->
+        <div class="screen" id="hymnsScreen">
+            <div class="section-title">🎵 Hymns</div>
+            <div id="hymnsContainer"></div>
         </div>
-        <div class="recently-item">
-            <div class="recently-artwork">🎵</div>
-            <div class="recently-info">
-                <div class="recently-title">It Is Well With My Soul</div>
-                <div class="recently-meta">English • 4:32</div>
-            </div>
-            <div class="recently-play">▶️</div>
-        </div>
-        <div class="recently-item">
-            <div class="recently-artwork" style="background: linear-gradient(135deg, #FFF3E0 0%, #FFCC80 100%);">🙏</div>
-            <div class="recently-info">
-                <div class="recently-title">Be Thou My Vision</div>
-                <div class="recently-meta">English • 3:48</div>
-            </div>
-            <div class="recently-play">▶️</div>
-        </div>
-        <div class="recently-item">
-            <div class="recently-artwork" style="background: linear-gradient(135deg, #E8EAF6 0%, #9FA8DA 100%);">✝️</div>
-            <div class="recently-info">
-                <div class="recently-title">A Mighty Fortress</div>
-                <div class="recently-meta">English • 5:12</div>
-            </div>
-            <div class="recently-play">▶️</div>
-        </div>
-    </div>
 
-    <!-- Floating Bottom Navigation -->
-    <div class="bottom-nav">
-        <div class="nav-item active">
-            <div class="nav-icon">🏠</div>
-            <div class="nav-label">Home</div>
+        <!-- Favorites -->
+        <div class="screen" id="favoritesScreen">
+            <div class="section-title">❤️ Favorites</div>
+            <div id="favoritesContainer"></div>
+            <div class="section-title">🔖 Bookmarks</div>
+            <div id="bookmarksContainer"></div>
         </div>
-        <div class="nav-item">
-            <div class="nav-icon">📚</div>
-            <div class="nav-label">Library</div>
-        </div>
-        <div class="nav-worship">🎵</div>
-        <div class="nav-item">
-            <div class="nav-icon">❤️</div>
-            <div class="nav-label">Favorites</div>
-        </div>
-        <div class="nav-item">
-            <div class="nav-icon">👤</div>
-            <div class="nav-label">Profile</div>
+
+        <!-- Premium Floating Nav -->
+        <div class="nav">
+            <div class="nav-item active" onclick="showTab('home')"><div class="nav-icon">🏠</div><div>Home</div></div>
+            <div class="nav-item" onclick="showTab('bible')"><div class="nav-icon">📖</div><div>Bible</div></div>
+            <div class="nav-item" onclick="showTab('hymns')"><div class="nav-icon">🎵</div><div>Hymns</div></div>
+            <div class="nav-item" onclick="showTab('favorites')"><div class="nav-icon">❤️</div><div>Saved</div></div>
         </div>
     </div>
 
     <script>
-        // Time update
-        function updateTime() {
-            const now = new Date();
-            const time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-            document.getElementById('time')?.innerText = time;
-        }
-        updateTime();
-        setInterval(updateTime, 60000);
+function updateTime(){const now=new Date();document.getElementById('time').textContent=now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});}updateTime();setInterval(updateTime,1000);
 
-        // Navigation
-        document.querySelectorAll('.nav-item, .nav-worship').forEach(item => {
-            item.addEventListener('click', function() {
-                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-                if (this.classList.contains('nav-item')) {
-                    this.classList.add('active');
-                }
-            });
-        });
+const BOOKS={OT:[{n:'Genesis',c:50,abbr:'gen'},{n:'Exodus',c:40,abbr:'exo'},{n:'Leviticus',c:27,abbr:'lev'},{n:'Numbers',c:36,abbr:'num'},{n:'Deuteronomy',c:34,abbr:'deu'},{n:'Joshua',c:24,abbr:'jos'},{n:'Judges',c:21,abbr:'jdg'},{n:'Ruth',c:4,abbr:'rut'},{n:'1 Samuel',c:31,abbr:'1sa'},{n:'2 Samuel',c:24,abbr:'2sa'},{n:'1 Kings',c:22,abbr:'1ki'},{n:'2 Kings',c:25,abbr:'2ki'},{n:'1 Chronicles',c:29,abbr:'1ch'},{n:'2 Chronicles',c:36,abbr:'2ch'},{n:'Ezra',c:10,abbr:'ezr'},{n:'Nehemiah',c:13,abbr:'neh'},{n:'Esther',c:10,abbr:'est'},{n:'Job',c:42,abbr:'job'},{n:'Psalms',c:150,abbr:'psa'},{n:'Proverbs',c:31,abbr:'pro'},{n:'Ecclesiastes',c:12,abbr:'ecc'},{n:'Song of Solomon',c:8,abbr:'sol'},{n:'Isaiah',c:66,abbr:'isa'},{n:'Jeremiah',c:52,abbr:'jer'},{n:'Lamentations',c:5,abbr:'lam'},{n:'Ezekiel',c:48,abbr:'eze'},{n:'Daniel',c:12,abbr:'dan'},{n:'Hosea',c:14,abbr:'hos'},{n:'Joel',c:3,abbr:'joe'},{n:'Amos',c:9,abbr:'amo'},{n:'Obadiah',c:1,abbr:'oba'},{n:'Jonah',c:4,abbr:'jon'},{n:'Micah',c:7,abbr:'mic'},{n:'Nahum',c:3,abbr:'nah'},{n:'Habakkuk',c:3,abbr:'hab'},{n:'Zephaniah',c:3,abbr:'zep'},{n:'Haggai',c:2,abbr:'hag'},{n:'Zechariah',c:14,abbr:'zec'},{n:'Malachi',c:4,abbr:'mal'}],NT:[{n:'Matthew',c:28,abbr:'mat'},{n:'Mark',c:16,abbr:'mar'},{n:'Luke',c:24,abbr:'luk'},{n:'John',c:21,abbr:'joh'},{n:'Acts',c:28,abbr:'act'},{n:'Romans',c:16,abbr:'rom'},{n:'1 Corinthians',c:16,abbr:'1co'},{n:'2 Corinthians',c:13,abbr:'2co'},{n:'Galatians',c:6,abbr:'gal'},{n:'Ephesians',c:6,abbr:'eph'},{n:'Philippians',c:4,abbr:'phi'},{n:'Colossians',c:4,abbr:'col'},{n:'1 Thessalonians',c:5,abbr:'1th'},{n:'2 Thessalonians',c:3,abbr:'2th'},{n:'1 Timothy',c:6,abbr:'1ti'},{n:'2 Timothy',c:4,abbr:'2ti'},{n:'Titus',c:3,abbr:'tit'},{n:'Philemon',c:1,abbr:'phm'},{n:'Hebrews',c:13,abbr:'heb'},{n:'James',c:5,abbr:'jas'},{n:'1 Peter',c:5,abbr:'1pe'},{n:'2 Peter',c:3,abbr:'2pe'},{n:'1 John',c:5,abbr:'1jo'},{n:'2 John',c:1,abbr:'2jo'},{n:'3 John',c:1,abbr:'3jo'},{n:'Jude',c:1,abbr:'jud'},{n:'Revelation',c:22,abbr:'rev'}]};
 
-        // Language pills
-        document.querySelectorAll('.language-pill').forEach(pill => {
-            pill.addEventListener('click', function() {
-                document.querySelectorAll('.language-pill').forEach(p => p.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
+const HYMNS=[{title:"Amazing Grace",text:"A hymn about divine mercy and redemption. Theme: God's grace saves us from sin and transforms our lives."},{title:"How Great Thou Art",text:"A worship song celebrating God's majesty. Theme: Observing nature's wonders leads us to praise God's greatness."},{title:"Blessed Assurance",text:"A hymn expressing confidence in salvation. Theme: Joy in knowing Jesus, filled with the Holy Spirit."},{title:"Great Is Thy Faithfulness",text:"About God's unchanging nature. Theme: God's mercies are new every morning, His faithfulness endures forever."},{title:"It Is Well With My Soul",text:"A hymn of peace during trials. Theme: Finding spiritual peace and trusting God through all circumstances."},{title:"Holy, Holy, Holy",text:"A trinitarian worship hymn. Theme: Praising the holy Trinity in perfect unity and glory."},{title:"Rock of Ages",text:"About finding refuge in Christ. Theme: Jesus as our shelter, cleansing us from sin."},{title:"What a Friend We Have in Jesus",text:"About prayer. Theme: Jesus as our faithful friend who bears our burdens and hears our prayers."}];
 
-        // Smooth scroll animations
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, { threshold: 0.1 });
+let curBook='',curChap=0,bibleData=null,viewMode='verse';
+let highlights=JSON.parse(localStorage.getItem('highlights')||'{}');
+let bookmarks=JSON.parse(localStorage.getItem('bookmarks')||'[]');
+let favorites=JSON.parse(localStorage.getItem('favorites')||'[]');
+let longPressTimer,longPressVerse;
 
-        document.querySelectorAll('.hymn-featured-card, .recently-item, .daily-worship-card').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(20px)';
-            el.style.transition = 'all 0.6s ease-out';
-            observer.observe(el);
-        });
+async function loadBibleData(){if(bibleData)return bibleData;try{const urls=['https://cdn.jsdelivr.net/gh/thiagobodruk/bible@master/json/en_kjv.json'];for(const url of urls){try{const r=await fetch(url);if(r.ok){bibleData=await r.json();return bibleData;}}catch(e){continue;}}return null;}catch(e){return null;}}
+
+function init(){renderBooks();renderHymns();renderFavorites();loadBibleData();}
+
+function renderBooks(){document.getElementById('otBooks').innerHTML=BOOKS.OT.map(b=>`<div class="book-card" data-name="${b.n.toLowerCase()}" onclick="showChapters('${b.n}',${b.c},'${b.abbr}')"><div class="book-name">${b.n}</div><div class="book-info">${b.c} Ch</div></div>`).join('');document.getElementById('ntBooks').innerHTML=BOOKS.NT.map(b=>`<div class="book-card" data-name="${b.n.toLowerCase()}" onclick="showChapters('${b.n}',${b.c},'${b.abbr}')"><div class="book-name">${b.n}</div><div class="book-info">${b.c} Ch</div></div>`).join('');}
+
+function renderHymns(){document.getElementById('hymnsContainer').innerHTML=HYMNS.map((h,i)=>`<div class="hymn-card" onclick="toggleHymn(${i})"><div class="hymn-title">🎵 ${h.title}</div><div class="hymn-lyrics" id="hymn${i}">${h.text}</div></div>`).join('');}
+
+function toggleHymn(i){document.getElementById('hymn'+i).classList.toggle('show');}
+
+function filterBooks(){const s=document.getElementById('searchBox').value.toLowerCase();document.querySelectorAll('.book-card').forEach(c=>c.style.display=c.getAttribute('data-name').includes(s)?'block':'none');}
+
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));const screen=document.getElementById(id);screen.classList.add('active');window.scrollTo(0,0);screen.addEventListener('scroll',handleHeaderScroll);}
+
+function handleHeaderScroll(e){const header=document.querySelector('.header');const scrollTop=e.target.scrollTop;if(scrollTop>30){header.classList.add('scrolled');}else{header.classList.remove('scrolled');}}
+
+function showTab(tab){document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));event.target.closest('.nav-item').classList.add('active');if(tab==='home')showScreen('homeScreen');else if(tab==='bible')showScreen('bibleScreen');else if(tab==='hymns')showScreen('hymnsScreen');else if(tab==='favorites'){renderFavorites();showScreen('favoritesScreen');}}
+
+function showChapters(book,total,abbr){curBook=book;document.getElementById('chapTitle').innerHTML=book;const grid=document.getElementById('chaptersGrid');grid.innerHTML='';for(let i=1;i<=total;i++){const btn=document.createElement('button');btn.className='chapter-btn';btn.textContent=i;btn.onclick=()=>loadVerses(book,i,abbr);grid.appendChild(btn);}showScreen('chaptersScreen');}
+
+async function loadVerses(book,chap,abbr){curBook=book;curChap=chap;document.getElementById('verseTitle').textContent=`${book} ${chap}`;const container=document.getElementById('versesContainer');container.innerHTML='<div class="loading"><div class="spinner"></div><div class="loading-text">Loading...</div></div>';showScreen('versesScreen');try{if(bibleData){const bookData=bibleData.find(b=>b.abbrev&&b.abbrev.toLowerCase()===abbr.toLowerCase());if(bookData&&bookData.chapters&&bookData.chapters[chap-1]){displayVerses(bookData.chapters[chap-1]);return;}}const api=`https://bible-api.com/${book}+${chap}?translation=kjv`;const r=await fetch(api);if(r.ok){const data=await r.json();if(data.verses){displayVerses(data.verses.map(v=>v.text));return;}}container.innerHTML='<div class="loading"><div class="loading-text">Connect to internet</div></div>';}catch(e){container.innerHTML='<div class="loading"><div class="loading-text">Failed to load</div></div>';}}
+
+function displayVerses(verses){const container=document.getElementById('versesContainer');if(typeof verses==='object'&&!Array.isArray(verses))verses=Object.values(verses);const ref=`${curBook}-${curChap}`;container.innerHTML=verses.map((t,i)=>{const vKey=`${ref}-${i+1}`;const highlightClass=highlights[vKey]||'';return `<div class="verse ${highlightClass}" data-verse="${vKey}" ontouchstart="startLongPress('${vKey}')" ontouchend="endLongPress()" ontouchmove="endLongPress()"><div class="verse-actions" id="actions-${vKey}"></div><span class="verse-num">${i+1}</span><span class="verse-text">${t}</span></div>`;}).join('');}
+
+function startLongPress(vKey){longPressVerse=vKey;longPressTimer=setTimeout(()=>showActions(vKey),500);}
+function endLongPress(){clearTimeout(longPressTimer);}
+
+function showActions(vKey){document.querySelectorAll('.verse-actions').forEach(a=>a.classList.remove('show'));const actions=document.getElementById('actions-'+vKey);actions.innerHTML=`<button class="action-btn yellow" onclick="highlightVerse('${vKey}','highlighted-yellow')">●</button><button class="action-btn green" onclick="highlightVerse('${vKey}','highlighted-green')">●</button><button class="action-btn blue" onclick="highlightVerse('${vKey}','highlighted-blue')">●</button><button class="action-btn pink" onclick="highlightVerse('${vKey}','highlighted-pink')">●</button><button class="action-btn orange" onclick="highlightVerse('${vKey}','highlighted-orange')">●</button><button class="action-btn bookmark" onclick="addBookmark('${vKey}')">🔖</button><button class="action-btn favorite" onclick="addFavorite('${vKey}')">❤️</button>`;actions.classList.add('show');setTimeout(()=>actions.classList.remove('show'),5000);}
+
+function highlightVerse(vKey,color){highlights[vKey]=color;localStorage.setItem('highlights',JSON.stringify(highlights));document.querySelector(`[data-verse="${vKey}"]`).className=`verse ${color}`;document.getElementById('actions-'+vKey).classList.remove('show');}
+
+function addBookmark(vKey){if(!bookmarks.includes(vKey)){bookmarks.push(vKey);localStorage.setItem('bookmarks',JSON.stringify(bookmarks));alert('📌 Bookmark added!');}document.getElementById('actions-'+vKey).classList.remove('show');}
+
+function addFavorite(vKey){const verse=document.querySelector(`[data-verse="${vKey}"]`);const text=verse.querySelector('.verse-text').textContent;if(!favorites.find(f=>f.key===vKey)){favorites.push({key:vKey,text:text});localStorage.setItem('favorites',JSON.stringify(favorites));alert('❤️ Added to favorites!');}document.getElementById('actions-'+vKey).classList.remove('show');}
+
+function setViewMode(mode){viewMode=mode;document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));event.target.classList.add('active');}
+
+function renderFavorites(){const favContainer=document.getElementById('favoritesContainer');const bookContainer=document.getElementById('bookmarksContainer');if(favorites.length===0){favContainer.innerHTML='<div class="glass-card"><div class="book-info">No favorites yet</div></div>';}else{favContainer.innerHTML=favorites.map(f=>`<div class="glass-card"><div class="book-name">${f.key}</div><div class="book-info">${f.text.substring(0,80)}...</div></div>`).join('');}if(bookmarks.length===0){bookContainer.innerHTML='<div class="glass-card"><div class="book-info">No bookmarks yet</div></div>';}else{bookContainer.innerHTML=bookmarks.map(b=>`<div class="glass-card"><div class="book-name">📖 ${b}</div></div>`).join('');}}
+
+function backToChapters(){const book=BOOKS.OT.concat(BOOKS.NT).find(b=>b.n===curBook);if(book)showChapters(curBook,book.c,book.abbr);}
+
+window.onload=init;
     </script>
 </body>
 </html>
