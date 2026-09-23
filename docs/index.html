@@ -188,6 +188,42 @@ body.theme-light .verse-of-day-title, body.theme-dark .verse-of-day-title { colo
 body.theme-light .verse-of-day-text, body.theme-dark .verse-of-day-text { color: #f6ebdc !important; }
 body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #ffffff !important; }
 
+/* ============================================================
+   CHURCH FELLOWSHIP SECTION
+   ============================================================ */
+.church-hero { position: relative; overflow: hidden; border-radius: var(--r-xl); padding: 26px 20px 24px; margin-bottom: 18px; text-align: center; background: linear-gradient(150deg, #2b3a67 0%, #1f2947 55%, #14182b 100%); border: 1px solid rgba(255,255,255,.16); box-shadow: 0 16px 40px rgba(10,14,28,.5), 0 1px 0 rgba(255,255,255,.18) inset; }
+.church-hero::before { content:''; position:absolute; inset:0; background: radial-gradient(120% 80% at 50% -10%, rgba(255,255,255,.18), transparent 60%); pointer-events:none; }
+.church-logo-ring { width: 92px; height: 92px; margin: 0 auto 14px; border-radius: 50%; padding: 4px; background: linear-gradient(150deg, rgba(255,255,255,.55), rgba(255,255,255,.12)); box-shadow: 0 8px 24px rgba(0,0,0,.35), 0 0 26px rgba(167,139,250,.35); position: relative; }
+.church-logo-ring img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background: #14182b; display: block; }
+.church-logo-ring .church-logo-fallback { width: 100%; height: 100%; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 42px; background: linear-gradient(150deg, #3a4a7a, #232a49); }
+.church-name { font-size: 20px; font-weight: 800; letter-spacing: 0.3px; color: #fff; line-height: 1.25; margin-bottom: 6px; text-shadow: 0 2px 10px rgba(0,0,0,.5); }
+.church-tagline { font-family: var(--font-scripture); font-style: italic; font-size: 13.5px; line-height: 1.5; color: rgba(255,255,255,.85); text-shadow: 0 1px 6px rgba(0,0,0,.4); }
+.church-badge { display:inline-flex; align-items:center; gap:6px; margin-bottom:14px; padding:5px 12px; border-radius: var(--r-pill); font-size:10.5px; font-weight:700; letter-spacing:.6px; text-transform:uppercase; color:#fff; background: rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.28); }
+
+/* Sub-tab pills */
+.church-tabs { display: flex; gap: 8px; margin-bottom: 18px; overflow-x: auto; padding-bottom: 2px; -webkit-overflow-scrolling: touch; }
+.church-tabs::-webkit-scrollbar { display: none; }
+.ctab { flex: 1 0 auto; min-width: 84px; display:flex; align-items:center; justify-content:center; gap:6px; padding: 10px 12px; border-radius: var(--r-pill); font-size: 13px; font-weight: 700; color: rgba(255,255,255,.82); cursor: pointer; background: var(--glass-1); border: 1px solid var(--hair); box-shadow: var(--e1); transition: all .28s var(--ease); -webkit-user-select:none; user-select:none; }
+.ctab:active { transform: scale(.96); }
+.ctab.active { color:#fff; background: linear-gradient(150deg, var(--violet), var(--violet-deep)); border-color: rgba(255,255,255,.45); box-shadow: 0 6px 18px rgba(124,58,237,.45), 0 1px 3px rgba(255,255,255,.4) inset; }
+
+/* Resource cards (books / teachings) */
+.res-card { display:flex; align-items:center; gap:14px; background: var(--glass-1); backdrop-filter: blur(16px) saturate(1.3); -webkit-backdrop-filter: blur(16px) saturate(1.3); border:1px solid var(--hair); border-radius: var(--r-md); padding: 15px; margin-bottom: 12px; box-shadow: var(--e1); cursor:pointer; transition: transform .24s var(--ease), box-shadow .24s var(--ease); position:relative; overflow:hidden; text-align:left; width:100%; }
+.res-card:active { transform: scale(.98); }
+.res-ic { width:50px; height:50px; flex-shrink:0; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:24px; background: linear-gradient(150deg, rgba(255,255,255,.30), rgba(255,255,255,.12)); border:1px solid rgba(255,255,255,.45); box-shadow: 0 4px 12px rgba(16,24,40,.18), 0 1px 2px rgba(255,255,255,.5) inset; }
+.res-title { font-size:15px; font-weight:700; color:#fff; margin-bottom:3px; text-shadow:0 2px 6px rgba(0,0,0,.2); }
+.res-desc { font-size:12px; color:rgba(255,255,255,.82); line-height:1.45; }
+.res-arrow { margin-left:auto; font-size:20px; color:rgba(255,255,255,.6); flex-shrink:0; }
+
+/* Video cards */
+.video-card { background: var(--glass-1); border:1px solid var(--hair); border-radius: var(--r-md); overflow:hidden; margin-bottom:14px; box-shadow: var(--e1); }
+.video-thumb { position:relative; width:100%; aspect-ratio:16/9; background:#14182b center/cover no-repeat; cursor:pointer; display:block; border:none; }
+.video-thumb .play { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:56px; height:56px; border-radius:50%; background:rgba(0,0,0,.55); backdrop-filter:blur(4px); border:2px solid rgba(255,255,255,.85); display:flex; align-items:center; justify-content:center; font-size:22px; color:#fff; box-shadow:0 6px 18px rgba(0,0,0,.4); }
+.video-card iframe { width:100%; aspect-ratio:16/9; border:0; display:block; }
+.video-meta { padding:12px 14px; }
+.video-title { font-size:14px; font-weight:700; color:#fff; text-shadow:0 2px 6px rgba(0,0,0,.2); }
+.church-empty { text-align:center; padding:26px 18px; color:rgba(255,255,255,.85); font-size:13px; line-height:1.6; }
+
 .loading { text-align: center; padding: 50px 20px; }
 .spinner { width: 48px; height: 48px; border: 4px solid rgba(255, 255, 255, 0.2); border-top-color: white; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px; box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2); }
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -528,13 +564,36 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
             </div>
         </div>
 
+        <!-- Church Fellowship (private to believers) -->
+        <div class="screen" id="churchScreen">
+            <div class="church-hero">
+                <div class="church-badge">✝️ Our Fellowship</div>
+                <div class="church-logo-ring">
+                    <img src="church-logo.png" alt="Church Logo" id="churchLogo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                    <div class="church-logo-fallback" style="display:none;">⛪</div>
+                </div>
+                <div class="church-name">All One In Christ Church Fellowship</div>
+                <div class="church-tagline">&ldquo;For ye are all one in Christ Jesus&rdquo; — Galatians 3:28</div>
+            </div>
+
+            <div class="church-tabs" id="churchTabs">
+                <div class="ctab active" data-ctab="books" onclick="showChurchTab('books')">📚 Books</div>
+                <div class="ctab" data-ctab="teachings" onclick="showChurchTab('teachings')">🕊️ Teachings</div>
+                <div class="ctab" data-ctab="hymns" onclick="showChurchTab('hymns')">🎶 Songs</div>
+                <div class="ctab" data-ctab="videos" onclick="showChurchTab('videos')">🎥 Videos</div>
+            </div>
+
+            <div id="churchContent"></div>
+        </div>
+
         <!-- Premium Floating Nav -->
         <div class="nav">
-            <div class="nav-item active" onclick="showTab('home')"><div class="nav-icon">🏠</div><div>Home</div></div>
-            <div class="nav-item" onclick="showTab('bible')"><div class="nav-icon">📖</div><div>Bible</div></div>
-            <div class="nav-item" onclick="showTab('hymns')"><div class="nav-icon">🎵</div><div>Hymns</div></div>
-            <div class="nav-item" onclick="showTab('favorites')"><div class="nav-icon">❤️</div><div>Saved</div></div>
-            <div class="nav-item" onclick="showTab('profile')">
+            <div class="nav-item active" data-tab="home" onclick="showTab('home')"><div class="nav-icon">🏠</div><div>Home</div></div>
+            <div class="nav-item" data-tab="bible" onclick="showTab('bible')"><div class="nav-icon">📖</div><div>Bible</div></div>
+            <div class="nav-item" data-tab="hymns" onclick="showTab('hymns')"><div class="nav-icon">🎵</div><div>Hymns</div></div>
+            <div class="nav-item" data-tab="church" onclick="showTab('church')"><div class="nav-icon">⛪</div><div>Church</div></div>
+            <div class="nav-item" data-tab="favorites" onclick="showTab('favorites')"><div class="nav-icon">❤️</div><div>Saved</div></div>
+            <div class="nav-item" data-tab="profile" onclick="showTab('profile')">
                 <div class="nav-icon">
                     <span id="navProfileIcon">👤</span>
                     <img id="navProfileImg" class="nav-profile-img" alt="" onerror="this.style.display='none';document.getElementById('navProfileIcon').style.display='inline-block';">
@@ -548,6 +607,33 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
 const BOOKS={OT:[{n:'Genesis',c:50,abbr:'gen'},{n:'Exodus',c:40,abbr:'exo'},{n:'Leviticus',c:27,abbr:'lev'},{n:'Numbers',c:36,abbr:'num'},{n:'Deuteronomy',c:34,abbr:'deu'},{n:'Joshua',c:24,abbr:'jos'},{n:'Judges',c:21,abbr:'jdg'},{n:'Ruth',c:4,abbr:'rut'},{n:'1 Samuel',c:31,abbr:'1sa'},{n:'2 Samuel',c:24,abbr:'2sa'},{n:'1 Kings',c:22,abbr:'1ki'},{n:'2 Kings',c:25,abbr:'2ki'},{n:'1 Chronicles',c:29,abbr:'1ch'},{n:'2 Chronicles',c:36,abbr:'2ch'},{n:'Ezra',c:10,abbr:'ezr'},{n:'Nehemiah',c:13,abbr:'neh'},{n:'Esther',c:10,abbr:'est'},{n:'Job',c:42,abbr:'job'},{n:'Psalms',c:150,abbr:'psa'},{n:'Proverbs',c:31,abbr:'pro'},{n:'Ecclesiastes',c:12,abbr:'ecc'},{n:'Song of Solomon',c:8,abbr:'sol'},{n:'Isaiah',c:66,abbr:'isa'},{n:'Jeremiah',c:52,abbr:'jer'},{n:'Lamentations',c:5,abbr:'lam'},{n:'Ezekiel',c:48,abbr:'eze'},{n:'Daniel',c:12,abbr:'dan'},{n:'Hosea',c:14,abbr:'hos'},{n:'Joel',c:3,abbr:'joe'},{n:'Amos',c:9,abbr:'amo'},{n:'Obadiah',c:1,abbr:'oba'},{n:'Jonah',c:4,abbr:'jon'},{n:'Micah',c:7,abbr:'mic'},{n:'Nahum',c:3,abbr:'nah'},{n:'Habakkuk',c:3,abbr:'hab'},{n:'Zephaniah',c:3,abbr:'zep'},{n:'Haggai',c:2,abbr:'hag'},{n:'Zechariah',c:14,abbr:'zec'},{n:'Malachi',c:4,abbr:'mal'}],NT:[{n:'Matthew',c:28,abbr:'mat'},{n:'Mark',c:16,abbr:'mar'},{n:'Luke',c:24,abbr:'luk'},{n:'John',c:21,abbr:'joh'},{n:'Acts',c:28,abbr:'act'},{n:'Romans',c:16,abbr:'rom'},{n:'1 Corinthians',c:16,abbr:'1co'},{n:'2 Corinthians',c:13,abbr:'2co'},{n:'Galatians',c:6,abbr:'gal'},{n:'Ephesians',c:6,abbr:'eph'},{n:'Philippians',c:4,abbr:'phi'},{n:'Colossians',c:4,abbr:'col'},{n:'1 Thessalonians',c:5,abbr:'1th'},{n:'2 Thessalonians',c:3,abbr:'2th'},{n:'1 Timothy',c:6,abbr:'1ti'},{n:'2 Timothy',c:4,abbr:'2ti'},{n:'Titus',c:3,abbr:'tit'},{n:'Philemon',c:1,abbr:'phm'},{n:'Hebrews',c:13,abbr:'heb'},{n:'James',c:5,abbr:'jas'},{n:'1 Peter',c:5,abbr:'1pe'},{n:'2 Peter',c:3,abbr:'2pe'},{n:'1 John',c:5,abbr:'1jo'},{n:'2 John',c:1,abbr:'2jo'},{n:'3 John',c:1,abbr:'3jo'},{n:'Jude',c:1,abbr:'jud'},{n:'Revelation',c:22,abbr:'rev'}]};
 
 const HYMNS=[{title:"Amazing Grace",text:"A hymn about divine mercy and redemption. Theme: God's grace saves us from sin and transforms our lives."},{title:"How Great Thou Art",text:"A worship song celebrating God's majesty. Theme: Observing nature's wonders leads us to praise God's greatness."},{title:"Blessed Assurance",text:"A hymn expressing confidence in salvation. Theme: Joy in knowing Jesus, filled with the Holy Spirit."},{title:"Great Is Thy Faithfulness",text:"About God's unchanging nature. Theme: God's mercies are new every morning, His faithfulness endures forever."},{title:"It Is Well With My Soul",text:"A hymn of peace during trials. Theme: Finding spiritual peace and trusting God through all circumstances."},{title:"Holy, Holy, Holy",text:"A trinitarian worship hymn. Theme: Praising the holy Trinity in perfect unity and glory."},{title:"Rock of Ages",text:"About finding refuge in Christ. Theme: Jesus as our shelter, cleansing us from sin."},{title:"What a Friend We Have in Jesus",text:"About prayer. Theme: Jesus as our faithful friend who bears our burdens and hears our prayers."}];
+
+/* ===== Church Fellowship content (edit freely to add your own) =====
+   books/teachings : {title, desc, url?}  — url opens a PDF/website in a new tab
+   hymns           : {title, text}
+   videos          : {title, yt}          — yt is the YouTube video id            */
+const CHURCH={
+  name:"All One In Christ Church Fellowship",
+  books:[
+    {title:"Foundations of Faith", desc:"Core doctrines every believer should know", url:""},
+    {title:"Walking in the Spirit", desc:"A study on Galatians 5 for daily living", url:""},
+    {title:"The Fellowship Handbook", desc:"Our beliefs, values and church covenant", url:""}
+  ],
+  teachings:[
+    {title:"One Body in Christ", desc:"Unity of believers — Galatians 3:28", url:""},
+    {title:"The Power of Prayer", desc:"Growing a consistent prayer life", url:""},
+    {title:"Living by Grace", desc:"Understanding salvation and grace", url:""}
+  ],
+  hymns:[
+    {title:"Amazing Grace", text:"Amazing grace! how sweet the sound,\nThat saved a wretch like me!\nI once was lost, but now am found,\nWas blind, but now I see."},
+    {title:"Blessed Assurance", text:"Blessed assurance, Jesus is mine!\nOh, what a foretaste of glory divine!\nHeir of salvation, purchase of God,\nBorn of His Spirit, washed in His blood."},
+    {title:"It Is Well With My Soul", text:"When peace like a river attendeth my way,\nWhen sorrows like sea billows roll;\nWhatever my lot, Thou hast taught me to say,\nIt is well, it is well with my soul."}
+  ],
+  videos:[
+    // {title:"Sunday Worship", yt:"YOUTUBE_ID_HERE"}
+  ]
+};
+let churchTab='books';
 
 let curBook='',curChap=0,bibleData=null,viewMode='verse';
 let highlights=JSON.parse(localStorage.getItem('highlights')||'{}');
@@ -1082,6 +1168,67 @@ function renderHymns(){document.getElementById('hymnsContainer').innerHTML=HYMNS
 
 function toggleHymn(i){document.getElementById('hymn'+i).classList.toggle('show');}
 
+/* ===== Church Fellowship rendering ===== */
+function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+function renderChurch(){
+    showChurchTab(churchTab);
+}
+
+function showChurchTab(kind){
+    churchTab=kind;
+    document.querySelectorAll('#churchTabs .ctab').forEach(t=>t.classList.toggle('active',t.getAttribute('data-ctab')===kind));
+    const box=document.getElementById('churchContent');
+    if(!box)return;
+
+    if(kind==='books'||kind==='teachings'){
+        const list=CHURCH[kind]||[];
+        const ic=kind==='books'?'📖':'🕊️';
+        if(!list.length){box.innerHTML=churchEmpty('Nothing here yet.');return;}
+        box.innerHTML=list.map(item=>{
+            const clickable=item.url?`onclick="window.open('${encodeURI(item.url)}','_blank')"`:'onclick="churchNoLink()"';
+            return `<button class="res-card" ${clickable}>
+                <div class="res-ic">${ic}</div>
+                <div style="flex:1;min-width:0;">
+                    <div class="res-title">${escapeHtml(item.title)}</div>
+                    <div class="res-desc">${escapeHtml(item.desc||'')}</div>
+                </div>
+                <div class="res-arrow">${item.url?'↗':'›'}</div>
+            </button>`;
+        }).join('');
+    }
+    else if(kind==='hymns'){
+        const list=CHURCH.hymns||[];
+        if(!list.length){box.innerHTML=churchEmpty('No songs added yet.');return;}
+        box.innerHTML=list.map((h,i)=>`<div class="hymn-card" onclick="document.getElementById('cHymn${i}').classList.toggle('show')">
+            <div class="hymn-title">🎶 ${escapeHtml(h.title)}</div>
+            <div class="hymn-lyrics" id="cHymn${i}">${escapeHtml(h.text)}</div>
+        </div>`).join('');
+    }
+    else if(kind==='videos'){
+        const list=CHURCH.videos||[];
+        if(!list.length){box.innerHTML=churchEmpty('🎥 Videos will appear here soon.<br>Send your YouTube links to add them.');return;}
+        box.innerHTML=list.map((v,i)=>`<div class="video-card">
+            <button class="video-thumb" id="cVidThumb${i}" style="background-image:url('https://i.ytimg.com/vi/${v.yt}/hqdefault.jpg')" onclick="playChurchVideo(${i},'${v.yt}')">
+                <span class="play">▶</span>
+            </button>
+            <div class="video-meta"><div class="video-title">${escapeHtml(v.title)}</div></div>
+        </div>`).join('');
+    }
+}
+
+function churchEmpty(msg){return `<div class="church-empty">${msg}</div>`;}
+function churchNoLink(){alert('📄 This resource will be available soon.');}
+function playChurchVideo(i,yt){
+    const thumb=document.getElementById('cVidThumb'+i);
+    if(!thumb)return;
+    const frame=document.createElement('iframe');
+    frame.src='https://www.youtube.com/embed/'+yt+'?autoplay=1&rel=0';
+    frame.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+    frame.setAttribute('allowfullscreen','');
+    thumb.replaceWith(frame);
+}
+
 function filterBooks(){const s=document.getElementById('searchBox').value.toLowerCase();document.querySelectorAll('.book-card').forEach(c=>c.style.display=c.getAttribute('data-name').includes(s)?'block':'none');}
 
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));const screen=document.getElementById(id);screen.classList.add('active');window.scrollTo(0,0);screen.addEventListener('scroll',handleHeaderScroll);}
@@ -1090,15 +1237,13 @@ function handleHeaderScroll(e){const header=document.querySelector('.header');co
 
 function showTab(tab){
     document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-    const navItems=document.querySelectorAll('.nav-item');
-    if(tab==='home')navItems[0]?.classList.add('active');
-    else if(tab==='bible')navItems[1]?.classList.add('active');
-    else if(tab==='hymns')navItems[2]?.classList.add('active');
-    else if(tab==='favorites')navItems[3]?.classList.add('active');
-    else if(tab==='profile')navItems[4]?.classList.add('active');
+    // activate the matching nav item by its data-tab (robust to nav ordering)
+    const activeItem=document.querySelector('.nav-item[data-tab="'+tab+'"]');
+    if(activeItem)activeItem.classList.add('active');
     if(tab==='home')showScreen('homeScreen');
     else if(tab==='bible')showScreen('bibleScreen');
     else if(tab==='hymns')showScreen('hymnsScreen');
+    else if(tab==='church'){renderChurch();showScreen('churchScreen');}
     else if(tab==='favorites'){renderFavorites();showScreen('favoritesScreen');}
     else if(tab==='profile'){loadProfile();showScreen('profileScreen');}
     updateNavProfilePic();
