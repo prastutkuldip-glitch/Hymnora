@@ -10,13 +10,16 @@ html, body { width: 100%; height: 100%; overflow: hidden; position: fixed; }
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); }
 .glass-container { position: relative; max-width: 430px; margin: 0 auto; height: 100vh; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-left: 1px solid rgba(255, 255, 255, 0.2); border-right: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); display: flex; flex-direction: column; overflow: hidden; }
 .status-bar { background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); color: white; padding: 8px 20px; display: flex; justify-content: space-between; font-size: 14px; font-weight: 500; flex-shrink: 0; }
-.header { background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%); backdrop-filter: blur(20px); padding: 24px 20px; position: relative; overflow: hidden; flex-shrink: 0; }
+.header { background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%); backdrop-filter: blur(20px); padding: 24px 20px; position: sticky; top: 0; overflow: hidden; flex-shrink: 0; z-index: 999; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); }
+.header.scrolled { padding: 12px 20px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); background: rgba(102, 126, 234, 0.95); backdrop-filter: blur(25px); }
+.header.scrolled h1 { font-size: 22px; }
+.header.scrolled p { font-size: 12px; opacity: 0.85; }
 .header::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%); animation: pulse 4s ease-in-out infinite; }
 @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.1); opacity: 0.8; } }
 .header-content { position: relative; z-index: 1; }
-.header h1 { font-size: 32px; font-weight: 800; color: white; text-shadow: 0 4px 12px rgba(0,0,0,0.2); margin-bottom: 6px; letter-spacing: -0.5px; }
-.header p { font-size: 14px; color: rgba(255, 255, 255, 0.9); font-weight: 500; }
-.screen { display: none; padding: 20px; padding-bottom: 100px; animation: fadeIn 0.3s ease-in-out; overflow-y: auto; overflow-x: hidden; flex: 1; -webkit-overflow-scrolling: touch; }
+.header h1 { font-size: 32px; font-weight: 800; color: white; text-shadow: 0 4px 12px rgba(0,0,0,0.2); margin-bottom: 6px; letter-spacing: -0.5px; transition: all 0.3s ease; }
+.header p { font-size: 14px; color: rgba(255, 255, 255, 0.9); font-weight: 500; transition: all 0.3s ease; }
+.screen { display: none; padding: 20px; padding-bottom: 120px; animation: fadeIn 0.3s ease-in-out; overflow-y: auto; overflow-x: hidden; flex: 1; -webkit-overflow-scrolling: touch; }
 .screen.active { display: block; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 .glass-card { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 20px; padding: 20px; margin-bottom: 16px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2); }
@@ -56,11 +59,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 .glass-btn { background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(15px); border: 1.5px solid rgba(255, 255, 255, 0.3); border-radius: 14px; padding: 14px 24px; font-weight: 700; color: white; cursor: pointer; margin-bottom: 16px; display: inline-flex; align-items: center; gap: 8px; transition: all 0.3s; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1); font-size: 15px; border: none; }
 .glass-btn:active { transform: scale(0.96); }
 .section-title { font-size: 20px; font-weight: 800; margin: 24px 0 16px; color: white; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); display: flex; align-items: center; gap: 10px; }
-.nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-top: 1px solid rgba(255, 255, 255, 0.3); display: flex; z-index: 1000; padding: 12px 20px 20px; box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.15); }
-@media (min-width: 431px) { .nav { max-width: 430px; left: 50%; transform: translateX(-50%); } }
-.nav-item { flex: 1; padding: 12px 8px; text-align: center; cursor: pointer; color: rgba(255, 255, 255, 0.7); transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; border-radius: 12px; }
-.nav-item.active { color: white; background: rgba(255, 255, 255, 0.2); box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1); }
-.nav-icon { font-size: 26px; filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2)); }
+.nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 390px; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border: 2px solid rgba(255, 255, 255, 0.4); border-radius: 24px; display: flex; z-index: 1000; padding: 10px 16px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), 0 2px 8px rgba(255, 255, 255, 0.1) inset, 0 -2px 12px rgba(0, 0, 0, 0.1) inset; animation: navFloat 3s ease-in-out infinite; }
+@keyframes navFloat { 0%, 100% { transform: translateX(-50%) translateY(0px); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), 0 2px 8px rgba(255, 255, 255, 0.1) inset, 0 -2px 12px rgba(0, 0, 0, 0.1) inset; } 50% { transform: translateX(-50%) translateY(-4px); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(255, 255, 255, 0.15) inset, 0 -4px 16px rgba(0, 0, 0, 0.15) inset; } }
+@media (min-width: 431px) { .nav { max-width: 390px; } }
+.nav-item { flex: 1; padding: 10px 8px; text-align: center; cursor: pointer; color: rgba(255, 255, 255, 0.75); transition: all 0.3s ease; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; border-radius: 16px; position: relative; }
+.nav-item.active { color: white; background: rgba(255, 255, 255, 0.25); box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(255, 255, 255, 0.2) inset; transform: scale(1.05); }
+.nav-item:active { transform: scale(0.95); }
+.nav-icon { font-size: 24px; filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2)); transition: all 0.3s ease; }
+.nav-item.active .nav-icon { font-size: 26px; }
 .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 20px 0; }
 .stat-card { background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 16px; padding: 20px 12px; text-align: center; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12); }
 .stat-num { font-size: 28px; font-weight: 800; color: white; margin-bottom: 6px; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); }
@@ -221,7 +227,9 @@ function toggleHymn(i){document.getElementById('hymn'+i).classList.toggle('show'
 
 function filterBooks(){const s=document.getElementById('searchBox').value.toLowerCase();document.querySelectorAll('.book-card').forEach(c=>c.style.display=c.getAttribute('data-name').includes(s)?'block':'none');}
 
-function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));const screen=document.getElementById(id);screen.classList.add('active');window.scrollTo(0,0);screen.addEventListener('scroll',handleHeaderScroll);}
+
+function handleHeaderScroll(e){const header=document.querySelector('.header');const scrollTop=e.target.scrollTop;if(scrollTop>50){header.classList.add('scrolled');}else{header.classList.remove('scrolled');}}
 
 function showTab(tab){document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));event.target.closest('.nav-item').classList.add('active');if(tab==='home')showScreen('homeScreen');else if(tab==='bible')showScreen('bibleScreen');else if(tab==='hymns')showScreen('hymnsScreen');else if(tab==='favorites'){renderFavorites();showScreen('favoritesScreen');}}
 
