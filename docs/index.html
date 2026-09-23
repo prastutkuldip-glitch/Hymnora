@@ -136,33 +136,69 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 
         <!-- Home -->
         <div class="screen active" id="homeScreen">
-            <div class="compact-hero">
-                <h2>✨ Welcome to God's Word</h2>
-                <p>Experience the complete Bible with beautiful design and powerful features</p>
+            <!-- Hero Card - Main Visual Focus -->
+            <div class="compact-hero" style="padding: 32px 28px; border-radius: 30px; margin-bottom: 20px;">
+                <div style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08)); border-radius: 20px; padding: 40px 20px; margin-bottom: 24px; text-align: center;">
+                    <div style="font-size: 80px; margin-bottom: 16px; animation: float 4s ease-in-out infinite;">📖</div>
+                </div>
+                <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 12px;">Worship in Every Moment</h2>
+                <p style="font-size: 15px; line-height: 1.6; margin-bottom: 24px;">Experience the complete Bible with hymns and timeless worship.</p>
+                <div style="display: flex; gap: 12px;">
+                    <button class="glass-btn" style="flex: 1; padding: 16px; border-radius: 16px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2));" onclick="showTab('bible')">Start Reading</button>
+                    <button class="glass-btn" style="flex: 1; padding: 16px; border-radius: 16px;" onclick="showTab('hymns')">Explore Hymns</button>
+                </div>
             </div>
             
-            <div class="verse-of-day">
-                <div class="verse-of-day-title">🌟 Verse of the Day</div>
-                <div class="verse-of-day-text">"For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life."</div>
-                <div class="verse-of-day-ref">— John 3:16</div>
+            <!-- Quick Access Categories -->
+            <div style="font-size: 18px; font-weight: 700; color: white; margin: 24px 0 16px; text-shadow: 0 2px 8px rgba(0,0,0,0.2);">Quick Access</div>
+            <div style="display: flex; gap: 12px; overflow-x: auto; margin-bottom: 20px; -webkit-overflow-scrolling: touch; scrollbar-width: none;">
+                <div class="glass-card" style="min-width: 120px; text-align: center; padding: 20px 16px;" onclick="showTab('bible')">
+                    <div style="font-size: 32px; margin-bottom: 8px;">📚</div>
+                    <div style="font-size: 13px; font-weight: 700; color: white;">Bible</div>
+                </div>
+                <div class="glass-card" style="min-width: 120px; text-align: center; padding: 20px 16px;" onclick="showTab('hymns')">
+                    <div style="font-size: 32px; margin-bottom: 8px;">🎵</div>
+                    <div style="font-size: 13px; font-weight: 700; color: white;">Hymns</div>
+                </div>
+                <div class="glass-card" style="min-width: 120px; text-align: center; padding: 20px 16px;" onclick="showTab('favorites')">
+                    <div style="font-size: 32px; margin-bottom: 8px;">❤️</div>
+                    <div style="font-size: 13px; font-weight: 700; color: white;">Favorites</div>
+                </div>
             </div>
             
+            <!-- Verse of the Day Card -->
+            <div class="verse-of-day" style="border-radius: 26px; padding: 24px;">
+                <div class="verse-of-day-title" style="font-size: 16px; margin-bottom: 12px;">🌟 Verse of the Day</div>
+                <div class="verse-of-day-text" style="font-size: 15px; line-height: 1.7; margin-bottom: 12px;">"For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life."</div>
+                <div class="verse-of-day-ref" style="font-size: 14px;">— John 3:16</div>
+            </div>
+            
+            <!-- Stats Cards -->
             <div class="stats">
                 <div class="stat-card"><div class="stat-num">66</div><div class="stat-label">Books</div></div>
                 <div class="stat-card"><div class="stat-num">1189</div><div class="stat-label">Chapters</div></div>
                 <div class="stat-card"><div class="stat-num">31K+</div><div class="stat-label">Verses</div></div>
             </div>
             
-            <button class="glass-card" style="width: 100%; border: none;" onclick="showTab('bible')">
-                <div class="bubble-icon">📚</div>
-                <div class="book-name" style="font-size: 17px;">Read the Bible</div>
-                <div class="book-info">Complete KJV with highlights & bookmarks</div>
+            <!-- Featured Section -->
+            <div style="font-size: 18px; font-weight: 700; color: white; margin: 24px 0 16px; text-shadow: 0 2px 8px rgba(0,0,0,0.2); display: flex; justify-content: space-between; align-items: center;">
+                <span>Featured</span>
+            </div>
+            
+            <button class="glass-card" style="width: 100%; border: none; text-align: left; padding: 20px; border-radius: 24px; margin-bottom: 12px;" onclick="showTab('bible')">
+                <div class="bubble-icon" style="float: left; margin-right: 16px;">📚</div>
+                <div>
+                    <div class="book-name" style="font-size: 17px; margin-bottom: 6px;">Complete Bible</div>
+                    <div class="book-info">66 books • All verses • 3 languages</div>
+                </div>
             </button>
             
-            <button class="glass-card" style="width: 100%; border: none;" onclick="showTab('hymns')">
-                <div class="bubble-icon">🎵</div>
-                <div class="book-name" style="font-size: 17px;">Worship Hymns</div>
-                <div class="book-info">Classic Christian hymns & songs</div>
+            <button class="glass-card" style="width: 100%; border: none; text-align: left; padding: 20px; border-radius: 24px;" onclick="showTab('hymns')">
+                <div class="bubble-icon" style="float: left; margin-right: 16px;">🎵</div>
+                <div>
+                    <div class="book-name" style="font-size: 17px; margin-bottom: 6px;">Worship Hymns</div>
+                    <div class="book-info">Classic hymns • Sing praises</div>
+                </div>
             </button>
         </div>
 
