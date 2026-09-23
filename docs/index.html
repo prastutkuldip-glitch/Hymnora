@@ -148,8 +148,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
             
             <!-- Action Buttons -->
             <div style="display: flex; gap: 12px; margin-bottom: 24px;">
-                <button class="glass-btn" style="flex: 1; padding: 16px; border-radius: 16px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2));" onclick="showTab('bible')">Start Reading</button>
-                <button class="glass-btn" style="flex: 1; padding: 16px; border-radius: 16px;" onclick="showTab('hymns')">Explore Hymns</button>
+                <button class="glass-btn" style="flex: 1; padding: 16px; border-radius: 16px; background: linear-gradient(135deg, rgba(76, 175, 80, 0.4), rgba(46, 125, 50, 0.3)); border: 2px solid rgba(76, 175, 80, 0.5); box-shadow: 0 4px 16px rgba(76, 175, 80, 0.3), 0 2px 8px rgba(255, 255, 255, 0.1) inset; font-size: 15px; font-weight: 700;" onclick="showTab('bible')">📖 Start Reading</button>
+                <button class="glass-btn" style="flex: 1; padding: 16px; border-radius: 16px; background: linear-gradient(135deg, rgba(156, 39, 176, 0.4), rgba(123, 31, 162, 0.3)); border: 2px solid rgba(156, 39, 176, 0.5); box-shadow: 0 4px 16px rgba(156, 39, 176, 0.3), 0 2px 8px rgba(255, 255, 255, 0.1) inset; font-size: 15px; font-weight: 700;" onclick="showTab('hymns')">🎵 Explore Hymns</button>
             </div>
             
             <!-- Quick Access Categories -->
@@ -280,7 +280,18 @@ function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classL
 
 function handleHeaderScroll(e){const header=document.querySelector('.header');const scrollTop=e.target.scrollTop;if(scrollTop>30){header.classList.add('scrolled');}else{header.classList.remove('scrolled');}}
 
-function showTab(tab){document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));event.target.closest('.nav-item').classList.add('active');if(tab==='home')showScreen('homeScreen');else if(tab==='bible')showScreen('bibleScreen');else if(tab==='hymns')showScreen('hymnsScreen');else if(tab==='favorites'){renderFavorites();showScreen('favoritesScreen');}}
+function showTab(tab){
+    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+    const navItems=document.querySelectorAll('.nav-item');
+    if(tab==='home')navItems[0]?.classList.add('active');
+    else if(tab==='bible')navItems[1]?.classList.add('active');
+    else if(tab==='hymns')navItems[2]?.classList.add('active');
+    else if(tab==='favorites')navItems[3]?.classList.add('active');
+    if(tab==='home')showScreen('homeScreen');
+    else if(tab==='bible')showScreen('bibleScreen');
+    else if(tab==='hymns')showScreen('hymnsScreen');
+    else if(tab==='favorites'){renderFavorites();showScreen('favoritesScreen');}
+}
 
 function showChapters(book,total,abbr){curBook=book;document.getElementById('chapTitle').innerHTML=book;const grid=document.getElementById('chaptersGrid');grid.innerHTML='';for(let i=1;i<=total;i++){const btn=document.createElement('button');btn.className='chapter-btn';btn.textContent=i;btn.onclick=()=>loadVerses(book,i,abbr);grid.appendChild(btn);}showScreen('chaptersScreen');}
 
