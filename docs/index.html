@@ -17,14 +17,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .header-logo { width: 32px; height: 32px; border-radius: 8px; box-shadow: 0 4px 12px rgba(135, 206, 250, 0.4), 0 2px 6px rgba(173, 216, 230, 0.3) inset, 0 0 15px rgba(173, 216, 230, 0.2); transition: all 0.3s; flex-shrink: 0; border: 1.5px solid rgba(173, 216, 230, 0.5); }
 .header.scrolled .header-logo { width: 28px; height: 28px; box-shadow: 0 2px 8px rgba(135, 206, 250, 0.3), 0 1px 4px rgba(173, 216, 230, 0.25) inset, 0 0 12px rgba(173, 216, 230, 0.15); }
 
-.header-text { flex: 1; display: flex; align-items: center; gap: 12px; }
-.header h1 { font-size: 22px; font-weight: 700; color: white; text-shadow: 0 2px 8px rgba(0,0,0,0.2); transition: all 0.3s; line-height: 1.2; margin: 0; }
+.header-text { flex: 1; }
+.header h1 { font-size: 22px; font-weight: 700; color: white; text-shadow: 0 2px 8px rgba(0,0,0,0.2); transition: all 0.3s; line-height: 1.2; margin: 0; display: inline-block; }
 .header.scrolled h1 { font-size: 18px; }
 .header p { font-size: 12px; color: rgba(255, 255, 255, 0.9); font-weight: 500; transition: all 0.3s; margin: 0; }
 .header.scrolled p { font-size: 10px; opacity: 0.8; }
 
-.header-side-logo { width: 40px; height: 40px; object-fit: contain; border-radius: 10px; box-shadow: 0 4px 12px rgba(135, 206, 250, 0.4), 0 2px 6px rgba(173, 216, 230, 0.3) inset, 0 0 15px rgba(173, 216, 230, 0.2); transition: all 0.3s; border: 2px solid rgba(173, 216, 230, 0.6); flex-shrink: 0; }
-.header.scrolled .header-side-logo { width: 34px; height: 34px; box-shadow: 0 2px 8px rgba(135, 206, 250, 0.3), 0 1px 4px rgba(173, 216, 230, 0.25) inset, 0 0 12px rgba(173, 216, 230, 0.15); }
+.header-side-logo { width: 50px; height: 50px; object-fit: contain; transition: all 0.3s; border: none; box-shadow: none; flex-shrink: 0; vertical-align: middle; display: inline-block; margin-left: 8px; margin-bottom: -8px; }
+.header.scrolled .header-side-logo { width: 42px; height: 42px; margin-bottom: -6px; }
 
 .screen { display: none; padding: 16px; padding-left: 16px; padding-right: 16px; animation: fadeIn 0.3s ease-in-out; overflow-y: auto; overflow-x: hidden; flex: 1; -webkit-overflow-scrolling: touch; }
 .screen.active { display: block; }
@@ -146,11 +146,8 @@ body.theme-light .header p, body.theme-light .book-info, body.theme-light .stat-
         <div class="header">
             <img src="logo.png" alt="HYMNORA" class="header-logo" id="headerLogo" onerror="this.style.display='none'">
             <div class="header-text">
-                <div>
-                    <h1>HYMNORA</h1>
-                    <p>Complete Bible & Worship</p>
-                </div>
-                <img src="header-logo.png" alt="Logo" class="header-side-logo" id="headerSideLogo" onerror="this.style.display='none'">
+                <h1>HYMNORA<img src="header-logo.png" alt="" class="header-side-logo" id="headerSideLogo" onerror="this.style.display='none'"></h1>
+                <p>Complete Bible & Worship</p>
             </div>
         </div>
 
