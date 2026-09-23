@@ -42,10 +42,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .compact-hero h2 { font-size: 20px; font-weight: 700; color: white; margin-bottom: 8px; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); }
 .compact-hero p { font-size: 13px; line-height: 1.5; color: rgba(255, 255, 255, 0.95); text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2); }
 
-.verse-of-day { background: linear-gradient(135deg, rgba(138, 43, 226, 0.3), rgba(75, 0, 130, 0.3)); backdrop-filter: blur(20px); border: 2px solid rgba(138, 43, 226, 0.5); border-radius: 18px; padding: 18px; margin-bottom: 16px; box-shadow: 0 8px 32px rgba(138, 43, 226, 0.25), 0 2px 8px rgba(255, 255, 255, 0.15) inset; }
-.verse-of-day-title { font-size: 15px; font-weight: 700; color: white; margin-bottom: 10px; text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); }
-.verse-of-day-text { font-size: 14px; line-height: 1.6; color: white; font-style: italic; margin-bottom: 8px; text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2); }
-.verse-of-day-ref { font-size: 13px; font-weight: 600; color: rgba(255, 255, 255, 0.9); text-align: right; }
+.verse-of-day { background: linear-gradient(145deg, #ffffff, #f0f0f0); border: none; border-radius: 20px; padding: 24px; margin-bottom: 16px; box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.15), -8px -8px 16px rgba(255, 255, 255, 0.7), inset 2px 2px 4px rgba(255, 255, 255, 0.8); position: relative; }
+.verse-of-day::before { content: ''; position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px; background: linear-gradient(145deg, #ffffff, #e0e0e0); border-radius: 20px; z-index: -1; }
+.verse-of-day-title { font-size: 16px; font-weight: 700; color: #333333; margin-bottom: 12px; text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8); }
+.verse-of-day-text { font-size: 15px; line-height: 1.6; color: #444444; font-style: italic; margin-bottom: 10px; text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5); }
+.verse-of-day-ref { font-size: 13px; font-weight: 600; color: #666666; text-align: right; }
 
 .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
 .stat-card { background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1)); backdrop-filter: blur(20px); border: 1.5px solid rgba(255, 255, 255, 0.3); border-radius: 16px; padding: 14px 10px; text-align: center; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(255, 255, 255, 0.1) inset; }
@@ -203,6 +204,78 @@ body.theme-light .header p, body.theme-light .book-info, body.theme-light .stat-
                     <div class="book-info">Classic hymns • Sing praises</div>
                 </div>
             </button>
+
+            <!-- Quick Access Section -->
+            <div style="font-size: 18px; font-weight: 700; color: white; margin: 24px 0 16px; text-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+                <span>Quick Access</span>
+            </div>
+
+            <!-- Quick Access Grid -->
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px;">
+                <button class="glass-card" style="border: none; padding: 16px 12px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px;" onclick="showTab('favorites')">
+                    <div style="font-size: 32px;">❤️</div>
+                    <div style="font-size: 11px; font-weight: 600; color: white;">Favorites</div>
+                </button>
+                
+                <button class="glass-card" style="border: none; padding: 16px 12px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px;" onclick="showTab('favorites')">
+                    <div style="font-size: 32px;">🔖</div>
+                    <div style="font-size: 11px; font-weight: 600; color: white;">Bookmarks</div>
+                </button>
+                
+                <button class="glass-card" style="border: none; padding: 16px 12px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px;" onclick="alert('🔍 Search feature coming soon!')">
+                    <div style="font-size: 32px;">🔍</div>
+                    <div style="font-size: 11px; font-weight: 600; color: white;">Search</div>
+                </button>
+                
+                <button class="glass-card" style="border: none; padding: 16px 12px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px;" onclick="showTab('profile')">
+                    <div style="font-size: 32px;">⚙️</div>
+                    <div style="font-size: 11px; font-weight: 600; color: white;">Settings</div>
+                </button>
+            </div>
+
+            <!-- Community Section -->
+            <div style="font-size: 18px; font-weight: 700; color: white; margin: 24px 0 16px; text-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+                <span>Community</span>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px;">
+                <button class="glass-card" style="border: none; padding: 16px 12px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px;" onclick="alert('📿 Prayer Requests coming soon!')">
+                    <div style="font-size: 32px;">📿</div>
+                    <div style="font-size: 11px; font-weight: 600; color: white;">Prayers</div>
+                </button>
+                
+                <button class="glass-card" style="border: none; padding: 16px 12px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px;" onclick="alert('👥 Community feature coming soon!')">
+                    <div style="font-size: 32px;">👥</div>
+                    <div style="font-size: 11px; font-weight: 600; color: white;">Groups</div>
+                </button>
+                
+                <button class="glass-card" style="border: none; padding: 16px 12px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px;" onclick="alert('💬 Share feature coming soon!')">
+                    <div style="font-size: 32px;">💬</div>
+                    <div style="font-size: 11px; font-weight: 600; color: white;">Share</div>
+                </button>
+            </div>
+
+            <!-- Daily Tools Section -->
+            <div style="font-size: 18px; font-weight: 700; color: white; margin: 24px 0 16px; text-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+                <span>Daily Tools</span>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 40px;">
+                <button class="glass-card" style="border: none; padding: 16px 12px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px;" onclick="alert('📅 Reading Plan coming soon!')">
+                    <div style="font-size: 32px;">📅</div>
+                    <div style="font-size: 11px; font-weight: 600; color: white;">Reading Plan</div>
+                </button>
+                
+                <button class="glass-card" style="border: none; padding: 16px 12px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px;" onclick="alert('📝 Notes coming soon!')">
+                    <div style="font-size: 32px;">📝</div>
+                    <div style="font-size: 11px; font-weight: 600; color: white;">Notes</div>
+                </button>
+                
+                <button class="glass-card" style="border: none; padding: 16px 12px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px;" onclick="alert('🎧 Audio Bible coming soon!')">
+                    <div style="font-size: 32px;">🎧</div>
+                    <div style="font-size: 11px; font-weight: 600; color: white;">Audio</div>
+                </button>
+            </div>
         </div>
 
         <!-- Bible -->
