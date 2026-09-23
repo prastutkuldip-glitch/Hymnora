@@ -684,6 +684,66 @@ const BIBLE_VERSIONS={
     ]}
 };
 
+// ---- Auto-discovery of available translations -------------------------------
+// Instead of hard-coding translation keys that may not exist, the app asks each
+// provider for its catalogue and picks whatever Hindi / Assamese Bible it offers.
+const CATALOGS={
+    getbible:{
+        url:'https://api.getbible.net/v2/translations.json',
+        find:(data,re)=>{
+            const list=Array.isArray(data)?data:Object.values(data||{});
+            const out=[];
+            list.forEach(t=>{
+                if(!t)return;
+                const hay=[t.language,t.lang,t.languageEnglish,t.version,t.translation,t.abbreviation].filter(Boolean).join(' ');
+                const key=t.abbreviation||t.abbr;
+                if(key&&re.test(hay))out.push({key:key,label:t.version||t.translation||key});
+            });
+            return out;
+        },
+        chapter:(key,bn,ch)=>`https://api.getbible.net/v2/${key}/${bn}/${ch}.json`,
+        parse:parseGetBible
+    },
+    bolls:{
+        url:'https://bolls.life/static/bolls/app/views/languages.json',
+        find:(data,re)=>{
+            const out=[];
+            (Array.isArray(data)?data:[]).forEach(g=>{
+                if(re.test(g.language||''))
+                    (g.translations||[]).forEach(t=>{if(t.short_name)out.push({key:t.short_name,label:t.full_name||t.short_name});});
+            });
+            return out;
+        },
+        chapter:(key,bn,ch)=>`https://bolls.life/get-text/${key}/${bn}/${ch}/`,
+        parse:parseBolls
+    }
+};
+
+const LANG_PATTERNS={english:/english/i,hindi:/hindi|हिन्दी|हिंदी/i,assamese:/assamese|asamiya|অসমীয়া/i};
+
+function cachedSources(version){try{return JSON.parse(localStorage.getItem('bibleSrc_'+version)||'null')||[];}catch(e){return [];}}
+function saveSources(version,list){try{localStorage.setItem('bibleSrc_'+version,JSON.stringify(list));}catch(e){}}
+
+async function discoverSources(version){
+    const re=LANG_PATTERNS[version];
+    if(!re)return [];
+    const found=[];
+    for(const [prov,cat] of Object.entries(CATALOGS)){
+        try{
+            const r=await fetch(cat.url);
+            if(!r.ok)continue;
+            cat.find(await r.json(),re).forEach(t=>found.push({provider:prov,key:t.key,label:t.label}));
+        }catch(e){continue;}
+    }
+    if(found.length)saveSources(version,found);
+    return found;
+}
+
+function toSource(d){
+    const cat=CATALOGS[d.provider];
+    return {name:d.provider+':'+d.key,url:(bn,ch)=>cat.chapter(d.key,bn,ch),parse:cat.parse};
+}
+
 const ALL_BOOKS=[];
 function buildBookIndex(){ALL_BOOKS.length=0;BOOKS.OT.forEach((b,i)=>ALL_BOOKS.push(Object.assign({},b,{num:i+1,part:'OT',idx:i})));BOOKS.NT.forEach((b,i)=>ALL_BOOKS.push(Object.assign({},b,{num:40+i,part:'NT',idx:i})));}
 
@@ -825,11 +885,25 @@ async function testBibleSources(){
     const box=document.getElementById('sourceTestResults');
     if(!ALL_BOOKS.length)buildBookIndex();
     const john=ALL_BOOKS.find(b=>b.abbr==='joh');
-    box.innerHTML='<div class="glass-card" style="cursor:default"><div class="book-info">Testing… please wait</div></div>';
+    box.innerHTML='<div class="glass-card" style="cursor:default"><div class="book-info">Testing… please wait (this can take ~30s)</div></div>';
     let html='';
+
+    // 1) What does each provider actually offer for Hindi / Assamese?
+    for(const ver of ['hindi','assamese']){
+        const found=await discoverSources(ver);
+        html+=`<div style="color:white;font-weight:700;font-size:14px;margin:14px 0 6px;">🔎 Available ${ver} translations</div>`;
+        if(!found.length){
+            html+='<div class="glass-card" style="cursor:default;margin-bottom:8px;padding:12px;"><div class="book-info">None found (provider catalogue unreachable or has no such language)</div></div>';
+        }else{
+            html+=`<div class="glass-card" style="cursor:default;margin-bottom:8px;padding:12px;"><div class="book-info">${found.map(f=>f.provider+':'+f.key+' ('+f.label+')').join('<br>')}</div></div>`;
+        }
+    }
+
+    // 2) Does each source actually return verses?
     for(const [ver,cfg] of Object.entries(BIBLE_VERSIONS)){
         html+=`<div style="color:white;font-weight:700;font-size:14px;margin:14px 0 6px;">${cfg.label}</div>`;
-        for(const src of cfg.sources){
+        const probeList=cachedSources(ver).map(toSource).concat(cfg.sources);
+        for(const src of probeList){
             let status='✗ failed',sample='';
             try{
                 if(src.local){
@@ -952,11 +1026,9 @@ function showChapters(book,total,abbr){
     showScreen('chaptersScreen');
 }
 
-// Fetch a chapter for a given version, trying each source until one works.
-async function fetchChapter(version,bk,ch){
-    const cfg=BIBLE_VERSIONS[version];
-    if(!cfg)return null;
-    for(const src of cfg.sources){
+// Try a list of sources in order, return the first that yields verses.
+async function tryEachSource(list,bk,ch){
+    for(const src of list){
         try{
             if(src.local){
                 const data=await loadBibleData();
@@ -971,12 +1043,41 @@ async function fetchChapter(version,bk,ch){
             }
             const r=await fetch(src.url(bk.num,ch,bk));
             if(!r.ok)continue;
-            const d=await r.json();
-            const verses=src.parse(d);
+            const verses=src.parse(await r.json());
             if(verses&&verses.length)return {verses:verses,source:src.name};
         }catch(e){continue;}
     }
     return null;
+}
+
+// Fetch a chapter: previously-discovered source first, then built-in candidates,
+// then a live catalogue lookup so any available translation still gets found.
+async function fetchChapter(version,bk,ch){
+    const cfg=BIBLE_VERSIONS[version];
+    if(!cfg)return null;
+    let list=cachedSources(version).map(toSource).concat(cfg.sources);
+    // put the source that worked last time first, so later chapters load fast
+    const best=localStorage.getItem('bibleBest_'+version);
+    if(best)list.sort((a,b)=>(b.name===best?1:0)-(a.name===best?1:0));
+    let res=await tryEachSource(list,bk,ch);
+    if(res){rememberWorking(version,res.source);return res;}
+    const found=await discoverSources(version);
+    if(found.length){
+        res=await tryEachSource(found.map(toSource),bk,ch);
+        if(res){rememberWorking(version,res.source);return res;}
+    }
+    return null;
+}
+
+// Remember which source actually worked so it is tried first next time.
+function rememberWorking(version,sourceName){
+    try{localStorage.setItem('bibleBest_'+version,sourceName);}catch(e){}
+    const parts=String(sourceName).split(':');
+    if(parts.length!==2)return;
+    const list=cachedSources(version);
+    const i=list.findIndex(d=>d.provider===parts[0]&&d.key===parts[1]);
+    if(i>0){const [hit]=list.splice(i,1);list.unshift(hit);saveSources(version,list);}
+    else if(i===-1&&CATALOGS[parts[0]]){list.unshift({provider:parts[0],key:parts[1],label:parts[1]});saveSources(version,list);}
 }
 
 async function loadVerses(book,chap,abbr){
