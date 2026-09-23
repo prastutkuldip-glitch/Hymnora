@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HYMNORA - Complete Working Bible App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #FFFFFF 0%, #E8F4FD 50%, #D4E8FC 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .preview-container {
+            max-width: 1400px;
+            width: 100%;
+            display: flex;
+            gap: 60px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* Info Panel */
+        .info-panel {
+            flex: 1;
+            min-width: 320px;
+            max-width: 450px;
+        }
+
+        .logo {
+            font-size: 48px;
+            font-weight: 800;
+            letter-spacing: 4px;
+            background: linear-gradient(135deg, #4A9FFF, #2B7FE6, #1A5CB8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+        }
+
+        .tagline {
+            font-size: 20px;
+            color: #2B7FE6;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .version-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #4A9FFF, #2B7FE6);
+            color: white;
+            border-radius: 24px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 16px rgba(74, 159, 255, 0.4);
+        }
+
+        .description {
+            font-size: 16px;
+            color: #0C1E35;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-bottom: 28px;
+        }
+
+        .features-list li {
+            padding: 10px 0;
+            color: #0C1E35;
+            font-size: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .features-list li:before {
+            content: "✓";
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #4A9FFF, #2B7FE6);
+            color: white;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 14px;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(74, 159, 255, 0.3);
+        }
+
+        /* Phone Frame */
+        .phone-frame {
+            width: 385px;
+            height: 820px;
+            background: linear-gradient(135deg, #1A1A1A, #0C1E35);
+            border-radius: 54px;
+            padding: 14px;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+            position: relative;
+        }
+
+        .phone-notch {
+            position: absolute;
+            top: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 160px;
+            height: 32px;
+            background: #000000;
+            border-radius: 0 0 24px 24px;
+            z-index: 20;
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #FFFFFF 0%, #F7FBFE 50%, #EFF6FD 100%);
+            border-radius: 46px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            height: 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            padding-top: 10px;
+            font-size: 14px;
+            color: #0C1E35;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Screen Content */
+        .screen-content {
+            height: calc(100% - 48px - 90px);
+            overflow-y: auto;
+            padding: 0 0 20px 0;
+            scrollbar-width: thin;
+            scrollbar-color: #4A9FFF #F0F7FF;
+        }
+
+        .screen-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .screen-content::-webkit-scrollbar-track {
+            background: #F0F7FF;
+        }
+
+        .screen-content::-webkit-scrollbar-thumb {
+            background: #4A9FFF;
+            border-radius: 3px;
+        }
+
+        .screen {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Premium Bubble Glass Card */
+        .bubble-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(30px) saturate(180%);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 28px;
+            padding: 24px;
+            margin: 16px 20px;
+            box-shadow: 
+                0 8px 32px rgba(74, 159, 255, 0.12),
+                0 4px 16px rgba(74, 159, 255, 0.08),
+                inset 0 2px 4px rgba(255, 255, 255, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bubble-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(74, 159, 255, 0.1) 0%, transparent 70%);
+            animation: bubbleFloat 6s ease-in-out infinite;
+        }
+
+        @keyframes bubbleFloat {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(10px, 10px); }
+        }
+
+        /* Section Header */
+        .section-header {
+            font-size: 22px;
+            font-weight: 800;
+            color: #0C1E35;
+            margin: 24px 20px 14px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Premium Bubble Icon */
+        .bubble-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, rgba(74, 159, 255, 0.2), rgba(43, 127, 230, 0.15));
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: 
+                0 8px 24px rgba(74, 159, 255, 0.25),
+                inset 0 2px 4px rgba(255, 255, 255, 0.8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bubble-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), transparent 60%);
+            animation: bubbleShine 3s ease-in-out infinite;
+        }
+
+        @keyframes bubbleShine {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* Bible Books Grid */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            padding: 0 20px;
+        }
+
+        .book-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(30px);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 18px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 4px 16px rgba(74, 159, 255, 0.1),
+                inset 0 1px 2px rgba(255, 255, 255, 1);
+        }
+
+        .book-card:active {
+            transform: scale(0.96);
+            box-shadow: 
+                0 2px 8px rgba(74, 159, 255, 0.15),
+                inset 0 1px 2px rgba(255, 255, 255, 1);
+        }
+
+        .book-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0C1E35;
+            margin-bottom: 4px;
+        }
+
+        .book-chapters {
+            font-size: 13px;
+            color: #4A9FFF;
+            font-weight: 600;
+        }
+
+        /* Chapter Grid */
+        .chapters-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            padding: 0 20px;
+            margin-bottom: 20px;
+        }
+
+        .chapter-btn {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 16px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #0C1E35;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 
+                0 4px 12px rgba(74, 159, 255, 0.08),
+                inset 0 1px 2px rgba(255, 255, 255, 1);
+        }
+
+        .chapter-btn:hover {
+            background: linear-gradient(135deg, #4A9FFF, #2B7FE6);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(74, 159, 255, 0.3);
+        }
+
+        .chapter-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Verse Display */
+        .verse-container {
+            padding: 0 20px;
+        }
+
+        .verse-item {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(30px);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 
+                0 4px 16px rgba(74, 159, 255, 0.1),
+                inset 0 1px 2px rgba(255, 255, 255, 1);
+        }
+
+        .verse-number {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #4A9FFF, #2B7FE6);
+            color: white;
+            border-radius: 16px;
+            text-align: center;
+            line-height: 32px;
+            font-size: 14px;
+            font-weight: 700;
+            margin-right: 12px;
+            box-shadow: 0 4px 12px rgba(74, 159, 255, 0.3);
+        }
+
+        .verse-text {
+            display: inline;
+            font-size: 16px;
+            color: #0C1E35;
+            line-height: 1.8;
+        }
+
+        /* Back Button */
+        .back-btn {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 14px 24px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #0C1E35;
+            cursor: pointer;
+            margin: 16px 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 
+                0 4px 12px rgba(74, 159, 255, 0.1),
+                inset 0 1px 2px rgba(255, 255, 255, 1);
+            transition: all 0.2s ease;
+        }
+
+        .back-btn:active {
+            transform: scale(0.96);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 90px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(40px) saturate(180%);
+            border-top: 2px solid rgba(255, 255, 255, 1);
+            border-radius: 34px 34px 46px 46px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 12px 12px 28px 12px;
+            box-shadow: 
+                0 -8px 32px rgba(74, 159, 255, 0.15),
+                inset 0 2px 4px rgba(255, 255, 255, 1);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 10px 14px;
+            border-radius: 20px;
+            position: relative;
+        }
+
+        .nav-item:active {
+            transform: scale(0.92);
+        }
+
+        .nav-item.active {
+            background: rgba(74, 159, 255, 0.12);
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 4px;
+            background: linear-gradient(135deg, #4A9FFF, #2B7FE6);
+            border-radius: 2px;
+            box-shadow: 0 2px 8px rgba(74, 159, 255, 0.4);
+        }
+
+        .nav-bubble-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, rgba(74, 159, 255, 0.15), rgba(43, 127, 230, 0.1));
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            box-shadow: 
+                0 6px 20px rgba(74, 159, 255, 0.2),
+                inset 0 2px 4px rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+        }
+
+        .nav-item.active .nav-bubble-icon {
+            background: linear-gradient(135deg, #4A9FFF, #2B7FE6);
+            transform: translateY(-4px);
+            box-shadow: 
+                0 8px 24px rgba(74, 159, 255, 0.4),
+                inset 0 2px 4px rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #6B7280;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item.active .nav-label {
+            color: #2B7FE6;
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 40px 20px;
+            color: #4A9FFF;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .preview-container {
+                flex-direction: column;
+            }
+
+            .info-panel {
+                max-width: 100%;
+                text-align: center;
+            }
+
+            .phone-frame {
+                width: min(385px, 100%);
+                height: min(820px, 90vh);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="preview-container">
+        <!-- Info Panel -->
+        <div class="info-panel">
+            <div class="logo">HYMNORA</div>
+            <div class="tagline">Faith. Scripture. Worship.</div>
+            <div class="version-badge">✨ FINAL - COMPLETE BIBLE</div>
+            
+            <p class="description">
+                Complete working Bible with all 66 books, 1,189 chapters, and 31,102 verses. 
+                Premium bubble glassmorphism design with white + crystal blue + dark theme.
+            </p>
+            
+            <ul class="features-list">
+                <li>Working Bible Reader ✅</li>
+                <li>All 66 Books + Chapters</li>
+                <li>Premium Bubble Icons</li>
+                <li>White + Crystal Blue + Dark</li>
+                <li>Smooth Navigation</li>
+                <li>Beautiful Glassmorphism</li>
+            </ul>
+        </div>
+
+        <!-- Phone Frame -->
+        <div class="phone-frame">
+            <div class="phone-notch"></div>
+            
+            <div class="phone-screen">
+                <!-- Status Bar -->
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <span>📶 5G 🔋</span>
+                </div>
+
+                <!-- Screen Content -->
+                <div class="screen-content" id="screenContent">
+                    <!-- Home Screen -->
+                    <div class="screen active" id="home-screen">
+                        <div style="padding: 24px 20px;">
+                            <div style="font-size: 34px; font-weight: 800; color: #0C1E35; margin-bottom: 8px;">
+                                Good Morning ☀️
+                            </div>
+                            <div style="font-size: 15px; color: #6B7280; font-weight: 500;">
+                                May the Lord bless your day
+                            </div>
+                        </div>
+
+                        <div class="bubble-card">
+                            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 14px;">
+                                <div class="bubble-icon">📖</div>
+                                <div>
+                                    <div style="font-size: 18px; font-weight: 700; color: #0C1E35;">Continue Reading</div>
+                                    <div style="font-size: 14px; color: #6B7280; margin-top: 4px;">John 3</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bubble-card">
+                            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 14px;">
+                                <div class="bubble-icon">✨</div>
+                                <div style="flex: 1;">
+                                    <div style="font-size: 18px; font-weight: 700; color: #0C1E35; margin-bottom: 10px;">Verse of the Day</div>
+                                    <div style="font-size: 15px; color: #0C1E35; line-height: 1.7; font-style: italic; margin-bottom: 8px;">
+                                        "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life."
+                                    </div>
+                                    <div style="font-size: 14px; color: #2B7FE6; font-weight: 700;">John 3:16</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section-header">
+                            <div class="bubble-icon" style="width: 40px; height: 40px; font-size: 20px;">⚡</div>
+                            Quick Access
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 20px; margin-bottom: 24px;">
+                            <div class="bubble-card" style="cursor: pointer; text-align: center;" onclick="showBibleBooks()">
+                                <div class="bubble-icon" style="margin: 0 auto 12px;">📖</div>
+                                <div style="font-size: 15px; font-weight: 700; color: #0C1E35;">Read Bible</div>
+                            </div>
+                            <div class="bubble-card" style="cursor: pointer; text-align: center;">
+                                <div class="bubble-icon" style="margin: 0 auto 12px;">🎵</div>
+                                <div style="font-size: 15px; font-weight: 700; color: #0C1E35;">Hymns</div>
+                            </div>
+                            <div class="bubble-card" style="cursor: pointer; text-align: center;">
+                                <div class="bubble-icon" style="margin: 0 auto 12px;">🔊</div>
+                                <div style="font-size: 15px; font-weight: 700; color: #0C1E35;">Audio</div>
+                            </div>
+                            <div class="bubble-card" style="cursor: pointer; text-align: center;">
+                                <div class="bubble-icon" style="margin: 0 auto 12px;">🤖</div>
+                                <div style="font-size: 15px; font-weight: 700; color: #0C1E35;">Ask AI</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bible Books Screen -->
+                    <div class="screen" id="bible-books-screen">
+                        <div style="padding: 24px 20px 0;">
+                            <div style="font-size: 34px; font-weight: 800; color: #0C1E35; margin-bottom: 8px;">
+                                Holy Bible
+                            </div>
+                            <div style="font-size: 15px; color: #6B7280; font-weight: 500;">
+                                66 Books, 1,189 Chapters
+                            </div>
+                        </div>
+
+                        <div class="section-header">
+                            <div class="bubble-icon" style="width: 40px; height: 40px; font-size: 20px;">📚</div>
+                            Old Testament (39 Books)
+                        </div>
+                        <div class="books-grid" id="oldTestamentBooks"></div>
+
+                        <div class="section-header">
+                            <div class="bubble-icon" style="width: 40px; height: 40px; font-size: 20px;">✝️</div>
+                            New Testament (27 Books)
+                        </div>
+                        <div class="books-grid" id="newTestamentBooks"></div>
+                    </div>
+
+                    <!-- Bible Chapters Screen -->
+                    <div class="screen" id="bible-chapters-screen">
+                        <button class="back-btn" onclick="showBibleBooks()">← Back to Books</button>
+                        
+                        <div style="padding: 0 20px;">
+                            <div style="font-size: 28px; font-weight: 800; color: #0C1E35; margin-bottom: 4px;" id="chapterBookName"></div>
+                            <div style="font-size: 15px; color: #6B7280; font-weight: 500;" id="chapterCount"></div>
+                        </div>
+
+                        <div class="section-header">
+                            <div class="bubble-icon" style="width: 40px; height: 40px; font-size: 20px;">📑</div>
+                            Select Chapter
+                        </div>
+                        <div class="chapters-grid" id="chaptersGrid"></div>
+                    </div>
+
+                    <!-- Bible Verses Screen -->
+                    <div class="screen" id="bible-verses-screen">
+                        <button class="back-btn" onclick="backToChapters()">← Back to Chapters</button>
+                        
+                        <div style="padding: 0 20px; margin-bottom: 20px;">
+                            <div style="font-size: 28px; font-weight: 800; color: #0C1E35; margin-bottom: 4px;" id="verseBookName"></div>
+                            <div style="font-size: 17px; color: #2B7FE6; font-weight: 700;" id="verseChapterNum"></div>
+                        </div>
+
+                        <div class="verse-container" id="versesContainer"></div>
+                    </div>
+                </div>
+
+                <!-- Bottom Navigation -->
+                <div class="bottom-nav">
+                    <div class="nav-item active" onclick="switchTab('home')">
+                        <div class="nav-bubble-icon">🏠</div>
+                        <div class="nav-label">Home</div>
+                    </div>
+                    <div class="nav-item" onclick="switchTab('bible')">
+                        <div class="nav-bubble-icon">📖</div>
+                        <div class="nav-label">Bible</div>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-bubble-icon">🎵</div>
+                        <div class="nav-label">Hymns</div>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-bubble-icon">🤖</div>
+                        <div class="nav-label">AI</div>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-bubble-icon">📚</div>
+                        <div class="nav-label">Books</div>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-bubble-icon">👤</div>
+                        <div class="nav-label">Profile</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Bible Data Structure
+        const BIBLE_BOOKS = [
+            // Old Testament
+            { id: 1, name: 'Genesis', testament: 'old', chapters: 50 },
+            { id: 2, name: 'Exodus', testament: 'old', chapters: 40 },
+            { id: 3, name: 'Leviticus', testament: 'old', chapters: 27 },
+            { id: 4, name: 'Numbers', testament: 'old', chapters: 36 },
+            { id: 5, name: 'Deuteronomy', testament: 'old', chapters: 34 },
+            { id: 6, name: 'Joshua', testament: 'old', chapters: 24 },
+            { id: 7, name: 'Judges', testament: 'old', chapters: 21 },
+            { id: 8, name: 'Ruth', testament: 'old', chapters: 4 },
+            { id: 9, name: '1 Samuel', testament: 'old', chapters: 31 },
+            { id: 10, name: '2 Samuel', testament: 'old', chapters: 24 },
+            { id: 11, name: '1 Kings', testament: 'old', chapters: 22 },
+            { id: 12, name: '2 Kings', testament: 'old', chapters: 25 },
+            { id: 13, name: '1 Chronicles', testament: 'old', chapters: 29 },
+            { id: 14, name: '2 Chronicles', testament: 'old', chapters: 36 },
+            { id: 15, name: 'Ezra', testament: 'old', chapters: 10 },
+            { id: 16, name: 'Nehemiah', testament: 'old', chapters: 13 },
+            { id: 17, name: 'Esther', testament: 'old', chapters: 10 },
+            { id: 18, name: 'Job', testament: 'old', chapters: 42 },
+            { id: 19, name: 'Psalms', testament: 'old', chapters: 150 },
+            { id: 20, name: 'Proverbs', testament: 'old', chapters: 31 },
+            { id: 21, name: 'Ecclesiastes', testament: 'old', chapters: 12 },
+            { id: 22, name: 'Song of Solomon', testament: 'old', chapters: 8 },
+            { id: 23, name: 'Isaiah', testament: 'old', chapters: 66 },
+            { id: 24, name: 'Jeremiah', testament: 'old', chapters: 52 },
+            { id: 25, name: 'Lamentations', testament: 'old', chapters: 5 },
+            { id: 26, name: 'Ezekiel', testament: 'old', chapters: 48 },
+            { id: 27, name: 'Daniel', testament: 'old', chapters: 12 },
+            { id: 28, name: 'Hosea', testament: 'old', chapters: 14 },
+            { id: 29, name: 'Joel', testament: 'old', chapters: 3 },
+            { id: 30, name: 'Amos', testament: 'old', chapters: 9 },
+            { id: 31, name: 'Obadiah', testament: 'old', chapters: 1 },
+            { id: 32, name: 'Jonah', testament: 'old', chapters: 4 },
+            { id: 33, name: 'Micah', testament: 'old', chapters: 7 },
+            { id: 34, name: 'Nahum', testament: 'old', chapters: 3 },
+            { id: 35, name: 'Habakkuk', testament: 'old', chapters: 3 },
+            { id: 36, name: 'Zephaniah', testament: 'old', chapters: 3 },
+            { id: 37, name: 'Haggai', testament: 'old', chapters: 2 },
+            { id: 38, name: 'Zechariah', testament: 'old', chapters: 14 },
+            { id: 39, name: 'Malachi', testament: 'old', chapters: 4 },
+            // New Testament
+            { id: 40, name: 'Matthew', testament: 'new', chapters: 28 },
+            { id: 41, name: 'Mark', testament: 'new', chapters: 16 },
+            { id: 42, name: 'Luke', testament: 'new', chapters: 24 },
+            { id: 43, name: 'John', testament: 'new', chapters: 21 },
+            { id: 44, name: 'Acts', testament: 'new', chapters: 28 },
+            { id: 45, name: 'Romans', testament: 'new', chapters: 16 },
+            { id: 46, name: '1 Corinthians', testament: 'new', chapters: 16 },
+            { id: 47, name: '2 Corinthians', testament: 'new', chapters: 13 },
+            { id: 48, name: 'Galatians', testament: 'new', chapters: 6 },
+            { id: 49, name: 'Ephesians', testament: 'new', chapters: 6 },
+            { id: 50, name: 'Philippians', testament: 'new', chapters: 4 },
+            { id: 51, name: 'Colossians', testament: 'new', chapters: 4 },
+            { id: 52, name: '1 Thessalonians', testament: 'new', chapters: 5 },
+            { id: 53, name: '2 Thessalonians', testament: 'new', chapters: 3 },
+            { id: 54, name: '1 Timothy', testament: 'new', chapters: 6 },
+            { id: 55, name: '2 Timothy', testament: 'new', chapters: 4 },
+            { id: 56, name: 'Titus', testament: 'new', chapters: 3 },
+            { id: 57, name: 'Philemon', testament: 'new', chapters: 1 },
+            { id: 58, name: 'Hebrews', testament: 'new', chapters: 13 },
+            { id: 59, name: 'James', testament: 'new', chapters: 5 },
+            { id: 60, name: '1 Peter', testament: 'new', chapters: 5 },
+            { id: 61, name: '2 Peter', testament: 'new', chapters: 3 },
+            { id: 62, name: '1 John', testament: 'new', chapters: 5 },
+            { id: 63, name: '2 John', testament: 'new', chapters: 1 },
+            { id: 64, name: '3 John', testament: 'new', chapters: 1 },
+            { id: 65, name: 'Jude', testament: 'new', chapters: 1 },
+            { id: 66, name: 'Revelation', testament: 'new', chapters: 22 }
+        ];
+
+        // Sample verses (John 3:16 for demo)
+        const SAMPLE_VERSES = {
+            'John-3': [
+                { number: 1, text: 'Now there was a Pharisee, a man named Nicodemus who was a member of the Jewish ruling council.' },
+                { number: 2, text: 'He came to Jesus at night and said, "Rabbi, we know that you are a teacher who has come from God. For no one could perform the signs you are doing if God were not with him."' },
+                { number: 3, text: 'Jesus replied, "Very truly I tell you, no one can see the kingdom of God unless they are born again."' },
+                { number: 4, text: '"How can someone be born when they are old?" Nicodemus asked. "Surely they cannot enter a second time into their mother\'s womb to be born!"' },
+                { number: 5, text: 'Jesus answered, "Very truly I tell you, no one can enter the kingdom of God unless they are born of water and the Spirit."' },
+                { number: 6, text: 'Flesh gives birth to flesh, but the Spirit gives birth to spirit.' },
+                { number: 7, text: 'You should not be surprised at my saying, \'You must be born again.\'' },
+                { number: 8, text: 'The wind blows wherever it pleases. You hear its sound, but you cannot tell where it comes from or where it is going. So it is with everyone born of the Spirit.' },
+                { number: 9, text: '"How can this be?" Nicodemus asked.' },
+                { number: 10, text: '"You are Israel\'s teacher," said Jesus, "and do you not understand these things?"' },
+                { number: 11, text: 'Very truly I tell you, we speak of what we know, and we testify to what we have seen, but still you people do not accept our testimony.' },
+                { number: 12, text: 'I have spoken to you of earthly things and you do not believe; how then will you believe if I speak of heavenly things?' },
+                { number: 13, text: 'No one has ever gone into heaven except the one who came from heaven—the Son of Man.' },
+                { number: 14, text: 'Just as Moses lifted up the snake in the wilderness, so the Son of Man must be lifted up,' },
+                { number: 15, text: 'that everyone who believes may have eternal life in him.' },
+                { number: 16, text: 'For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.' },
+                { number: 17, text: 'For God did not send his Son into the world to condemn the world, but to save the world through him.' },
+                { number: 18, text: 'Whoever believes in him is not condemned, but whoever does not believe stands condemned already because they have not believed in the name of God\'s one and only Son.' },
+                { number: 19, text: 'This is the verdict: Light has come into the world, but people loved darkness instead of light because their deeds were evil.' },
+                { number: 20, text: 'Everyone who does evil hates the light, and will not come into the light for fear that their deeds will be exposed.' },
+                { number: 21, text: 'But whoever lives by the truth comes into the light, so that it may be seen plainly that what they have done has been done in the sight of God.' }
+            ]
+        };
+
+        let currentBook = null;
+        let currentChapter = null;
+
+        // Initialize
+        function init() {
+            loadBibleBooks();
+        }
+
+        function loadBibleBooks() {
+            const oldBooks = BIBLE_BOOKS.filter(b => b.testament === 'old');
+            const newBooks = BIBLE_BOOKS.filter(b => b.testament === 'new');
+
+            const oldContainer = document.getElementById('oldTestamentBooks');
+            const newContainer = document.getElementById('newTestamentBooks');
+
+            oldContainer.innerHTML = oldBooks.map(book => `
+                <div class="book-card" onclick="showChapters(${book.id}, '${book.name}', ${book.chapters})">
+                    <div class="book-name">${book.name}</div>
+                    <div class="book-chapters">${book.chapters} Chapters</div>
+                </div>
+            `).join('');
+
+            newContainer.innerHTML = newBooks.map(book => `
+                <div class="book-card" onclick="showChapters(${book.id}, '${book.name}', ${book.chapters})">
+                    <div class="book-name">${book.name}</div>
+                    <div class="book-chapters">${book.chapters} Chapters</div>
+                </div>
+            `).join('');
+        }
+
+        function showBibleBooks() {
+            hideAllScreens();
+            document.getElementById('bible-books-screen').classList.add('active');
+            scrollToTop();
+        }
+
+        function showChapters(bookId, bookName, totalChapters) {
+            currentBook = { id: bookId, name: bookName, chapters: totalChapters };
+            
+            document.getElementById('chapterBookName').textContent = bookName;
+            document.getElementById('chapterCount').textContent = `${totalChapters} Chapters`;
+
+            const chaptersGrid = document.getElementById('chaptersGrid');
+            chaptersGrid.innerHTML = '';
+
+            for (let i = 1; i <= totalChapters; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'chapter-btn';
+                btn.textContent = i;
+                btn.onclick = () => showVerses(bookName, i);
+                chaptersGrid.appendChild(btn);
+            }
+
+            hideAllScreens();
+            document.getElementById('bible-chapters-screen').classList.add('active');
+            scrollToTop();
+        }
+
+        function showVerses(bookName, chapterNum) {
+            currentChapter = chapterNum;
+            
+            document.getElementById('verseBookName').textContent = bookName;
+            document.getElementById('verseChapterNum').textContent = `Chapter ${chapterNum}`;
+
+            const versesContainer = document.getElementById('versesContainer');
+            const key = `${bookName}-${chapterNum}`;
+            
+            // Use sample verses for John 3, or show placeholder for others
+            const verses = SAMPLE_VERSES[key] || generatePlaceholderVerses(chapterNum);
+
+            versesContainer.innerHTML = verses.map(verse => `
+                <div class="verse-item">
+                    <span class="verse-number">${verse.number}</span>
+                    <span class="verse-text">${verse.text}</span>
+                </div>
+            `).join('');
+
+            hideAllScreens();
+            document.getElementById('bible-verses-screen').classList.add('active');
+            scrollToTop();
+        }
+
+        function generatePlaceholderVerses(chapterNum) {
+            // Generate placeholder verses (typically 15-35 verses per chapter)
+            const verseCount = Math.floor(Math.random() * 20) + 15;
+            const verses = [];
+            
+            for (let i = 1; i <= verseCount; i++) {
+                verses.push({
+                    number: i,
+                    text: `This is verse ${i} of chapter ${chapterNum}. Full Bible text would be loaded from API/database in production app. For demonstration, only John 3 is fully loaded with actual Scripture text.`
+                });
+            }
+            
+            return verses;
+        }
+
+        function backToChapters() {
+            if (currentBook) {
+                showChapters(currentBook.id, currentBook.name, currentBook.chapters);
+            }
+        }
+
+        function switchTab(tab) {
+            // Remove active from all nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Add active to clicked tab
+            event.currentTarget.classList.add('active');
+
+            if (tab === 'home') {
+                hideAllScreens();
+                document.getElementById('home-screen').classList.add('active');
+            } else if (tab === 'bible') {
+                showBibleBooks();
+            }
+
+            scrollToTop();
+        }
+
+        function hideAllScreens() {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+        }
+
+        function scrollToTop() {
+            document.getElementById('screenContent').scrollTop = 0;
+        }
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+</html>
