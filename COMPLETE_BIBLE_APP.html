@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HYMNORA - Complete Bible (31,102 Verses)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #FFFFFF 0%, #E8F4FD 50%, #D4E8FC 100%);
+            min-height: 100vh;
+        }
+
+        .app-container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 40px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #4A9FFF, #2B7FE6);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(43, 127, 230, 0.3);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 4px;
+        }
+
+        /* Search Bar */
+        .search-container {
+            padding: 16px;
+            background: white;
+            border-bottom: 2px solid #E8F4FD;
+            position: sticky;
+            top: 86px;
+            z-index: 99;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: #F7FBFE;
+            border: 2px solid #E8F4FD;
+            border-radius: 12px;
+            padding: 12px 16px;
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus-within {
+            border-color: #4A9FFF;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(74, 159, 255, 0.1);
+        }
+
+        .search-box input {
+            flex: 1;
+            border: none;
+            background: none;
+            outline: none;
+            font-size: 15px;
+            color: #0C1E35;
+        }
+
+        .search-box input::placeholder {
+            color: #9CA3AF;
+        }
+
+        /* Content */
+        .content {
+            padding-bottom: 80px;
+        }
+
+        /* Loading Spinner */
+        .loading {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #E8F4FD;
+            border-top: 4px solid #4A9FFF;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Testament Headers */
+        .testament-header {
+            background: linear-gradient(135deg, rgba(74, 159, 255, 0.1), rgba(43, 127, 230, 0.05));
+            padding: 16px 20px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #2B7FE6;
+            border-bottom: 2px solid rgba(74, 159, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .testament-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #4A9FFF, #2B7FE6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+
+        /* Book Cards */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            padding: 16px;
+        }
+
+        .book-card {
+            background: white;
+            border: 2px solid #E8F4FD;
+            border-radius: 16px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .book-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(74, 159, 255, 0.2);
+            border-color: #4A9FFF;
+        }
+
+        .book-card:active {
+            transform: translateY(-2px);
+        }
+
+        .book-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0C1E35;
+            margin-bottom: 6px;
+        }
+
+        .book-info {
+            font-size: 13px;
+            color: #6B7280;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Chapter Grid */
+        .chapters-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            padding: 16px;
+        }
+
+        .chapter-btn {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, rgba(74, 159, 255, 0.1), rgba(43, 127, 230, 0.05));
+            border: 2px solid rgba(74, 159, 255, 0.2);
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #2B7FE6;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chapter-btn:hover {
+            background: linear-gradient(135deg, #4A9FFF, #2B7FE6);
+            color: white;
+            border-color: transparent;
+            transform: scale(1.05);
+        }
+
+        /* Verses */
+        .verse-container {
+            padding: 16px;
+        }
+
+        .verse-item {
+            margin-bottom: 16px;
+            padding: 16px;
+            background: white;
+            border: 2px solid #E8F4FD;
+            border-radius: 12px;
+            line-height: 1.8;
+        }
+
+        .verse-number {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #4A9FFF, #2B7FE6);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-weight: 700;
+            font-size: 14px;
+            margin-right: 12px;
+            vertical-align: middle;
+        }
+
+        .verse-text {
+            font-size: 16px;
+            color: #0C1E35;
+        }
+
+        .verse-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #E8F4FD;
+        }
+
+        .verse-btn {
+            padding: 8px 14px;
+            background: rgba(74, 159, 255, 0.1);
+            border: 1px solid rgba(74, 159, 255, 0.2);
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #2B7FE6;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .verse-btn:hover {
+            background: linear-gradient(135deg, #4A9FFF, #2B7FE6);
+            color: white;
+            border-color: transparent;
+        }
+
+        /* Back Button */
+        .back-btn {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #4A9FFF, #2B7FE6);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(74, 159, 255, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 28px rgba(74, 159, 255, 0.6);
+        }
+
+        .back-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Error State */
+        .error-message {
+            text-align: center;
+            padding: 40px 20px;
+            color: #DC2626;
+        }
+
+        .error-message h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        .error-message p {
+            font-size: 14px;
+            color: #6B7280;
+        }
+
+        /* Hide scrollbar but keep functionality */
+        .app-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .app-container::-webkit-scrollbar-track {
+            background: #F7FBFE;
+        }
+
+        .app-container::-webkit-scrollbar-thumb {
+            background: #4A9FFF;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="header">
+            <h1>📖 HOLY BIBLE</h1>
+            <p>Complete KJV • 66 Books • 31,102 Verses</p>
+        </div>
+
+        <div class="search-container">
+            <div class="search-box">
+                <span style="font-size: 20px; margin-right: 8px;">🔍</span>
+                <input type="text" id="searchInput" placeholder="Search: John 3:16, Romans 8, etc..." />
+            </div>
+        </div>
+
+        <div class="content" id="content">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p style="color: #6B7280; font-weight: 600;">Loading Bible...</p>
+            </div>
+        </div>
+
+        <button class="back-btn" id="backBtn" style="display: none;">←</button>
+    </div>
+
+    <script>
+        // Complete Bible Structure - All 66 Books
+        const BIBLE_BOOKS = {
+            'Old Testament': [
+                { name: 'Genesis', abbr: 'Gen', chapters: 50 },
+                { name: 'Exodus', abbr: 'Exo', chapters: 40 },
+                { name: 'Leviticus', abbr: 'Lev', chapters: 27 },
+                { name: 'Numbers', abbr: 'Num', chapters: 36 },
+                { name: 'Deuteronomy', abbr: 'Deu', chapters: 34 },
+                { name: 'Joshua', abbr: 'Josh', chapters: 24 },
+                { name: 'Judges', abbr: 'Judg', chapters: 21 },
+                { name: 'Ruth', abbr: 'Ruth', chapters: 4 },
+                { name: '1 Samuel', abbr: '1Sam', chapters: 31 },
+                { name: '2 Samuel', abbr: '2Sam', chapters: 24 },
+                { name: '1 Kings', abbr: '1Kgs', chapters: 22 },
+                { name: '2 Kings', abbr: '2Kgs', chapters: 25 },
+                { name: '1 Chronicles', abbr: '1Chr', chapters: 29 },
+                { name: '2 Chronicles', abbr: '2Chr', chapters: 36 },
+                { name: 'Ezra', abbr: 'Ezra', chapters: 10 },
+                { name: 'Nehemiah', abbr: 'Neh', chapters: 13 },
+                { name: 'Esther', abbr: 'Est', chapters: 10 },
+                { name: 'Job', abbr: 'Job', chapters: 42 },
+                { name: 'Psalms', abbr: 'Psa', chapters: 150 },
+                { name: 'Proverbs', abbr: 'Pro', chapters: 31 },
+                { name: 'Ecclesiastes', abbr: 'Ecc', chapters: 12 },
+                { name: 'Song of Solomon', abbr: 'Song', chapters: 8 },
+                { name: 'Isaiah', abbr: 'Isa', chapters: 66 },
+                { name: 'Jeremiah', abbr: 'Jer', chapters: 52 },
+                { name: 'Lamentations', abbr: 'Lam', chapters: 5 },
+                { name: 'Ezekiel', abbr: 'Eze', chapters: 48 },
+                { name: 'Daniel', abbr: 'Dan', chapters: 12 },
+                { name: 'Hosea', abbr: 'Hos', chapters: 14 },
+                { name: 'Joel', abbr: 'Joel', chapters: 3 },
+                { name: 'Amos', abbr: 'Amos', chapters: 9 },
+                { name: 'Obadiah', abbr: 'Oba', chapters: 1 },
+                { name: 'Jonah', abbr: 'Jonah', chapters: 4 },
+                { name: 'Micah', abbr: 'Mic', chapters: 7 },
+                { name: 'Nahum', abbr: 'Nah', chapters: 3 },
+                { name: 'Habakkuk', abbr: 'Hab', chapters: 3 },
+                { name: 'Zephaniah', abbr: 'Zeph', chapters: 3 },
+                { name: 'Haggai', abbr: 'Hag', chapters: 2 },
+                { name: 'Zechariah', abbr: 'Zech', chapters: 14 },
+                { name: 'Malachi', abbr: 'Mal', chapters: 4 }
+            ],
+            'New Testament': [
+                { name: 'Matthew', abbr: 'Matt', chapters: 28 },
+                { name: 'Mark', abbr: 'Mark', chapters: 16 },
+                { name: 'Luke', abbr: 'Luke', chapters: 24 },
+                { name: 'John', abbr: 'John', chapters: 21 },
+                { name: 'Acts', abbr: 'Acts', chapters: 28 },
+                { name: 'Romans', abbr: 'Rom', chapters: 16 },
+                { name: '1 Corinthians', abbr: '1Cor', chapters: 16 },
+                { name: '2 Corinthians', abbr: '2Cor', chapters: 13 },
+                { name: 'Galatians', abbr: 'Gal', chapters: 6 },
+                { name: 'Ephesians', abbr: 'Eph', chapters: 6 },
+                { name: 'Philippians', abbr: 'Phil', chapters: 4 },
+                { name: 'Colossians', abbr: 'Col', chapters: 4 },
+                { name: '1 Thessalonians', abbr: '1Thes', chapters: 5 },
+                { name: '2 Thessalonians', abbr: '2Thes', chapters: 3 },
+                { name: '1 Timothy', abbr: '1Tim', chapters: 6 },
+                { name: '2 Timothy', abbr: '2Tim', chapters: 4 },
+                { name: 'Titus', abbr: 'Titus', chapters: 3 },
+                { name: 'Philemon', abbr: 'Philem', chapters: 1 },
+                { name: 'Hebrews', abbr: 'Heb', chapters: 13 },
+                { name: 'James', abbr: 'Jas', chapters: 5 },
+                { name: '1 Peter', abbr: '1Pet', chapters: 5 },
+                { name: '2 Peter', abbr: '2Pet', chapters: 3 },
+                { name: '1 John', abbr: '1John', chapters: 5 },
+                { name: '2 John', abbr: '2John', chapters: 1 },
+                { name: '3 John', abbr: '3John', chapters: 1 },
+                { name: 'Jude', abbr: 'Jude', chapters: 1 },
+                { name: 'Revelation', abbr: 'Rev', chapters: 22 }
+            ]
+        };
+
+        let currentView = 'books';
+        let currentBook = null;
+        let currentChapter = null;
+        let currentVerses = [];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            showBooks();
+            setupSearch();
+            setupBackButton();
+        });
+
+        // Show All Books
+        function showBooks() {
+            currentView = 'books';
+            currentBook = null;
+            currentChapter = null;
+            document.getElementById('backBtn').style.display = 'none';
+
+            let html = '';
+            for (const [testament, books] of Object.entries(BIBLE_BOOKS)) {
+                const icon = testament === 'Old Testament' ? '📜' : '✝️';
+                html += `
+                    <div class="testament-header">
+                        <div class="testament-icon">${icon}</div>
+                        <div>${testament}</div>
+                    </div>
+                    <div class="books-grid">
+                `;
+                
+                books.forEach(book => {
+                    html += `
+                        <div class="book-card" onclick="showChapters('${book.name}', ${book.chapters})">
+                            <div class="book-name">${book.name}</div>
+                            <div class="book-info">
+                                <span>📑</span>
+                                <span>${book.chapters} Chapters</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+            }
+
+            document.getElementById('content').innerHTML = html;
+        }
+
+        // Show Chapters
+        function showChapters(bookName, totalChapters) {
+            currentView = 'chapters';
+            currentBook = bookName;
+            document.getElementById('backBtn').style.display = 'block';
+
+            let html = `
+                <div style="padding: 20px; background: white; border-bottom: 2px solid #E8F4FD;">
+                    <h2 style="font-size: 24px; font-weight: 800; color: #0C1E35; margin-bottom: 4px;">${bookName}</h2>
+                    <p style="font-size: 14px; color: #6B7280;">Select a chapter to read</p>
+                </div>
+                <div class="chapters-grid">
+            `;
+
+            for (let i = 1; i <= totalChapters; i++) {
+                html += `<button class="chapter-btn" onclick="loadChapter('${bookName}', ${i})">${i}</button>`;
+            }
+
+            html += '</div>';
+            document.getElementById('content').innerHTML = html;
+            window.scrollTo(0, 0);
+        }
+
+        // Load Chapter from API
+        async function loadChapter(bookName, chapterNum) {
+            currentView = 'verses';
+            currentChapter = chapterNum;
+            document.getElementById('backBtn').style.display = 'block';
+
+            document.getElementById('content').innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p style="color: #6B7280; font-weight: 600;">Loading ${bookName} ${chapterNum}...</p>
+                </div>
+            `;
+
+            try {
+                // Using bible-api.com - free API
+                const apiBookName = bookName.toLowerCase().replace(/\s+/g, '+');
+                const response = await fetch(`https://bible-api.com/${apiBookName}+${chapterNum}?translation=kjv`);
+                
+                if (!response.ok) {
+                    throw new Error('Failed to load chapter');
+                }
+
+                const data = await response.json();
+                currentVerses = data.verses || [];
+                
+                displayVerses(bookName, chapterNum, currentVerses);
+            } catch (error) {
+                document.getElementById('content').innerHTML = `
+                    <div class="error-message">
+                        <h3>⚠️ Unable to Load Chapter</h3>
+                        <p>Please check your internet connection and try again.</p>
+                        <button onclick="loadChapter('${bookName}', ${chapterNum})" 
+                                style="margin-top: 20px; padding: 12px 24px; background: linear-gradient(135deg, #4A9FFF, #2B7FE6); 
+                                color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer;">
+                            Retry
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        // Display Verses
+        function displayVerses(bookName, chapterNum, verses) {
+            let html = `
+                <div style="padding: 20px; background: white; border-bottom: 2px solid #E8F4FD;">
+                    <h2 style="font-size: 24px; font-weight: 800; color: #0C1E35; margin-bottom: 4px;">
+                        ${bookName} ${chapterNum}
+                    </h2>
+                    <p style="font-size: 14px; color: #6B7280;">${verses.length} verses</p>
+                </div>
+                <div class="verse-container">
+            `;
+
+            verses.forEach(verse => {
+                html += `
+                    <div class="verse-item">
+                        <span class="verse-number">${verse.verse}</span>
+                        <span class="verse-text">${verse.text}</span>
+                        <div class="verse-actions">
+                            <button class="verse-btn" onclick="copyVerse('${bookName}', ${chapterNum}, ${verse.verse}, '${verse.text.replace(/'/g, "\\'")}')">
+                                📋 Copy
+                            </button>
+                            <button class="verse-btn" onclick="shareVerse('${bookName}', ${chapterNum}, ${verse.verse}, '${verse.text.replace(/'/g, "\\'")}')">
+                                📤 Share
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+            document.getElementById('content').innerHTML = html;
+            window.scrollTo(0, 0);
+        }
+
+        // Copy Verse
+        function copyVerse(book, chapter, verseNum, text) {
+            const verseText = `"${text}" - ${book} ${chapter}:${verseNum} (KJV)`;
+            navigator.clipboard.writeText(verseText);
+            alert('✅ Verse copied to clipboard!');
+        }
+
+        // Share Verse
+        function shareVerse(book, chapter, verseNum, text) {
+            const verseText = `"${text}"\n\n- ${book} ${chapter}:${verseNum} (KJV)\n\nShared via HYMNORA Bible App`;
+            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(verseText)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // Back Button
+        function setupBackButton() {
+            document.getElementById('backBtn').addEventListener('click', () => {
+                if (currentView === 'verses') {
+                    showChapters(currentBook, getCurrentBookChapters(currentBook));
+                } else if (currentView === 'chapters') {
+                    showBooks();
+                }
+            });
+        }
+
+        // Get Book Chapter Count
+        function getCurrentBookChapters(bookName) {
+            for (const [testament, books] of Object.entries(BIBLE_BOOKS)) {
+                const book = books.find(b => b.name === bookName);
+                if (book) return book.chapters;
+            }
+            return 1;
+        }
+
+        // Search Functionality
+        function setupSearch() {
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    performSearch(searchInput.value.trim());
+                }
+            });
+        }
+
+        // Search for verses
+        async function performSearch(query) {
+            if (!query) return;
+
+            document.getElementById('content').innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p style="color: #6B7280; font-weight: 600;">Searching for "${query}"...</p>
+                </div>
+            `;
+
+            try {
+                const response = await fetch(`https://bible-api.com/${encodeURIComponent(query)}?translation=kjv`);
+                
+                if (!response.ok) {
+                    throw new Error('Verse not found');
+                }
+
+                const data = await response.json();
+                
+                // Parse book and chapter from reference
+                const ref = data.reference.split(' ');
+                const book = ref.slice(0, -1).join(' ');
+                const chapterVerse = ref[ref.length - 1].split(':');
+                const chapter = parseInt(chapterVerse[0]);
+
+                currentBook = book;
+                currentChapter = chapter;
+                currentView = 'verses';
+                currentVerses = data.verses || [];
+
+                displayVerses(book, chapter, currentVerses);
+                document.getElementById('backBtn').style.display = 'block';
+            } catch (error) {
+                document.getElementById('content').innerHTML = `
+                    <div class="error-message">
+                        <h3>❌ Not Found</h3>
+                        <p>Could not find "${query}". Try formats like:<br/>
+                        • John 3:16<br/>
+                        • Romans 8<br/>
+                        • Psalm 23:1-6</p>
+                        <button onclick="showBooks()" 
+                                style="margin-top: 20px; padding: 12px 24px; background: linear-gradient(135deg, #4A9FFF, #2B7FE6); 
+                                color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer;">
+                            Back to Books
+                        </button>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
