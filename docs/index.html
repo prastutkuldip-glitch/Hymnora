@@ -9,12 +9,6 @@
 html, body { width: 100%; height: 100%; overflow: hidden; position: fixed; }
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); position: relative; }
 
-/* Mobile view - Fully clear theme background */
-@media (max-width: 768px) {
-    body { background: url('theme.png') center center / cover no-repeat fixed; }
-    body::before { display: none; }
-}
-
 .glass-container { position: relative; max-width: 430px; margin: 0 auto; height: 100vh; background: transparent; backdrop-filter: none; display: flex; flex-direction: column; overflow: hidden; box-shadow: none; }
 
 .header { background: linear-gradient(135deg, rgba(102, 126, 234, 0.95), rgba(118, 75, 162, 0.95)); backdrop-filter: blur(25px); padding: 16px 20px; position: sticky; top: 0; flex-shrink: 0; z-index: 999; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); display: flex; align-items: center; gap: 12px; }
@@ -105,6 +99,20 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .hymn-title { font-size: 16px; font-weight: 700; color: white; margin-bottom: 6px; text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); }
 .hymn-lyrics { font-size: 14px; line-height: 1.7; color: rgba(255, 255, 255, 0.95); white-space: pre-wrap; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.3); font-weight: 500; display: none; }
 .hymn-lyrics.show { display: block; }
+
+/* Theme Card Styles */
+.theme-card { background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08)); backdrop-filter: blur(15px); border: 2px solid rgba(255, 255, 255, 0.25); border-radius: 16px; padding: 12px; cursor: pointer; transition: all 0.3s; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); position: relative; }
+.theme-card:active { transform: scale(0.96); }
+.theme-card.active { border-color: rgba(76, 175, 80, 0.8); box-shadow: 0 8px 24px rgba(76, 175, 80, 0.4); }
+.theme-indicator { position: absolute; top: 8px; right: 8px; width: 28px; height: 28px; background: linear-gradient(135deg, rgba(76, 175, 80, 0.95), rgba(46, 125, 50, 0.95)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 16px; box-shadow: 0 4px 12px rgba(76, 175, 80, 0.5); }
+.theme-card.active .theme-indicator { display: flex !important; }
+
+/* Dynamic Theme Classes */
+body.theme-dark { background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%) !important; }
+body.theme-light { background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%) !important; }
+body.theme-dark .header, body.theme-dark .section-title, body.theme-dark .book-name, body.theme-dark .hymn-title, body.theme-dark .verse-text, body.theme-dark h1, body.theme-dark h2, body.theme-dark h3, body.theme-dark p, body.theme-dark .stat-num, body.theme-dark .loading-text { color: white !important; }
+body.theme-light .header, body.theme-light .section-title, body.theme-light .book-name, body.theme-light .hymn-title, body.theme-light .verse-text, body.theme-light h1, body.theme-light h2, body.theme-light h3, body.theme-light p, body.theme-light .stat-num, body.theme-light .loading-text { color: #000000 !important; }
+body.theme-light .header p, body.theme-light .book-info, body.theme-light .stat-label, body.theme-light .verse-of-day-ref, body.theme-light .hymn-lyrics { color: rgba(0, 0, 0, 0.8) !important; }
 
 .loading { text-align: center; padding: 50px 20px; }
 .spinner { width: 48px; height: 48px; border: 4px solid rgba(255, 255, 255, 0.2); border-top-color: white; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px; box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2); }
@@ -236,12 +244,130 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
             <div id="bookmarksContainer"></div>
         </div>
 
+        <!-- Profile -->
+        <div class="screen" id="profileScreen">
+            <div class="section-title">👤 Profile</div>
+            
+            <!-- Profile Card -->
+            <div class="glass-card" style="text-align: center; padding: 30px 20px; margin-bottom: 20px;">
+                <div style="position: relative; width: 120px; height: 120px; margin: 0 auto 16px;">
+                    <img id="profileImage" src="" alt="Profile" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid rgba(255, 255, 255, 0.5); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); display: none;">
+                    <div id="profilePlaceholder" style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.15)); border: 4px solid rgba(255, 255, 255, 0.5); display: flex; align-items: center; justify-content: center; font-size: 60px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);">👤</div>
+                </div>
+                <h2 id="profileName" style="font-size: 24px; font-weight: 700; color: white; margin-bottom: 8px; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);">Guest User</h2>
+                <p id="profileBio" style="font-size: 14px; color: rgba(255, 255, 255, 0.9); line-height: 1.5; margin-bottom: 20px;">No bio yet</p>
+                <button class="glass-btn" style="width: 100%;" onclick="showEditProfile()">✏️ Edit Profile</button>
+            </div>
+
+            <!-- Settings Button -->
+            <button class="glass-card" style="width: 100%; border: none; text-align: left; padding: 20px; display: flex; align-items: center; gap: 16px;" onclick="showSettings()">
+                <div class="bubble-icon" style="width: 56px; height: 56px; font-size: 28px; margin: 0; flex-shrink: 0;">⚙️</div>
+                <div style="flex: 1;">
+                    <div class="book-name" style="font-size: 17px; margin-bottom: 6px;">Settings</div>
+                    <div class="book-info">Themes & Preferences</div>
+                </div>
+            </button>
+        </div>
+
+        <!-- Edit Profile -->
+        <div class="screen" id="editProfileScreen">
+            <button class="glass-btn" onclick="showTab('profile')">← Back</button>
+            <div class="section-title">✏️ Edit Profile</div>
+            
+            <div class="glass-card" style="padding: 24px;">
+                <!-- Profile Picture Upload -->
+                <div style="text-align: center; margin-bottom: 24px;">
+                    <div style="position: relative; width: 100px; height: 100px; margin: 0 auto 16px;">
+                        <img id="editProfileImage" src="" alt="Profile" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(255, 255, 255, 0.5); display: none;">
+                        <div id="editProfilePlaceholder" style="width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.15)); border: 3px solid rgba(255, 255, 255, 0.5); display: flex; align-items: center; justify-content: center; font-size: 50px;">👤</div>
+                    </div>
+                    <input type="file" id="profilePicInput" accept="image/*" style="display: none;" onchange="handleProfilePicUpload(event)">
+                    <button class="glass-btn" onclick="document.getElementById('profilePicInput').click()">📷 Choose Photo</button>
+                </div>
+
+                <!-- Name Input -->
+                <label style="display: block; color: white; font-weight: 600; margin-bottom: 8px; font-size: 14px;">Name</label>
+                <input type="text" id="nameInput" class="search-box" placeholder="Enter your name" style="margin-bottom: 20px;" value="">
+
+                <!-- Bio Input -->
+                <label style="display: block; color: white; font-weight: 600; margin-bottom: 8px; font-size: 14px;">Bio</label>
+                <textarea id="bioInput" class="search-box" placeholder="Tell us about yourself..." style="height: 100px; resize: vertical; font-family: inherit; margin-bottom: 24px;"></textarea>
+
+                <!-- Save Button -->
+                <button class="glass-btn" style="width: 100%; background: linear-gradient(135deg, rgba(76, 175, 80, 0.4), rgba(46, 125, 50, 0.3)); border: 2px solid rgba(76, 175, 80, 0.5); box-shadow: 0 4px 16px rgba(76, 175, 80, 0.3);" onclick="saveProfile()">💾 Save Profile</button>
+            </div>
+        </div>
+
+        <!-- Settings -->
+        <div class="screen" id="settingsScreen">
+            <button class="glass-btn" onclick="showTab('profile')">← Back</button>
+            <div class="section-title">⚙️ Settings</div>
+            
+            <div style="margin-bottom: 20px;">
+                <h3 style="color: white; font-size: 16px; font-weight: 700; margin-bottom: 12px; text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);">🎨 Choose Theme</h3>
+                <p style="color: rgba(255, 255, 255, 0.9); font-size: 13px; margin-bottom: 16px;">Select your preferred background theme</p>
+            </div>
+
+            <!-- Themes Grid -->
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px;">
+                <!-- Theme 1 - Default Black & White -->
+                <div class="theme-card" onclick="changeTheme('default')" data-theme="default">
+                    <img src="logo.png" alt="Default Theme" style="width: 100%; height: 140px; object-fit: cover; border-radius: 12px; margin-bottom: 8px;">
+                    <div style="text-align: center; color: white; font-size: 13px; font-weight: 600;">Default (B&W)</div>
+                    <div class="theme-indicator" style="display: none;">✓</div>
+                </div>
+                
+                <!-- Theme 2 -->
+                <div class="theme-card" onclick="changeTheme('theme1')" data-theme="theme1">
+                    <img src="theme1.jpg" alt="Theme 1" style="width: 100%; height: 140px; object-fit: cover; border-radius: 12px; margin-bottom: 8px;">
+                    <div style="text-align: center; color: white; font-size: 13px; font-weight: 600;">Theme 1</div>
+                    <div class="theme-indicator" style="display: none;">✓</div>
+                </div>
+                
+                <!-- Theme 3 -->
+                <div class="theme-card" onclick="changeTheme('theme2')" data-theme="theme2">
+                    <img src="theme2.jpg" alt="Theme 2" style="width: 100%; height: 140px; object-fit: cover; border-radius: 12px; margin-bottom: 8px;">
+                    <div style="text-align: center; color: white; font-size: 13px; font-weight: 600;">Theme 2</div>
+                    <div class="theme-indicator" style="display: none;">✓</div>
+                </div>
+                
+                <!-- Theme 4 -->
+                <div class="theme-card" onclick="changeTheme('theme3')" data-theme="theme3">
+                    <img src="theme3.png" alt="Theme 3" style="width: 100%; height: 140px; object-fit: cover; border-radius: 12px; margin-bottom: 8px;">
+                    <div style="text-align: center; color: white; font-size: 13px; font-weight: 600;">Theme 3</div>
+                    <div class="theme-indicator" style="display: none;">✓</div>
+                </div>
+                
+                <!-- Theme 5 -->
+                <div class="theme-card" onclick="changeTheme('theme4')" data-theme="theme4">
+                    <img src="theme4.png" alt="Theme 4" style="width: 100%; height: 140px; object-fit: cover; border-radius: 12px; margin-bottom: 8px;">
+                    <div style="text-align: center; color: white; font-size: 13px; font-weight: 600;">Theme 4</div>
+                    <div class="theme-indicator" style="display: none;">✓</div>
+                </div>
+                
+                <!-- Theme 6 -->
+                <div class="theme-card" onclick="changeTheme('theme5')" data-theme="theme5">
+                    <img src="theme5.png" alt="Theme 5" style="width: 100%; height: 140px; object-fit: cover; border-radius: 12px; margin-bottom: 8px;">
+                    <div style="text-align: center; color: white; font-size: 13px; font-weight: 600;">Theme 5</div>
+                    <div class="theme-indicator" style="display: none;">✓</div>
+                </div>
+                
+                <!-- Theme 7 -->
+                <div class="theme-card" onclick="changeTheme('theme6')" data-theme="theme6">
+                    <img src="theme6.png" alt="Theme 6" style="width: 100%; height: 140px; object-fit: cover; border-radius: 12px; margin-bottom: 8px;">
+                    <div style="text-align: center; color: white; font-size: 13px; font-weight: 600;">Theme 6</div>
+                    <div class="theme-indicator" style="display: none;">✓</div>
+                </div>
+            </div>
+        </div>
+
         <!-- Premium Floating Nav -->
         <div class="nav">
             <div class="nav-item active" onclick="showTab('home')"><div class="nav-icon">🏠</div><div>Home</div></div>
             <div class="nav-item" onclick="showTab('bible')"><div class="nav-icon">📖</div><div>Bible</div></div>
             <div class="nav-item" onclick="showTab('hymns')"><div class="nav-icon">🎵</div><div>Hymns</div></div>
             <div class="nav-item" onclick="showTab('favorites')"><div class="nav-icon">❤️</div><div>Saved</div></div>
+            <div class="nav-item" onclick="showTab('profile')"><div class="nav-icon">👤</div><div>Profile</div></div>
         </div>
     </div>
 
@@ -255,10 +381,106 @@ let highlights=JSON.parse(localStorage.getItem('highlights')||'{}');
 let bookmarks=JSON.parse(localStorage.getItem('bookmarks')||'[]');
 let favorites=JSON.parse(localStorage.getItem('favorites')||'[]');
 let longPressTimer,longPressVerse;
+let profileData=JSON.parse(localStorage.getItem('profileData')||'{"name":"Guest User","bio":"No bio yet","image":""}');
+let currentTheme=localStorage.getItem('currentTheme')||'theme';
 
 async function loadBibleData(){if(bibleData)return bibleData;try{const urls=['https://cdn.jsdelivr.net/gh/thiagobodruk/bible@master/json/en_kjv.json'];for(const url of urls){try{const r=await fetch(url);if(r.ok){bibleData=await r.json();return bibleData;}}catch(e){continue;}}return null;}catch(e){return null;}}
 
-function init(){renderBooks();renderHymns();renderFavorites();loadBibleData();}
+function init(){renderBooks();renderHymns();renderFavorites();loadBibleData();loadProfile();applyTheme();}
+
+// Profile Functions
+function loadProfile(){
+    document.getElementById('profileName').textContent=profileData.name;
+    document.getElementById('profileBio').textContent=profileData.bio;
+    if(profileData.image){
+        document.getElementById('profileImage').src=profileData.image;
+        document.getElementById('profileImage').style.display='block';
+        document.getElementById('profilePlaceholder').style.display='none';
+    }
+}
+
+function showEditProfile(){
+    document.getElementById('nameInput').value=profileData.name==='Guest User'?'':profileData.name;
+    document.getElementById('bioInput').value=profileData.bio==='No bio yet'?'':profileData.bio;
+    if(profileData.image){
+        document.getElementById('editProfileImage').src=profileData.image;
+        document.getElementById('editProfileImage').style.display='block';
+        document.getElementById('editProfilePlaceholder').style.display='none';
+    }
+    showScreen('editProfileScreen');
+}
+
+function handleProfilePicUpload(event){
+    const file=event.target.files[0];
+    if(file){
+        const reader=new FileReader();
+        reader.onload=function(e){
+            const imgSrc=e.target.result;
+            document.getElementById('editProfileImage').src=imgSrc;
+            document.getElementById('editProfileImage').style.display='block';
+            document.getElementById('editProfilePlaceholder').style.display='none';
+            profileData.image=imgSrc;
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+function saveProfile(){
+    const name=document.getElementById('nameInput').value.trim();
+    const bio=document.getElementById('bioInput').value.trim();
+    if(name){
+        profileData.name=name;
+        profileData.bio=bio||'No bio yet';
+        localStorage.setItem('profileData',JSON.stringify(profileData));
+        loadProfile();
+        alert('✅ Profile saved successfully!');
+        showTab('profile');
+    }else{
+        alert('⚠️ Please enter your name!');
+    }
+}
+
+function showSettings(){
+    showScreen('settingsScreen');
+    updateThemeIndicator();
+}
+
+// Theme Functions
+function applyTheme(){
+    document.body.className='';
+    document.querySelectorAll('.theme-card').forEach(card=>card.classList.remove('active'));
+    
+    if(currentTheme==='default'){
+        document.body.style.background='linear-gradient(135deg, #1a1a1a 0%, #000000 100%)';
+        document.body.classList.add('theme-dark');
+    }else{
+        const themeFile=currentTheme+'.jpg';
+        const themePng=currentTheme+'.png';
+        document.body.style.background=`url('${themeFile}'), url('${themePng}')`;
+        document.body.style.backgroundSize='cover';
+        document.body.style.backgroundPosition='center';
+        document.body.style.backgroundRepeat='no-repeat';
+        document.body.style.backgroundAttachment='fixed';
+    }
+}
+
+function changeTheme(theme){
+    currentTheme=theme;
+    localStorage.setItem('currentTheme',theme);
+    applyTheme();
+    updateThemeIndicator();
+}
+
+function updateThemeIndicator(){
+    document.querySelectorAll('.theme-card').forEach(card=>{
+        card.classList.remove('active');
+        if(card.getAttribute('data-theme')===currentTheme){
+            card.classList.add('active');
+        }
+    });
+}
+
+function init(){renderBooks();renderHymns();renderFavorites();loadBibleData();loadProfile();applyTheme();}
 
 function renderBooks(){document.getElementById('otBooks').innerHTML=BOOKS.OT.map(b=>`<div class="book-card" data-name="${b.n.toLowerCase()}" onclick="showChapters('${b.n}',${b.c},'${b.abbr}')"><div class="book-name">${b.n}</div><div class="book-info">${b.c} Ch</div></div>`).join('');document.getElementById('ntBooks').innerHTML=BOOKS.NT.map(b=>`<div class="book-card" data-name="${b.n.toLowerCase()}" onclick="showChapters('${b.n}',${b.c},'${b.abbr}')"><div class="book-name">${b.n}</div><div class="book-info">${b.c} Ch</div></div>`).join('');}
 
@@ -279,10 +501,12 @@ function showTab(tab){
     else if(tab==='bible')navItems[1]?.classList.add('active');
     else if(tab==='hymns')navItems[2]?.classList.add('active');
     else if(tab==='favorites')navItems[3]?.classList.add('active');
+    else if(tab==='profile')navItems[4]?.classList.add('active');
     if(tab==='home')showScreen('homeScreen');
     else if(tab==='bible')showScreen('bibleScreen');
     else if(tab==='hymns')showScreen('hymnsScreen');
     else if(tab==='favorites'){renderFavorites();showScreen('favoritesScreen');}
+    else if(tab==='profile'){loadProfile();showScreen('profileScreen');}
 }
 
 function showChapters(book,total,abbr){curBook=book;document.getElementById('chapTitle').innerHTML=book;const grid=document.getElementById('chaptersGrid');grid.innerHTML='';for(let i=1;i<=total;i++){const btn=document.createElement('button');btn.className='chapter-btn';btn.textContent=i;btn.onclick=()=>loadVerses(book,i,abbr);grid.appendChild(btn);}showScreen('chaptersScreen');}
