@@ -7,8 +7,8 @@
     <style>
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 /* Stop text getting selected/copied when tapping buttons & cards */
-.nav, .nav-item, .glass-btn, .glass-card, .book-card, .chapter-btn, .toggle-btn, .theme-card, .language-card, .hymn-card, .stat-card, .header { -webkit-user-select: none; -ms-user-select: none; user-select: none; }
-.nav-item, .glass-card, .book-card, .theme-card, .language-card, .hymn-card { cursor: pointer; }
+.nav, .nav-item, .glass-btn, .glass-card, .book-card, .chapter-btn, .toggle-btn, .theme-card, .language-card, .hymn-card, .stat-card, .header, .version-btn { -webkit-user-select: none; -ms-user-select: none; user-select: none; }
+.nav-item, .glass-card, .book-card, .theme-card, .language-card, .hymn-card, .version-btn { cursor: pointer; }
 html, body { width: 100%; height: 100%; overflow: hidden; position: fixed; }
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); position: relative; }
 
@@ -78,6 +78,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 
 .glass-btn { background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1)); backdrop-filter: blur(15px); border: 1.5px solid rgba(255, 255, 255, 0.3); border-radius: 12px; padding: 12px 20px; font-weight: 600; color: white; cursor: pointer; margin-bottom: 14px; display: inline-flex; align-items: center; gap: 6px; transition: all 0.3s; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(255, 255, 255, 0.1) inset; font-size: 14px; border: none; }
 .glass-btn:active { transform: scale(0.96); }
+
+/* Bible Version Selector */
+.version-row { display: flex; gap: 8px; margin-bottom: 14px; }
+.version-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 10px 6px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08)); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1.5px solid rgba(255, 255, 255, 0.28); border-radius: 14px; color: rgba(255, 255, 255, 0.85); cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(255, 255, 255, 0.12) inset; }
+.version-btn:active { transform: scale(0.96); }
+.version-btn .version-short { font-size: 15px; font-weight: 800; letter-spacing: 0.5px; }
+.version-btn .version-name { font-size: 11px; font-weight: 600; opacity: 0.9; }
+.version-btn.active { color: #fff; background: linear-gradient(135deg, rgba(76, 175, 80, 0.55), rgba(46, 125, 50, 0.45)); border-color: rgba(76, 175, 80, 0.85); box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4), 0 2px 6px rgba(255, 255, 255, 0.25) inset, 0 0 18px rgba(76, 175, 80, 0.35); }
 
 .toggle-btns { display: flex; gap: 8px; margin-bottom: 14px; }
 .toggle-btn { flex: 1; padding: 10px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08)); backdrop-filter: blur(10px); border: 1.5px solid rgba(255, 255, 255, 0.3); border-radius: 10px; color: rgba(255, 255, 255, 0.85); font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 13px; }
@@ -307,9 +315,24 @@ body.theme-light .header p, body.theme-light .book-info, body.theme-light .stat-
 
         <!-- Bible -->
         <div class="screen" id="bibleScreen">
+            <!-- Bible Version Selector -->
+            <div class="version-row">
+                <button class="version-btn active" data-version="english" onclick="changeBibleVersion('english')">
+                    <span class="version-short">EN</span>
+                    <span class="version-name">English</span>
+                </button>
+                <button class="version-btn" data-version="hindi" onclick="changeBibleVersion('hindi')">
+                    <span class="version-short">HI</span>
+                    <span class="version-name">हिन्दी</span>
+                </button>
+                <button class="version-btn" data-version="assamese" onclick="changeBibleVersion('assamese')">
+                    <span class="version-short">AS</span>
+                    <span class="version-name">অসমীয়া</span>
+                </button>
+            </div>
             <input type="text" class="search-box" id="searchBox" placeholder="🔍 Search books..." onkeyup="filterBooks()">
-            <div class="section-title">📜 Old Testament</div><div class="books-grid" id="otBooks"></div>
-            <div class="section-title">✝️ New Testament</div><div class="books-grid" id="ntBooks"></div>
+            <div class="section-title" id="otTitle">📜 Old Testament</div><div class="books-grid" id="otBooks"></div>
+            <div class="section-title" id="ntTitle">✝️ New Testament</div><div class="books-grid" id="ntBooks"></div>
         </div>
 
         <!-- Chapters -->
@@ -488,6 +511,14 @@ body.theme-light .header p, body.theme-light .book-info, body.theme-light .stat-
                     <div class="theme-indicator" style="display: none;">✓</div>
                 </div>
             </div>
+
+            <!-- Bible Source Diagnostics -->
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: white; font-size: 16px; font-weight: 700; margin-bottom: 8px; text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);">🔍 Bible Translation Test</h3>
+                <p style="color: rgba(255, 255, 255, 0.9); font-size: 13px; margin-bottom: 12px;">Checks which Hindi / Assamese Bible sources work on your device and shows a sample verse so you can confirm the text is correct.</p>
+                <button class="glass-btn" style="width: 100%;" onclick="testBibleSources()">▶️ Run Test</button>
+                <div id="sourceTestResults" style="margin-top: 12px;"></div>
+            </div>
         </div>
 
         <!-- Premium Floating Nav -->
@@ -519,6 +550,8 @@ let longPressTimer,longPressVerse;
 let profileData=JSON.parse(localStorage.getItem('profileData')||'{"name":"Guest User","bio":"No bio yet","image":""}');
 let currentTheme=localStorage.getItem('currentTheme')||'theme';
 let currentLanguage=localStorage.getItem('currentLanguage')||'english';
+let bibleVersion=localStorage.getItem('bibleVersion')||currentLanguage;
+let curBookObj=null;
 
 // Language Translations
 const TRANSLATIONS={
@@ -611,14 +644,58 @@ const TRANSLATIONS={
     }
 };
 
-// Bible API URLs for different languages
-const BIBLE_APIS={
-    english:'https://cdn.jsdelivr.net/gh/thiagobodruk/bible@master/json/en_kjv.json',
-    hindi:'https://cdn.jsdelivr.net/gh/aruljohn/Bible-kjv@master/Hindi.json',
-    assamese:'https://getbible.net/v2/assamese.json'
+// Localized book names (same order as BOOKS.OT then BOOKS.NT)
+const BOOK_NAMES={
+    hindi:{
+        OT:['उत्पत्ति','निर्गमन','लैव्यव्यवस्था','गिनती','व्यवस्थाविवरण','यहोशू','न्यायियों','रूत','1 शमूएल','2 शमूएल','1 राजा','2 राजा','1 इतिहास','2 इतिहास','एज्रा','नहेमायाह','एस्तेर','अय्यूब','भजन संहिता','नीतिवचन','सभोपदेशक','श्रेष्ठगीत','यशायाह','यिर्मयाह','विलापगीत','यहेजकेल','दानिय्येल','होशे','योएल','आमोस','ओबद्याह','योना','मीका','नहूम','हबक्कूक','सपन्याह','हाग्गै','जकर्याह','मलाकी'],
+        NT:['मत्ती','मरकुस','लूका','यूहन्ना','प्रेरितों के काम','रोमियों','1 कुरिन्थियों','2 कुरिन्थियों','गलातियों','इफिसियों','फिलिप्पियों','कुलुस्सियों','1 थिस्सलुनीकियों','2 थिस्सलुनीकियों','1 तीमुथियुस','2 तीमुथियुस','तीतुस','फिलेमोन','इब्रानियों','याकूब','1 पतरस','2 पतरस','1 यूहन्ना','2 यूहन्ना','3 यूहन्ना','यहूदा','प्रकाशितवाक्य']
+    },
+    assamese:{
+        OT:['আদিপুস্তক','যাত্ৰাপুস্তক','লেবীয়া পুস্তক','গণনা পুস্তক','দ্বিতীয় বিবৰণ','যিহোচূৱা','বিচাৰকৰ্তা','ৰূথ','১ চমূৱেল','২ চমূৱেল','১ ৰাজাবলি','২ ৰাজাবলি','১ বংশাবলি','২ বংশাবলি','ইজ্ৰা','নহিমিয়া','ইষ্টেৰ','ইয়োব','গীতমালা','হিতোপদেশ','উপদেশক','পৰমগীত','যিচয়া','যিৰিমিয়া','বিলাপ-গাথা','ইজিকিয়েল','দানিয়েল','হোচেয়া','যোৱেল','আমোচ','ওবদিয়া','যোনা','মীখা','নাহূম','হবক্কূক','চফনিয়া','হগ্গয়','জখৰিয়া','মালাখী'],
+        NT:['মথি','মাৰ্ক','লূক','যোহন','পাঁচনিৰ কৰ্ম','ৰোমীয়া','১ কৰিন্থীয়া','২ কৰিন্থীয়া','গালাতীয়া','ইফিচীয়া','ফিলিপীয়া','কলচীয়া','১ থিচলনীকীয়া','২ থিচলনীকীয়া','১ তীমথিয়','২ তীমথিয়','তীত','ফিলীমন','ইব্ৰী','যাকোব','১ পিতৰ','২ পিতৰ','১ যোহন','২ যোহন','৩ যোহন','যিহূদা','প্ৰকাশিত বাক্য']
+    }
 };
 
-async function loadBibleData(){if(bibleData)return bibleData;try{const apiUrl=BIBLE_APIS[currentLanguage]||BIBLE_APIS.english;const urls=[apiUrl];for(const url of urls){try{const r=await fetch(url);if(r.ok){bibleData=await r.json();return bibleData;}}catch(e){continue;}}return null;}catch(e){return null;}}
+function stripHtml(s){return String(s).replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim();}
+function parseGetBible(d){if(d&&Array.isArray(d.verses))return d.verses.map(v=>stripHtml(v.text));return null;}
+function parseBolls(d){if(Array.isArray(d)&&d.length&&d[0].text!==undefined)return d.map(v=>stripHtml(v.text));return null;}
+function parseWldeh(d){if(d&&Array.isArray(d.data))return d.data.map(v=>stripHtml(v.text));return null;}
+
+// Bible versions. Each version tries its sources in order until one returns verses.
+// bn = book number 1-66, ch = chapter, bk = book object {n,c,abbr}
+const BIBLE_VERSIONS={
+    english:{label:'English (KJV)',short:'EN',sources:[
+        {name:'local-kjv',local:true},
+        {name:'bible-api-kjv',url:(bn,ch,bk)=>`https://bible-api.com/${encodeURIComponent(bk.n)}+${ch}?translation=kjv`,parse:d=>d&&d.verses?d.verses.map(v=>stripHtml(v.text)):null},
+        {name:'getbible-kjv',url:(bn,ch)=>`https://api.getbible.net/v2/kjv/${bn}/${ch}.json`,parse:parseGetBible},
+        {name:'bolls-KJV',url:(bn,ch)=>`https://bolls.life/get-text/KJV/${bn}/${ch}/`,parse:parseBolls}
+    ]},
+    hindi:{label:'हिन्दी बाइबिल',short:'HI',sources:[
+        {name:'getbible-hindi',url:(bn,ch)=>`https://api.getbible.net/v2/hindi/${bn}/${ch}.json`,parse:parseGetBible},
+        {name:'getbible-hindiolvbsi',url:(bn,ch)=>`https://api.getbible.net/v2/hindiolvbsi/${bn}/${ch}.json`,parse:parseGetBible},
+        {name:'bolls-HINOV',url:(bn,ch)=>`https://bolls.life/get-text/HINOV/${bn}/${ch}/`,parse:parseBolls},
+        {name:'bolls-IRVHIN',url:(bn,ch)=>`https://bolls.life/get-text/IRVHIN/${bn}/${ch}/`,parse:parseBolls},
+        {name:'wldeh-hi-irv',url:(bn,ch,bk)=>`https://cdn.jsdelivr.net/gh/wldeh/bible-api/bibles/hi-irv/books/${bk.abbr}/chapters/${ch}.json`,parse:parseWldeh}
+    ]},
+    assamese:{label:'অসমীয়া বাইবেল',short:'AS',sources:[
+        {name:'getbible-assamese',url:(bn,ch)=>`https://api.getbible.net/v2/assamese/${bn}/${ch}.json`,parse:parseGetBible},
+        {name:'bolls-ASM',url:(bn,ch)=>`https://bolls.life/get-text/ASM/${bn}/${ch}/`,parse:parseBolls},
+        {name:'wldeh-as',url:(bn,ch,bk)=>`https://cdn.jsdelivr.net/gh/wldeh/bible-api/bibles/as-asm/books/${bk.abbr}/chapters/${ch}.json`,parse:parseWldeh}
+    ]}
+};
+
+const ALL_BOOKS=[];
+function buildBookIndex(){ALL_BOOKS.length=0;BOOKS.OT.forEach((b,i)=>ALL_BOOKS.push(Object.assign({},b,{num:i+1,part:'OT',idx:i})));BOOKS.NT.forEach((b,i)=>ALL_BOOKS.push(Object.assign({},b,{num:40+i,part:'NT',idx:i})));}
+
+function bookLabel(part,idx,englishName){
+    const names=BOOK_NAMES[bibleVersion];
+    if(names&&names[part]&&names[part][idx])return names[part][idx];
+    return englishName;
+}
+
+// English KJV full-bible JSON (cached once, used as the local/offline-friendly source)
+const KJV_JSON_URL='https://cdn.jsdelivr.net/gh/thiagobodruk/bible@master/json/en_kjv.json';
+async function loadBibleData(){if(bibleData)return bibleData;try{const r=await fetch(KJV_JSON_URL);if(r.ok){bibleData=await r.json();return bibleData;}}catch(e){}return null;}
 
 // Profile Functions
 function loadProfile(){
@@ -721,10 +798,13 @@ function updateThemeIndicator(){
 function changeLanguage(lang){
     currentLanguage=lang;
     localStorage.setItem('currentLanguage',lang);
-    bibleData=null;
-    loadBibleData();
+    // keep the Bible version in step with the UI language (can be overridden in the Bible tab)
+    bibleVersion=lang;
+    localStorage.setItem('bibleVersion',lang);
     updateAllText();
     updateLanguageIndicator();
+    renderBooks();
+    updateVersionButtons();
 }
 
 function updateAllText(){
@@ -740,6 +820,42 @@ function updateAllText(){
     if(navTexts[4])navTexts[4].textContent=t.profile;
 }
 
+// Runs in the user's browser: probes every configured source and reports what works.
+async function testBibleSources(){
+    const box=document.getElementById('sourceTestResults');
+    if(!ALL_BOOKS.length)buildBookIndex();
+    const john=ALL_BOOKS.find(b=>b.abbr==='joh');
+    box.innerHTML='<div class="glass-card" style="cursor:default"><div class="book-info">Testing… please wait</div></div>';
+    let html='';
+    for(const [ver,cfg] of Object.entries(BIBLE_VERSIONS)){
+        html+=`<div style="color:white;font-weight:700;font-size:14px;margin:14px 0 6px;">${cfg.label}</div>`;
+        for(const src of cfg.sources){
+            let status='✗ failed',sample='';
+            try{
+                if(src.local){
+                    const data=await loadBibleData();
+                    const bd=data&&data.find(b=>b.abbrev&&b.abbrev.toLowerCase()==='joh');
+                    if(bd&&bd.chapters&&bd.chapters[2]){status='✓ works';sample=stripHtml(bd.chapters[2][15]||'');}
+                }else{
+                    const r=await fetch(src.url(john.num,3,john));
+                    if(r.ok){
+                        const v=src.parse(await r.json());
+                        if(v&&v.length){status='✓ works';sample=v[15]||v[0]||'';}
+                        else status='✗ empty/unknown format';
+                    }else status='✗ HTTP '+r.status;
+                }
+            }catch(e){status='✗ blocked/offline';}
+            const ok=status.startsWith('✓');
+            html+=`<div class="glass-card" style="cursor:default;margin-bottom:8px;padding:12px;border-color:${ok?'rgba(76,175,80,0.7)':'rgba(255,255,255,0.2)'}">
+                <div style="color:white;font-size:12px;font-weight:700;">${status} — ${src.name}</div>
+                ${sample?`<div class="book-info" style="margin-top:6px;">John 3:16 → ${sample.substring(0,140)}</div>`:''}
+            </div>`;
+        }
+    }
+    html+='<div class="glass-card" style="cursor:default"><div class="book-info">Screenshot this and send it to me — I will lock each language onto the source that works.</div></div>';
+    box.innerHTML=html;
+}
+
 function updateLanguageIndicator(){
     document.querySelectorAll('.language-card').forEach(card=>{
         card.classList.remove('active');
@@ -749,9 +865,39 @@ function updateLanguageIndicator(){
     });
 }
 
-function init(){renderBooks();renderHymns();renderFavorites();loadBibleData();loadProfile();applyTheme();updateNavProfilePic();}
+function init(){buildBookIndex();renderBooks();updateVersionButtons();renderHymns();renderFavorites();loadBibleData();loadProfile();applyTheme();updateNavProfilePic();}
 
-function renderBooks(){document.getElementById('otBooks').innerHTML=BOOKS.OT.map(b=>`<div class="book-card" data-name="${b.n.toLowerCase()}" onclick="showChapters('${b.n}',${b.c},'${b.abbr}')"><div class="book-name">${b.n}</div><div class="book-info">${b.c} Ch</div></div>`).join('');document.getElementById('ntBooks').innerHTML=BOOKS.NT.map(b=>`<div class="book-card" data-name="${b.n.toLowerCase()}" onclick="showChapters('${b.n}',${b.c},'${b.abbr}')"><div class="book-name">${b.n}</div><div class="book-info">${b.c} Ch</div></div>`).join('');}
+function renderBooks(){
+    if(!ALL_BOOKS.length)buildBookIndex();
+    const t=TRANSLATIONS[currentLanguage];
+    const card=(b,part,i)=>{
+        const label=bookLabel(part,i,b.n);
+        const search=(label+' '+b.n).toLowerCase();
+        return `<div class="book-card" data-name="${search}" onclick="showChapters('${b.n}',${b.c},'${b.abbr}')"><div class="book-name">${label}</div><div class="book-info">${b.c} ${t.chapters}</div></div>`;
+    };
+    document.getElementById('otBooks').innerHTML=BOOKS.OT.map((b,i)=>card(b,'OT',i)).join('');
+    document.getElementById('ntBooks').innerHTML=BOOKS.NT.map((b,i)=>card(b,'NT',i)).join('');
+    const otT=document.getElementById('otTitle'),ntT=document.getElementById('ntTitle');
+    if(otT)otT.textContent='📜 '+t.oldTestament;
+    if(ntT)ntT.textContent='✝️ '+t.newTestament;
+    const sb=document.getElementById('searchBox');
+    if(sb)sb.placeholder='🔍 '+t.searchBooks;
+}
+
+function changeBibleVersion(version){
+    bibleVersion=version;
+    localStorage.setItem('bibleVersion',version);
+    renderBooks();
+    updateVersionButtons();
+    // if a chapter is open, reload it in the new version
+    if(curBookObj&&curChap)loadVerses(curBookObj.n,curChap,curBookObj.abbr);
+}
+
+function updateVersionButtons(){
+    document.querySelectorAll('.version-btn').forEach(b=>{
+        b.classList.toggle('active',b.getAttribute('data-version')===bibleVersion);
+    });
+}
 
 function renderHymns(){document.getElementById('hymnsContainer').innerHTML=HYMNS.map((h,i)=>`<div class="hymn-card" onclick="toggleHymn(${i})"><div class="hymn-title">🎵 ${h.title}</div><div class="hymn-lyrics" id="hymn${i}">${h.text}</div></div>`).join('');}
 
@@ -794,9 +940,75 @@ function updateNavProfilePic(){
     }
 }
 
-function showChapters(book,total,abbr){curBook=book;document.getElementById('chapTitle').innerHTML=book;const grid=document.getElementById('chaptersGrid');grid.innerHTML='';for(let i=1;i<=total;i++){const btn=document.createElement('button');btn.className='chapter-btn';btn.textContent=i;btn.onclick=()=>loadVerses(book,i,abbr);grid.appendChild(btn);}showScreen('chaptersScreen');}
+function showChapters(book,total,abbr){
+    curBook=book;
+    if(!ALL_BOOKS.length)buildBookIndex();
+    const bk=ALL_BOOKS.find(b=>b.abbr===abbr);
+    curBookObj=bk||null;
+    const label=bk?bookLabel(bk.part,bk.idx,bk.n):book;
+    document.getElementById('chapTitle').textContent=`${label} — ${BIBLE_VERSIONS[bibleVersion].label}`;
+    const grid=document.getElementById('chaptersGrid');grid.innerHTML='';
+    for(let i=1;i<=total;i++){const btn=document.createElement('button');btn.className='chapter-btn';btn.textContent=i;btn.onclick=()=>loadVerses(book,i,abbr);grid.appendChild(btn);}
+    showScreen('chaptersScreen');
+}
 
-async function loadVerses(book,chap,abbr){curBook=book;curChap=chap;document.getElementById('verseTitle').textContent=`${book} ${chap}`;const container=document.getElementById('versesContainer');container.innerHTML='<div class="loading"><div class="spinner"></div><div class="loading-text">Loading...</div></div>';showScreen('versesScreen');try{if(bibleData){const bookData=bibleData.find(b=>b.abbrev&&b.abbrev.toLowerCase()===abbr.toLowerCase());if(bookData&&bookData.chapters&&bookData.chapters[chap-1]){displayVerses(bookData.chapters[chap-1]);return;}}const api=`https://bible-api.com/${book}+${chap}?translation=kjv`;const r=await fetch(api);if(r.ok){const data=await r.json();if(data.verses){displayVerses(data.verses.map(v=>v.text));return;}}container.innerHTML='<div class="loading"><div class="loading-text">Connect to internet</div></div>';}catch(e){container.innerHTML='<div class="loading"><div class="loading-text">Failed to load</div></div>';}}
+// Fetch a chapter for a given version, trying each source until one works.
+async function fetchChapter(version,bk,ch){
+    const cfg=BIBLE_VERSIONS[version];
+    if(!cfg)return null;
+    for(const src of cfg.sources){
+        try{
+            if(src.local){
+                const data=await loadBibleData();
+                if(data){
+                    const bd=data.find(b=>b.abbrev&&b.abbrev.toLowerCase()===bk.abbr.toLowerCase());
+                    if(bd&&bd.chapters&&bd.chapters[ch-1]){
+                        const v=bd.chapters[ch-1].map(t=>stripHtml(t));
+                        if(v.length)return {verses:v,source:src.name};
+                    }
+                }
+                continue;
+            }
+            const r=await fetch(src.url(bk.num,ch,bk));
+            if(!r.ok)continue;
+            const d=await r.json();
+            const verses=src.parse(d);
+            if(verses&&verses.length)return {verses:verses,source:src.name};
+        }catch(e){continue;}
+    }
+    return null;
+}
+
+async function loadVerses(book,chap,abbr){
+    curBook=book;curChap=chap;
+    const bk=ALL_BOOKS.find(b=>b.abbr===abbr)||{n:book,abbr:abbr,num:1};
+    curBookObj=bk;
+    const shown=bookLabel(bk.part,bk.idx,bk.n);
+    const t=TRANSLATIONS[currentLanguage];
+    document.getElementById('verseTitle').textContent=`${shown} ${chap}`;
+    const container=document.getElementById('versesContainer');
+    container.innerHTML=`<div class="loading"><div class="spinner"></div><div class="loading-text">${t.loading}</div></div>`;
+    showScreen('versesScreen');
+
+    let res=await fetchChapter(bibleVersion,bk,chap);
+    let fellBack=false;
+    if(!res&&bibleVersion!=='english'){
+        res=await fetchChapter('english',bk,chap);
+        fellBack=true;
+    }
+    if(!res){
+        container.innerHTML='<div class="loading"><div class="loading-text">⚠️ Could not load this chapter.<br>Check your internet connection.</div></div>';
+        return;
+    }
+    displayVerses(res.verses);
+    if(fellBack){
+        const warn=document.createElement('div');
+        warn.className='glass-card';
+        warn.style.cssText='margin-bottom:12px;cursor:default';
+        warn.innerHTML=`<div class="book-info">ℹ️ ${BIBLE_VERSIONS[bibleVersion].label} is not reachable right now — showing English (KJV) instead.</div>`;
+        container.insertBefore(warn,container.firstChild);
+    }
+}
 
 function displayVerses(verses){const container=document.getElementById('versesContainer');if(typeof verses==='object'&&!Array.isArray(verses))verses=Object.values(verses);const ref=`${curBook}-${curChap}`;container.innerHTML=verses.map((t,i)=>{const vKey=`${ref}-${i+1}`;const highlightClass=highlights[vKey]||'';return `<div class="verse ${highlightClass}" data-verse="${vKey}" ontouchstart="startLongPress('${vKey}')" ontouchend="endLongPress()" ontouchmove="endLongPress()"><div class="verse-actions" id="actions-${vKey}"></div><span class="verse-num">${i+1}</span><span class="verse-text">${t}</span></div>`;}).join('');}
 
