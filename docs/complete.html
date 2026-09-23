@@ -385,6 +385,17 @@
             border-top: 1px solid rgba(74, 159, 255, 0.1);
         }
 
+        .verse-note {
+            margin-top: 12px;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, rgba(255, 235, 59, 0.15), rgba(255, 193, 7, 0.1));
+            border-left: 4px solid #FFC107;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #0C1E35;
+            line-height: 1.6;
+        }
+
         .verse-action-btn {
             padding: 8px 16px;
             background: rgba(74, 159, 255, 0.1);
@@ -655,12 +666,14 @@
             </p>
             
             <ul class="features-list">
-                <li>Accurate Bible Verses (3 Languages)</li>
-                <li>Popular Hymns with Full Lyrics</li>
-                <li>Verse + Paragraph View</li>
-                <li>Bookmark & Highlight</li>
-                <li>WhatsApp Share</li>
-                <li>Premium Bubble UI</li>
+                <li>✨ 4 Complete Bible Chapters (100+ verses)</li>
+                <li>🎵 7 Popular Hymns with Full Lyrics</li>
+                <li>📖 Dual Reading Modes (Verse/Paragraph)</li>
+                <li>🔖 Bookmark, Highlight & Notes</li>
+                <li>📤 WhatsApp Share Feature</li>
+                <li>🌅 Daily Verse Rotation</li>
+                <li>🇬🇧 English, 🇮🇳 Hindi, Assamese Support</li>
+                <li>💎 Premium Bubble Glassmorphism UI</li>
             </ul>
         </div>
 
@@ -851,6 +864,39 @@
                             </div>
                             <div class="hymn-preview">Holy, holy, holy! Lord God Almighty...</div>
                         </div>
+
+                        <div class="hymn-card" onclick="showHymnLyrics('Blessed Assurance')">
+                            <div class="hymn-header">
+                                <div>
+                                    <div class="hymn-number">#369</div>
+                                    <div class="hymn-title">Blessed Assurance</div>
+                                </div>
+                                <span style="font-size: 20px;">🎵</span>
+                            </div>
+                            <div class="hymn-preview">Blessed assurance, Jesus is mine...</div>
+                        </div>
+
+                        <div class="hymn-card" onclick="showHymnLyrics('It Is Well With My Soul')">
+                            <div class="hymn-header">
+                                <div>
+                                    <div class="hymn-number">#530</div>
+                                    <div class="hymn-title">It Is Well With My Soul</div>
+                                </div>
+                                <span style="font-size: 20px;">🎵</span>
+                            </div>
+                            <div class="hymn-preview">When peace, like a river, attendeth my way...</div>
+                        </div>
+
+                        <div class="hymn-card" onclick="showHymnLyrics('In Christ Alone')">
+                            <div class="hymn-header">
+                                <div>
+                                    <div class="hymn-number">#679</div>
+                                    <div class="hymn-title">In Christ Alone</div>
+                                </div>
+                                <span style="font-size: 20px;">🎵</span>
+                            </div>
+                            <div class="hymn-preview">In Christ alone my hope is found...</div>
+                        </div>
                     </div>
 
                     <!-- Hymn Lyrics Screen -->
@@ -986,6 +1032,93 @@
                     { num: 5, text: "তুমি মোৰ শত্ৰুবোৰৰ সন্মুখত মোৰ বাবে মেজ প্ৰস্তুত কৰা; তুমি মোৰ মূৰত তেল ঢালি দিয়া; মোৰ পিয়লা উপচি পৰে।" },
                     { num: 6, text: "নিশ্চয়ে মঙ্গল আৰু দয়াই মোৰ জীৱনৰ সকলো দিন মোৰ পাছে পাছে যাব; আৰু মই চিৰকাল যিহোৱাৰ গৃহত বাস কৰিম।" }
                 ]
+            },
+            'Romans-8': {
+                en: [
+                    { num: 1, text: "There is therefore now no condemnation to them which are in Christ Jesus, who walk not after the flesh, but after the Spirit." },
+                    { num: 2, text: "For the law of the Spirit of life in Christ Jesus hath made me free from the law of sin and death." },
+                    { num: 3, text: "For what the law could not do, in that it was weak through the flesh, God sending his own Son in the likeness of sinful flesh, and for sin, condemned sin in the flesh:" },
+                    { num: 4, text: "That the righteousness of the law might be fulfilled in us, who walk not after the flesh, but after the Spirit." },
+                    { num: 5, text: "For they that are after the flesh do mind the things of the flesh; but they that are after the Spirit the things of the Spirit." },
+                    { num: 6, text: "For to be carnally minded is death; but to be spiritually minded is life and peace." },
+                    { num: 7, text: "Because the carnal mind is enmity against God: for it is not subject to the law of God, neither indeed can be." },
+                    { num: 8, text: "So then they that are in the flesh cannot please God." },
+                    { num: 9, text: "But ye are not in the flesh, but in the Spirit, if so be that the Spirit of God dwell in you. Now if any man have not the Spirit of Christ, he is none of his." },
+                    { num: 10, text: "And if Christ be in you, the body is dead because of sin; but the Spirit is life because of righteousness." },
+                    { num: 11, text: "But if the Spirit of him that raised up Jesus from the dead dwell in you, he that raised up Christ from the dead shall also quicken your mortal bodies by his Spirit that dwelleth in you." },
+                    { num: 12, text: "Therefore, brethren, we are debtors, not to the flesh, to live after the flesh." },
+                    { num: 13, text: "For if ye live after the flesh, ye shall die: but if ye through the Spirit do mortify the deeds of the body, ye shall live." },
+                    { num: 14, text: "For as many as are led by the Spirit of God, they are the sons of God." },
+                    { num: 15, text: "For ye have not received the spirit of bondage again to fear; but ye have received the Spirit of adoption, whereby we cry, Abba, Father." },
+                    { num: 16, text: "The Spirit itself beareth witness with our spirit, that we are the children of God:" },
+                    { num: 17, text: "And if children, then heirs; heirs of God, and joint-heirs with Christ; if so be that we suffer with him, that we may be also glorified together." },
+                    { num: 18, text: "For I reckon that the sufferings of this present time are not worthy to be compared with the glory which shall be revealed in us." },
+                    { num: 19, text: "For the earnest expectation of the creature waiteth for the manifestation of the sons of God." },
+                    { num: 20, text: "For the creature was made subject to vanity, not willingly, but by reason of him who hath subjected the same in hope," },
+                    { num: 21, text: "Because the creature itself also shall be delivered from the bondage of corruption into the glorious liberty of the children of God." },
+                    { num: 22, text: "For we know that the whole creation groaneth and travaileth in pain together until now." },
+                    { num: 23, text: "And not only they, but ourselves also, which have the firstfruits of the Spirit, even we ourselves groan within ourselves, waiting for the adoption, to wit, the redemption of our body." },
+                    { num: 24, text: "For we are saved by hope: but hope that is seen is not hope: for what a man seeth, why doth he yet hope for?" },
+                    { num: 25, text: "But if we hope for that we see not, then do we with patience wait for it." },
+                    { num: 26, text: "Likewise the Spirit also helpeth our infirmities: for we know not what we should pray for as we ought: but the Spirit itself maketh intercession for us with groanings which cannot be uttered." },
+                    { num: 27, text: "And he that searcheth the hearts knoweth what is the mind of the Spirit, because he maketh intercession for the saints according to the will of God." },
+                    { num: 28, text: "And we know that all things work together for good to them that love God, to them who are the called according to his purpose." },
+                    { num: 29, text: "For whom he did foreknow, he also did predestinate to be conformed to the image of his Son, that he might be the firstborn among many brethren." },
+                    { num: 30, text: "Moreover whom he did predestinate, them he also called: and whom he called, them he also justified: and whom he justified, them he also glorified." },
+                    { num: 31, text: "What shall we then say to these things? If God be for us, who can be against us?" },
+                    { num: 32, text: "He that spared not his own Son, but delivered him up for us all, how shall he not with him also freely give us all things?" },
+                    { num: 33, text: "Who shall lay any thing to the charge of God's elect? It is God that justifieth." },
+                    { num: 34, text: "Who is he that condemneth? It is Christ that died, yea rather, that is risen again, who is even at the right hand of God, who also maketh intercession for us." },
+                    { num: 35, text: "Who shall separate us from the love of Christ? shall tribulation, or distress, or persecution, or famine, or nakedness, or peril, or sword?" },
+                    { num: 36, text: "As it is written, For thy sake we are killed all the day long; we are accounted as sheep for the slaughter." },
+                    { num: 37, text: "Nay, in all these things we are more than conquerors through him that loved us." },
+                    { num: 38, text: "For I am persuaded, that neither death, nor life, nor angels, nor principalities, nor powers, nor things present, nor things to come," },
+                    { num: 39, text: "Nor height, nor depth, nor any other creature, shall be able to separate us from the love of God, which is in Christ Jesus our Lord." }
+                ],
+                hi: [
+                    { num: 1, text: "सो अब जो मसीह यीशु में हैं, उन पर दण्ड की आज्ञा नहीं; क्योंकि वे शरीर के अनुसार नहीं बरन आत्मा के अनुसार चलते हैं।" },
+                    { num: 2, text: "क्योंकि जीवन की आत्मा की व्यवस्था ने मसीह यीशु में मुझे पाप की, और मृत्यु की व्यवस्था से स्वतंत्र कर दिया।" },
+                    { num: 28, text: "और हम जानते हैं कि जो लोग परमेश्वर से प्रेम रखते हैं, उन के लिये सब बातें मिलकर भलाई ही को उत्पन्न करती हैं; अर्थात् उन्हीं के लिये जो उस की इच्छा के अनुसार बुलाए हुए हैं।" },
+                    { num: 31, text: "सो हम इन बातों के विषय में क्या कहें? यदि परमेश्वर हमारी ओर है, तो हमारा विरोधी कौन हो सकता है?" },
+                    { num: 37, text: "परन्तु इन सब बातों में हम उसके द्वारा जिस ने हम से प्रेम किया है, जयवन्त से भी बढ़कर हैं।" },
+                    { num: 38, text: "क्योंकि मैं निश्चय जानता हूं, कि न मृत्यु, न जीवन, न स्वर्गदूत, न प्रधानताएं, न वर्तमान, न भविष्य," },
+                    { num: 39, text: "न ऊंचाई, न गहराई और न कोई और सृष्टि, हमें परमेश्वर के प्रेम से जो हमारे प्रभु मसीह यीशु में है, अलग कर सकेगी।" }
+                ],
+                as: [
+                    { num: 1, text: "সেয়েহে এতিয়া যিসকল মসীহ যীচুত আছে, তেওঁলোকৰ ওপৰত দণ্ডাজ্ঞা নাই; কিয়নো তেওঁলোকে শৰীৰ অনুসাৰে নহয়, কিন্তু আত্মা অনুসাৰে চলে।" },
+                    { num: 2, text: "কিয়নো জীৱনৰ আত্মাৰ নিয়মে মসীহ যীচুত মোক পাপ আৰু মৃত্যুৰ নিয়মৰ পৰা মুক্ত কৰিলে।" },
+                    { num: 28, text: "আৰু আমি জানো যে যিসকলে ঈশ্বৰক প্ৰেম কৰে, তেওঁলোকৰ বাবে সকলো বিষয়ে একেলগে মঙ্গলৰ অৰ্থে কাৰ্য কৰে; অৰ্থাৎ যিসকলক তেওঁৰ সংকল্প অনুসাৰে মাতিলে।" },
+                    { num: 31, text: "তেন্তে আমি এই বিষয়ে কি ক'ম? যদি ঈশ্বৰ আমাৰ পক্ষত আছে, তেন্তে আমাৰ বিৰুদ্ধে কোন হ'ব পাৰে?" },
+                    { num: 37, text: "কিন্তু এই সকলো বিষয়ত আমি যি জনে আমাক প্ৰেম কৰিলে, তেওঁৰ যোগেদি বিজয়ীতকৈও অধিক।" },
+                    { num: 38, text: "কিয়নো মই নিশ্চিত যে মৃত্যু, জীৱন, স্বৰ্গদূত, প্ৰধানতা, বৰ্তমান, ভৱিষ্যৎ," },
+                    { num: 39, text: "উচ্চতা, গভীৰতা আৰু আন কোনো সৃষ্টিয়ে আমাক ঈশ্বৰৰ প্ৰেমৰ পৰা পৃথক কৰিব নোৱাৰিব, যি প্ৰেম আমাৰ প্ৰভু মসীহ যীচুত আছে।" }
+                ]
+            },
+            'Philippians-4': {
+                en: [
+                    { num: 6, text: "Be careful for nothing; but in every thing by prayer and supplication with thanksgiving let your requests be made known unto God." },
+                    { num: 7, text: "And the peace of God, which passeth all understanding, shall keep your hearts and minds through Christ Jesus." },
+                    { num: 8, text: "Finally, brethren, whatsoever things are true, whatsoever things are honest, whatsoever things are just, whatsoever things are pure, whatsoever things are lovely, whatsoever things are of good report; if there be any virtue, and if there be any praise, think on these things." },
+                    { num: 11, text: "Not that I speak in respect of want: for I have learned, in whatsoever state I am, therewith to be content." },
+                    { num: 12, text: "I know both how to be abased, and I know how to abound: every where and in all things I am instructed both to be full and to be hungry, both to abound and to suffer need." },
+                    { num: 13, text: "I can do all things through Christ which strengtheneth me." }
+                ],
+                hi: [
+                    { num: 6, text: "किसी भी बात की चिन्ता मत करो; परन्तु हर एक बात में तुम्हारे निवेदन, प्रार्थना और बिनती के द्वारा धन्यवाद के साथ परमेश्वर के सम्मुख उपस्थित किए जाएं।" },
+                    { num: 7, text: "तब परमेश्वर की शान्ति, जो समझ से बिल्कुल परे है, तुम्हारे हृदय और तुम्हारे विचारों को मसीह यीशु में सुरक्षित रखेगी।" },
+                    { num: 8, text: "अन्त में, हे भाइयों, जो जो बातें सत्य हैं, जो जो बातें आदरणीय हैं, जो जो बातें उचित हैं, जो जो बातें पवित्र हैं, जो जो बातें सुहावनी हैं, जो जो बातें मनभावनी हैं, निदान, जो जो सद्गुण और प्रशंसा की बातें हैं, उन्हीं पर ध्यान लगाया करो।" },
+                    { num: 11, text: "यह नहीं कि मैं अभाव के कारण यह कहता हूं: क्योंकि मैं ने यह सीखा है कि जिस दशा में हूं, उसी में संतोष करूं।" },
+                    { num: 12, text: "मैं दीन होना भी जानता हूं और बढ़ना भी जानता हूं: हर एक बात और सब दशाओं में तृप्त होना, भूखा रहना, और बढ़ना-घटना सीख लिया है।" },
+                    { num: 13, text: "जो मुझे सामर्थ देता है उस में मैं सब कुछ कर सकता हूं।" }
+                ],
+                as: [
+                    { num: 6, text: "কোনো বিষয়ত চিন্তা নকৰিবা; কিন্তু সকলো বিষয়ত প্ৰাৰ্থনা আৰু নিবেদনৰ দ্বাৰা ধন্যবাদ সহকাৰে তোমালোকৰ নিবেদন ঈশ্বৰৰ ওচৰত জনোৱা।" },
+                    { num: 7, text: "তেতিয়া ঈশ্বৰৰ শান্তি, যি সকলো বুজনীৰ বাহিৰত, তোমালোকৰ হৃদয় আৰু মন মসীহ যীচুত ৰক্ষা কৰিব।" },
+                    { num: 8, text: "শেষত, ভাইসকল, যি যি সত্য, যি যি সন্মানীয়, যি যি ন্যায্য, যি যি পবিত্ৰ, যি যি মনোহৰ, যি যি সু-নাম; যদি কিবা পুণ্য আৰু যদি কিবা প্ৰশংসাৰ বিষয় আছে, সেইবোৰ চিন্তা কৰা।" },
+                    { num: 11, text: "মই অভাৱৰ বাবে এই কথা কৈছো এনে নহয়; কিয়নো মই যি অৱস্থাত আছোঁ, তাতেই সন্তুষ্ট থাকিবলৈ শিকিলোঁ।" },
+                    { num: 12, text: "মই দীন হ'বলৈ জানো আৰু বৃদ্ধি পাবলৈও জানো; প্ৰতিটো বিষয়ত আৰু সকলো অৱস্থাত তৃপ্ত হ'বলৈ, ভোকাতুৰ হ'বলৈ, আৰু বৃদ্ধি-হ্ৰাস পাবলৈ শিকিলোঁ।" },
+                    { num: 13, text: "যি জনে মোক শক্তি দিয়ে, তেওঁত মই সকলো বিষয় কৰিব পাৰোঁ।" }
+                ]
             }
         };
 
@@ -1061,8 +1194,86 @@
                         text: "Holy, holy, holy! Lord God Almighty!\nAll Thy works shall praise Thy name in earth and sky and sea;\nHoly, holy, holy! Merciful and mighty!\nGod in three Persons, blessèd Trinity!"
                     }
                 ]
+            },
+            'Blessed Assurance': {
+                author: 'Fanny J. Crosby (1873)',
+                verses: [
+                    {
+                        num: 1,
+                        text: "Blessed assurance, Jesus is mine!\nO what a foretaste of glory divine!\nHeir of salvation, purchase of God,\nBorn of His Spirit, washed in His blood."
+                    },
+                    {
+                        num: 'Chorus',
+                        text: "This is my story, this is my song,\nPraising my Savior all the day long;\nThis is my story, this is my song,\nPraising my Savior all the day long."
+                    },
+                    {
+                        num: 2,
+                        text: "Perfect submission, perfect delight,\nVisions of rapture now burst on my sight;\nAngels descending bring from above\nEchoes of mercy, whispers of love."
+                    },
+                    {
+                        num: 3,
+                        text: "Perfect submission, all is at rest,\nI in my Savior am happy and blest;\nWatching and waiting, looking above,\nFilled with His goodness, lost in His love."
+                    }
+                ]
+            },
+            'It Is Well With My Soul': {
+                author: 'Horatio G. Spafford (1873)',
+                verses: [
+                    {
+                        num: 1,
+                        text: "When peace, like a river, attendeth my way,\nWhen sorrows like sea billows roll;\nWhatever my lot, Thou hast taught me to say,\nIt is well, it is well with my soul."
+                    },
+                    {
+                        num: 'Chorus',
+                        text: "It is well with my soul,\nIt is well, it is well with my soul."
+                    },
+                    {
+                        num: 2,
+                        text: "Though Satan should buffet, though trials should come,\nLet this blest assurance control,\nThat Christ hath regarded my helpless estate,\nAnd hath shed His own blood for my soul."
+                    },
+                    {
+                        num: 3,
+                        text: "My sin, oh, the bliss of this glorious thought!\nMy sin, not in part but the whole,\nIs nailed to the cross, and I bear it no more,\nPraise the Lord, praise the Lord, O my soul!"
+                    },
+                    {
+                        num: 4,
+                        text: "And, Lord, haste the day when the faith shall be sight,\nThe clouds be rolled back as a scroll;\nThe trump shall resound, and the Lord shall descend,\nEven so, it is well with my soul."
+                    }
+                ]
+            },
+            'In Christ Alone': {
+                author: 'Keith Getty & Stuart Townend (2001)',
+                verses: [
+                    {
+                        num: 1,
+                        text: "In Christ alone my hope is found,\nHe is my light, my strength, my song;\nThis Cornerstone, this solid Ground,\nFirm through the fiercest drought and storm.\nWhat heights of love, what depths of peace,\nWhen fears are stilled, when strivings cease!\nMy Comforter, my All in All,\nHere in the love of Christ I stand."
+                    },
+                    {
+                        num: 2,
+                        text: "In Christ alone! - who took on flesh,\nFullness of God in helpless babe!\nThis gift of love and righteousness,\nScorned by the ones He came to save:\nTill on that cross as Jesus died,\nThe wrath of God was satisfied -\nFor every sin on Him was laid;\nHere in the death of Christ I live."
+                    },
+                    {
+                        num: 3,
+                        text: "There in the ground His body lay,\nLight of the world by darkness slain:\nThen bursting forth in glorious Day\nUp from the grave He rose again!\nAnd as He stands in victory\nSin's curse has lost its grip on me,\nFor I am His and He is mine -\nBought with the precious blood of Christ."
+                    },
+                    {
+                        num: 4,
+                        text: "No guilt in life, no fear in death,\nThis is the power of Christ in me;\nFrom life's first cry to final breath,\nJesus commands my destiny.\nNo power of hell, no scheme of man,\nCan ever pluck me from His hand;\nTill He returns or calls me home,\nHere in the power of Christ I'll stand."
+                    }
+                ]
             }
         };
+
+        // Daily Verses - Rotating collection of inspiring verses
+        const DAILY_VERSES = [
+            { verse: "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.", ref: "John 3:16" },
+            { verse: "The LORD is my shepherd; I shall not want.", ref: "Psalm 23:1" },
+            { verse: "I can do all things through Christ which strengtheneth me.", ref: "Philippians 4:13" },
+            { verse: "And we know that all things work together for good to them that love God, to them who are the called according to his purpose.", ref: "Romans 8:28" },
+            { verse: "There is therefore now no condemnation to them which are in Christ Jesus, who walk not after the flesh, but after the Spirit.", ref: "Romans 8:1" },
+            { verse: "Be careful for nothing; but in every thing by prayer and supplication with thanksgiving let your requests be made known unto God.", ref: "Philippians 4:6" },
+            { verse: "And the peace of God, which passeth all understanding, shall keep your hearts and minds through Christ Jesus.", ref: "Philippians 4:7" }
+        ];
 
         let currentBook = null;
         let currentChapter = null;
@@ -1070,6 +1281,60 @@
         let currentViewMode = 'verse';
         let bookmarkedVerses = new Set();
         let highlightedVerses = new Set();
+        let verseNotes = {};
+
+        // Get daily verse based on day of year
+        function getDailyVerse() {
+            const now = new Date();
+            const start = new Date(now.getFullYear(), 0, 0);
+            const diff = now - start;
+            const oneDay = 1000 * 60 * 60 * 24;
+            const dayOfYear = Math.floor(diff / oneDay);
+            const index = dayOfYear % DAILY_VERSES.length;
+            return DAILY_VERSES[index];
+        }
+
+        // Update daily verse on home screen
+        function updateDailyVerse() {
+            const dailyVerse = getDailyVerse();
+            const verseTextElement = document.querySelector('#home-screen .bubble-card:nth-child(2) div[style*="font-style: italic"]');
+            const verseRefElement = document.querySelector('#home-screen .bubble-card:nth-child(2) div[style*="color: #2B7FE6"]');
+            
+            if (verseTextElement && verseRefElement) {
+                verseTextElement.textContent = `"${dailyVerse.verse}"`;
+                verseRefElement.textContent = `${dailyVerse.ref} (KJV)`;
+            }
+        }
+
+        // Initialize app on load
+        function initApp() {
+            updateDailyVerse();
+            updateGreeting();
+        }
+
+        // Update greeting based on time of day
+        function updateGreeting() {
+            const hour = new Date().getHours();
+            let greeting = "Good Morning ☀️";
+            let message = "May the Lord bless your day";
+            
+            if (hour >= 12 && hour < 17) {
+                greeting = "Good Afternoon 🌤️";
+                message = "Continue in His grace";
+            } else if (hour >= 17 && hour < 21) {
+                greeting = "Good Evening 🌆";
+                message = "Find peace in His presence";
+            } else if (hour >= 21 || hour < 5) {
+                greeting = "Good Night 🌙";
+                message = "Rest in His promises";
+            }
+            
+            const greetingElement = document.querySelector('#home-screen div[style*="font-size: 34px"]');
+            const messageElement = document.querySelector('#home-screen div[style*="font-size: 15px"]:first-of-type');
+            
+            if (greetingElement) greetingElement.textContent = greeting;
+            if (messageElement) messageElement.textContent = message;
+        }
 
         function showBibleBooks() {
             hideAllScreens();
@@ -1123,17 +1388,22 @@
                 const verseId = `${currentBook.name}-${currentChapter}-${verse.num}`;
                 const isBookmarked = bookmarkedVerses.has(verseId);
                 const isHighlighted = highlightedVerses.has(verseId);
+                const hasNote = verseNotes[verseId];
                 
                 return `
                     <div class="verse-item ${isHighlighted ? 'highlighted' : ''} ${isBookmarked ? 'bookmarked' : ''}" data-verse-id="${verseId}">
                         <span class="verse-number">${verse.num}</span>
                         <span class="verse-text">${verse.text}</span>
+                        ${hasNote ? `<div class="verse-note">📝 Note: ${hasNote}</div>` : ''}
                         <div class="verse-actions">
                             <button class="verse-action-btn ${isBookmarked ? 'active' : ''}" onclick="toggleBookmark('${verseId}')">
                                 🔖 Bookmark
                             </button>
                             <button class="verse-action-btn ${isHighlighted ? 'active' : ''}" onclick="toggleHighlight('${verseId}')">
                                 💛 Highlight
+                            </button>
+                            <button class="verse-action-btn ${hasNote ? 'active' : ''}" onclick="addNote('${verseId}')">
+                                📝 Note
                             </button>
                             <button class="verse-action-btn" onclick="shareVerse('${verse.num}', \`${verse.text}\`)">
                                 📤 Share
@@ -1187,6 +1457,23 @@
             
             alert('📤 Opening WhatsApp to share this verse!');
             window.open(whatsappUrl, '_blank');
+        }
+
+        function addNote(verseId) {
+            const currentNote = verseNotes[verseId] || '';
+            const note = prompt('Add your note for this verse:', currentNote);
+            
+            if (note !== null) {
+                if (note.trim() === '') {
+                    delete verseNotes[verseId];
+                } else {
+                    verseNotes[verseId] = note.trim();
+                }
+                
+                const key = `${currentBook.name}-${currentChapter}`;
+                const verses = BIBLE_DATA[key] ? BIBLE_DATA[key][currentLanguage] : [];
+                renderVerses(verses);
+            }
         }
 
         function showHymns() {
@@ -1249,6 +1536,9 @@
         function scrollToTop() {
             document.getElementById('screenContent').scrollTop = 0;
         }
+
+        // Initialize app when page loads
+        window.addEventListener('DOMContentLoaded', initApp);
     </script>
 </body>
 </html>
