@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HYMNORA - Complete Bible & Hymns App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #FFFFFF 0%, #E8F4FD 50%, #D4E8FC 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .preview-container {
+            max-width: 1400px;
+            width: 100%;
+            display: flex;
+            gap: 60px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* Info Panel */
+        .info-panel {
+            flex: 1;
+            min-width: 320px;
+            max-width: 450px;
+        }
+
+        .logo {
+            font-size: 48px;
+            font-weight: 800;
+            letter-spacing: 4px;
+            background: linear-gradient(135deg, #4A9FFF, #2B7FE6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+        }
+
+        .tagline {
+            font-size: 20px;
+            color: #2B7FE6;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .version-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #4A9FFF, #2B7FE6);
+            color: white;
+            border-radius: 24px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 16px rgba(74, 159, 255, 0.4);
+        }
+
+        .description {
+            font-size: 16px;
+            color: #0C1E35;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-bottom: 28px;
+        }
+
+        .features-list li {
+            padding: 10px 0;
+            color: #0C1E35;
+            font-size: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .features-list li:before {
+            content: "✓";
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #4A9FFF, #2B7FE6);
+            color: white;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 14px;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(74, 159, 255, 0.3);
+        }
+
+        /* Phone Frame */
+        .phone-frame {
+            width: 385px;
+            height: 820px;
+            background: linear-gradient(135deg, #1A1A1A, #0C1E35);
+            border-radius: 54px;
+            padding: 14px;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+            position: relative;
+        }
+
+        .phone-notch {
+            position: absolute;
+            top: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 160px;
+            height: 32px;
+            background: #000000;
+            border-radius: 0 0 24px 24px;
+            z-index: 20;
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #FFFFFF 0%, #F7FBFE 50%, #EFF6FD 100%);
+            border-radius: 46px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            height: 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            padding-top: 10px;
+            font-size: 14px;
+            color: #0C1E35;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Screen Content */
+        .screen-content {
+            height: calc(100% - 48px - 90px);
+            overflow-y: auto;
+            padding: 0 0 20px 0;
+            scrollbar-width: thin;
+            scrollbar-color: #4A9FFF #F0F7FF;
+        }
+
+        .screen-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .screen-content::-webkit-scrollbar-track {
+            background: #F0F7FF;
+        }
+
+        .screen-content::-webkit-scrollbar-thumb {
+            background: #4A9FFF;
+            border-radius: 3px;
+        }
+
+        .screen {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Premium Bubble Glass Card */
+        .bubble-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(30px) saturate(180%);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 28px;
+            padding: 24px;
+            margin: 16px 20px;
+            box-shadow: 
+                0 8px 32px rgba(74, 159, 255, 0.12),
+                0 4px 16px rgba(74, 159, 255, 0.08),
+                inset 0 2px 4px rgba(255, 255, 255, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Section Header */
+        .section-header {
+            font-size: 22px;
+            font-weight: 800;
+            color: #0C1E35;
+            margin: 24px 20px 14px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Premium Bubble Icon */
+        .bubble-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, rgba(74, 159, 255, 0.2), rgba(43, 127, 230, 0.15));
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: 
+                0 8px 24px rgba(74, 159, 255, 0.25),
+                inset 0 2px 4px rgba(255, 255, 255, 0.8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bubble-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), transparent 60%);
+            animation: bubbleShine 3s ease-in-out infinite;
+        }
+
+        @keyframes bubbleShine {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* Bible Books Grid */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            padding: 0 20px;
+        }
+
+        .book-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(30px);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 18px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 4px 16px rgba(74, 159, 255, 0.1),
+                inset 0 1px 2px rgba(255, 255, 255, 1);
+        }
+
+        .book-card:active {
+            transform: scale(0.96);
+        }
+
+        .book-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0C1E35;
+            margin-bottom: 4px;
+        }
+
+        .book-chapters {
+            font-size: 13px;
+            color: #4A9FFF;
+            font-weight: 600;
+        }
+
+        /* Chapter Grid */
+        .chapters-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            padding: 0 20px;
+            margin-bottom: 20px;
+        }
+
+        .chapter-btn {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 16px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #0C1E35;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 
+                0 4px 12px rgba(74, 159, 255, 0.08),
+                inset 0 1px 2px rgba(255, 255, 255, 1);
+        }
+
+        .chapter-btn:hover {
+            background: linear-gradient(135deg, #4A9FFF, #2B7FE6);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(74, 159, 255, 0.3);
+        }
+
+        /* Verse Display */
+        .verse-container {
+            padding: 0 20px;
+        }
+
+        .verse-item {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(30px);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 
+                0 4px 16px rgba(74, 159, 255, 0.1),
+                inset 0 1px 2px rgba(255, 255, 255, 1);
+            position: relative;
+        }
+
+        .verse-item.highlighted {
+            background: rgba(255, 243, 128, 0.3);
+            border-color: #FFD700;
+        }
+
+        .verse-item.bookmarked::before {
+            content: '🔖';
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            font-size: 24px;
+        }
+
+        .verse-number {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #4A9FFF, #2B7FE6);
+            color: white;
+            border-radius: 16px;
+            text-align: center;
+            line-height: 32px;
+            font-size: 14px;
+            font-weight: 700;
+            margin-right: 12px;
+            box-shadow: 0 4px 12px rgba(74, 159, 255, 0.3);
+        }
+
+        .verse-text {
+            display: inline;
+            font-size: 16px;
+            color: #0C1E35;
+            line-height: 1.8;
+        }
+
+        .verse-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(74, 159, 255, 0.1);
+        }
+
+        .verse-action-btn {
+            padding: 8px 16px;
+            background: rgba(74, 159, 255, 0.1);
+            border: 1px solid rgba(74, 159, 255, 0.2);
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #2B7FE6;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .verse-action-btn:active {
+            transform: scale(0.95);
+        }
+
+        .verse-action-btn.active {
+            background: linear-gradient(135deg, #4A9FFF, #2B7FE6);
+            color: white;
+            border-color: transparent;
+        }
+
+        /* View Mode Toggle */
+        .view-toggle {
+            display: flex;
+            gap: 8px;
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 2px solid rgba(74, 159, 255, 0.1);
+        }
+
+        .view-btn {
+            flex: 1;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #6B7280;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .view-btn.active {
+            background: linear-gradient(135deg, #4A9FFF, #2B7FE6);
+            color: white;
+            border-color: transparent;
+        }
+
+        /* Paragraph View */
+        .paragraph-view .verse-text {
+            display: block;
+            margin-bottom: 16px;
+        }
+
+        .paragraph-view .verse-number {
+            font-size: 11px;
+            width: 24px;
+            height: 24px;
+            line-height: 24px;
+            margin-right: 8px;
+            vertical-align: super;
+        }
+
+        /* Back Button */
+        .back-btn {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 14px 24px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #0C1E35;
+            cursor: pointer;
+            margin: 16px 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 
+                0 4px 12px rgba(74, 159, 255, 0.1),
+                inset 0 1px 2px rgba(255, 255, 255, 1);
+            transition: all 0.2s ease;
+        }
+
+        .back-btn:active {
+            transform: scale(0.96);
+        }
+
+        /* Hymn Card */
+        .hymn-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(30px);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 20px;
+            margin: 12px 20px;
+            cursor: pointer;
+            box-shadow: 
+                0 4px 16px rgba(74, 159, 255, 0.1),
+                inset 0 1px 2px rgba(255, 255, 255, 1);
+        }
+
+        .hymn-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 10px;
+        }
+
+        .hymn-number {
+            font-size: 14px;
+            font-weight: 700;
+            color: #4A9FFF;
+        }
+
+        .hymn-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0C1E35;
+            margin-bottom: 6px;
+        }
+
+        .hymn-preview {
+            font-size: 14px;
+            color: #4B5563;
+            line-height: 1.5;
+        }
+
+        /* Hymn Lyrics Display */
+        .hymn-lyrics {
+            font-size: 15px;
+            color: #0C1E35;
+            line-height: 1.8;
+            white-space: pre-line;
+        }
+
+        .hymn-verse {
+            margin-bottom: 20px;
+        }
+
+        .hymn-verse-num {
+            font-weight: 700;
+            color: #2B7FE6;
+            margin-bottom: 8px;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 90px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(40px) saturate(180%);
+            border-top: 2px solid rgba(255, 255, 255, 1);
+            border-radius: 34px 34px 46px 46px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 12px 12px 28px 12px;
+            box-shadow: 
+                0 -8px 32px rgba(74, 159, 255, 0.15),
+                inset 0 2px 4px rgba(255, 255, 255, 1);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 10px 14px;
+            border-radius: 20px;
+            position: relative;
+        }
+
+        .nav-item:active {
+            transform: scale(0.92);
+        }
+
+        .nav-item.active {
+            background: rgba(74, 159, 255, 0.12);
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 4px;
+            background: linear-gradient(135deg, #4A9FFF, #2B7FE6);
+            border-radius: 2px;
+            box-shadow: 0 2px 8px rgba(74, 159, 255, 0.4);
+        }
+
+        .nav-bubble-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, rgba(74, 159, 255, 0.15), rgba(43, 127, 230, 0.1));
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            box-shadow: 
+                0 6px 20px rgba(74, 159, 255, 0.2),
+                inset 0 2px 4px rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+        }
+
+        .nav-item.active .nav-bubble-icon {
+            background: linear-gradient(135deg, #4A9FFF, #2B7FE6);
+            transform: translateY(-4px);
+            box-shadow: 
+                0 8px 24px rgba(74, 159, 255, 0.4),
+                inset 0 2px 4px rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #6B7280;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item.active .nav-label {
+            color: #2B7FE6;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .preview-container {
+                flex-direction: column;
+            }
+
+            .info-panel {
+                max-width: 100%;
+                text-align: center;
+            }
+
+            .phone-frame {
+                width: min(385px, 100%);
+                height: min(820px, 90vh);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="preview-container">
+        <!-- Info Panel -->
+        <div class="info-panel">
+            <div class="logo">HYMNORA</div>
+            <div class="tagline">Faith. Scripture. Worship.</div>
+            <div class="version-badge">✨ COMPLETE - ALL FEATURES</div>
+            
+            <p class="description">
+                Full working Bible with accurate verses in 3 languages, complete hymn lyrics, 
+                verse/paragraph reading modes, bookmark, highlight, and WhatsApp share features!
+            </p>
+            
+            <ul class="features-list">
+                <li>Accurate Bible Verses (3 Languages)</li>
+                <li>Popular Hymns with Full Lyrics</li>
+                <li>Verse + Paragraph View</li>
+                <li>Bookmark & Highlight</li>
+                <li>WhatsApp Share</li>
+                <li>Premium Bubble UI</li>
+            </ul>
+        </div>
+
+        <!-- Phone Frame -->
+        <div class="phone-frame">
+            <div class="phone-notch"></div>
+            
+            <div class="phone-screen">
+                <!-- Status Bar -->
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <span>📶 5G 🔋</span>
+                </div>
+
+                <!-- Screen Content -->
+                <div class="screen-content" id="screenContent">
+                    <!-- Home Screen -->
+                    <div class="screen active" id="home-screen">
+                        <div style="padding: 24px 20px;">
+                            <div style="font-size: 34px; font-weight: 800; color: #0C1E35; margin-bottom: 8px;">
+                                Good Morning ☀️
+                            </div>
+                            <div style="font-size: 15px; color: #6B7280; font-weight: 500;">
+                                May the Lord bless your day
+                            </div>
+                        </div>
+
+                        <div class="bubble-card" onclick="showBibleBooks()">
+                            <div style="display: flex; align-items: center; gap: 16px;">
+                                <div class="bubble-icon">📖</div>
+                                <div>
+                                    <div style="font-size: 18px; font-weight: 700; color: #0C1E35;">Continue Reading</div>
+                                    <div style="font-size: 14px; color: #6B7280; margin-top: 4px;">John 3 • 21 verses</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bubble-card">
+                            <div style="display: flex; align-items: center; gap: 16px;">
+                                <div class="bubble-icon">✨</div>
+                                <div style="flex: 1;">
+                                    <div style="font-size: 18px; font-weight: 700; color: #0C1E35; margin-bottom: 10px;">Verse of the Day</div>
+                                    <div style="font-size: 15px; color: #0C1E35; line-height: 1.7; font-style: italic; margin-bottom: 8px;">
+                                        "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life."
+                                    </div>
+                                    <div style="font-size: 14px; color: #2B7FE6; font-weight: 700;">John 3:16 (KJV)</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section-header">
+                            <div class="bubble-icon" style="width: 40px; height: 40px; font-size: 20px;">⚡</div>
+                            Quick Access
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 20px; margin-bottom: 24px;">
+                            <div class="bubble-card" style="cursor: pointer; text-align: center;" onclick="showBibleBooks()">
+                                <div class="bubble-icon" style="margin: 0 auto 12px;">📖</div>
+                                <div style="font-size: 15px; font-weight: 700; color: #0C1E35;">Read Bible</div>
+                            </div>
+                            <div class="bubble-card" style="cursor: pointer; text-align: center;" onclick="showHymns()">
+                                <div class="bubble-icon" style="margin: 0 auto 12px;">🎵</div>
+                                <div style="font-size: 15px; font-weight: 700; color: #0C1E35;">Hymns</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bible Books Screen -->
+                    <div class="screen" id="bible-books-screen">
+                        <div style="padding: 24px 20px 0;">
+                            <div style="font-size: 34px; font-weight: 800; color: #0C1E35; margin-bottom: 8px;">
+                                Holy Bible
+                            </div>
+                            <div style="font-size: 15px; color: #6B7280; font-weight: 500;">
+                                66 Books, 1,189 Chapters
+                            </div>
+                        </div>
+
+                        <div class="section-header">
+                            <div class="bubble-icon" style="width: 40px; height: 40px; font-size: 20px;">📚</div>
+                            New Testament
+                        </div>
+                        <div class="books-grid">
+                            <div class="book-card" onclick="showChapters('John', 21)">
+                                <div class="book-name">John</div>
+                                <div class="book-chapters">21 Chapters</div>
+                            </div>
+                            <div class="book-card" onclick="showChapters('Matthew', 28)">
+                                <div class="book-name">Matthew</div>
+                                <div class="book-chapters">28 Chapters</div>
+                            </div>
+                        </div>
+
+                        <div class="section-header">
+                            <div class="bubble-icon" style="width: 40px; height: 40px; font-size: 20px;">📜</div>
+                            Old Testament
+                        </div>
+                        <div class="books-grid">
+                            <div class="book-card" onclick="showChapters('Psalms', 150)">
+                                <div class="book-name">Psalms</div>
+                                <div class="book-chapters">150 Chapters</div>
+                            </div>
+                            <div class="book-card" onclick="showChapters('Genesis', 50)">
+                                <div class="book-name">Genesis</div>
+                                <div class="book-chapters">50 Chapters</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bible Chapters Screen -->
+                    <div class="screen" id="bible-chapters-screen">
+                        <button class="back-btn" onclick="showBibleBooks()">← Back to Books</button>
+                        
+                        <div style="padding: 0 20px;">
+                            <div style="font-size: 28px; font-weight: 800; color: #0C1E35; margin-bottom: 4px;" id="chapterBookName"></div>
+                            <div style="font-size: 15px; color: #6B7280; font-weight: 500;" id="chapterCount"></div>
+                        </div>
+
+                        <div class="section-header">
+                            <div class="bubble-icon" style="width: 40px; height: 40px; font-size: 20px;">📑</div>
+                            Select Chapter
+                        </div>
+                        <div class="chapters-grid" id="chaptersGrid"></div>
+                    </div>
+
+                    <!-- Bible Verses Screen -->
+                    <div class="screen" id="bible-verses-screen">
+                        <button class="back-btn" onclick="backToChapters()">← Back to Chapters</button>
+                        
+                        <div class="view-toggle">
+                            <button class="view-btn active" onclick="toggleView('verse')">📝 Verse-by-Verse</button>
+                            <button class="view-btn" onclick="toggleView('paragraph')">📄 Paragraph</button>
+                        </div>
+
+                        <div style="padding: 0 20px; margin: 16px 0;">
+                            <div style="font-size: 28px; font-weight: 800; color: #0C1E35; margin-bottom: 4px;" id="verseBookName"></div>
+                            <div style="font-size: 17px; color: #2B7FE6; font-weight: 700;" id="verseChapterNum"></div>
+                        </div>
+
+                        <div class="verse-container" id="versesContainer"></div>
+                    </div>
+
+                    <!-- Hymns Screen -->
+                    <div class="screen" id="hymns-screen">
+                        <div style="padding: 24px 20px 0;">
+                            <div style="font-size: 34px; font-weight: 800; color: #0C1E35; margin-bottom: 8px;">
+                                Hymns
+                            </div>
+                            <div style="font-size: 15px; color: #6B7280; font-weight: 500;">
+                                Worship through song
+                            </div>
+                        </div>
+
+                        <div class="section-header">
+                            <div class="bubble-icon" style="width: 40px; height: 40px; font-size: 20px;">⭐</div>
+                            Popular Hymns
+                        </div>
+
+                        <div class="hymn-card" onclick="showHymnLyrics('Amazing Grace')">
+                            <div class="hymn-header">
+                                <div>
+                                    <div class="hymn-number">#145</div>
+                                    <div class="hymn-title">Amazing Grace</div>
+                                </div>
+                                <span style="font-size: 20px;">🎵</span>
+                            </div>
+                            <div class="hymn-preview">Amazing grace, how sweet the sound...</div>
+                        </div>
+
+                        <div class="hymn-card" onclick="showHymnLyrics('How Great Thou Art')">
+                            <div class="hymn-header">
+                                <div>
+                                    <div class="hymn-number">#289</div>
+                                    <div class="hymn-title">How Great Thou Art</div>
+                                </div>
+                                <span style="font-size: 20px;">🎵</span>
+                            </div>
+                            <div class="hymn-preview">O Lord my God, when I in awesome wonder...</div>
+                        </div>
+
+                        <div class="hymn-card" onclick="showHymnLyrics('Holy Holy Holy')">
+                            <div class="hymn-header">
+                                <div>
+                                    <div class="hymn-number">#001</div>
+                                    <div class="hymn-title">Holy, Holy, Holy</div>
+                                </div>
+                                <span style="font-size: 20px;">🎵</span>
+                            </div>
+                            <div class="hymn-preview">Holy, holy, holy! Lord God Almighty...</div>
+                        </div>
+                    </div>
+
+                    <!-- Hymn Lyrics Screen -->
+                    <div class="screen" id="hymn-lyrics-screen">
+                        <button class="back-btn" onclick="showHymns()">← Back to Hymns</button>
+                        
+                        <div style="padding: 0 20px; margin-bottom: 20px;">
+                            <div style="font-size: 28px; font-weight: 800; color: #0C1E35; margin-bottom: 4px;" id="hymnTitle"></div>
+                            <div style="font-size: 14px; color: #6B7280;" id="hymnAuthor"></div>
+                        </div>
+
+                        <div class="bubble-card">
+                            <div class="hymn-lyrics" id="hymnLyricsContent"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Navigation -->
+                <div class="bottom-nav">
+                    <div class="nav-item active" onclick="switchTab('home')">
+                        <div class="nav-bubble-icon">🏠</div>
+                        <div class="nav-label">Home</div>
+                    </div>
+                    <div class="nav-item" onclick="switchTab('bible')">
+                        <div class="nav-bubble-icon">📖</div>
+                        <div class="nav-label">Bible</div>
+                    </div>
+                    <div class="nav-item" onclick="switchTab('hymns')">
+                        <div class="nav-bubble-icon">🎵</div>
+                        <div class="nav-label">Hymns</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Bible Data - Accurate KJV John 3
+        const BIBLE_DATA = {
+            'John-3': {
+                en: [
+                    { num: 1, text: "There was a man of the Pharisees, named Nicodemus, a ruler of the Jews:" },
+                    { num: 2, text: "The same came to Jesus by night, and said unto him, Rabbi, we know that thou art a teacher come from God: for no man can do these miracles that thou doest, except God be with him." },
+                    { num: 3, text: "Jesus answered and said unto him, Verily, verily, I say unto thee, Except a man be born again, he cannot see the kingdom of God." },
+                    { num: 4, text: "Nicodemus saith unto him, How can a man be born when he is old? can he enter the second time into his mother's womb, and be born?" },
+                    { num: 5, text: "Jesus answered, Verily, verily, I say unto thee, Except a man be born of water and of the Spirit, he cannot enter into the kingdom of God." },
+                    { num: 6, text: "That which is born of the flesh is flesh; and that which is born of the Spirit is spirit." },
+                    { num: 7, text: "Marvel not that I said unto thee, Ye must be born again." },
+                    { num: 8, text: "The wind bloweth where it listeth, and thou hearest the sound thereof, but canst not tell whence it cometh, and whither it goeth: so is every one that is born of the Spirit." },
+                    { num: 9, text: "Nicodemus answered and said unto him, How can these things be?" },
+                    { num: 10, text: "Jesus answered and said unto him, Art thou a master of Israel, and knowest not these things?" },
+                    { num: 11, text: "Verily, verily, I say unto thee, We speak that we do know, and testify that we have seen; and ye receive not our witness." },
+                    { num: 12, text: "If I have told you earthly things, and ye believe not, how shall ye believe, if I tell you of heavenly things?" },
+                    { num: 13, text: "And no man hath ascended up to heaven, but he that came down from heaven, even the Son of man which is in heaven." },
+                    { num: 14, text: "And as Moses lifted up the serpent in the wilderness, even so must the Son of man be lifted up:" },
+                    { num: 15, text: "That whosoever believeth in him should not perish, but have eternal life." },
+                    { num: 16, text: "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life." },
+                    { num: 17, text: "For God sent not his Son into the world to condemn the world; but that the world through him might be saved." },
+                    { num: 18, text: "He that believeth on him is not condemned: but he that believeth not is condemned already, because he hath not believed in the name of the only begotten Son of God." },
+                    { num: 19, text: "And this is the condemnation, that light is come into the world, and men loved darkness rather than light, because their deeds were evil." },
+                    { num: 20, text: "For every one that doeth evil hateth the light, neither cometh to the light, lest his deeds should be reproved." },
+                    { num: 21, text: "But he that doeth truth cometh to the light, that his deeds may be made manifest, that they are wrought in God." }
+                ],
+                hi: [
+                    { num: 1, text: "फरीसियों में से निकुदेमुस नाम एक आदमी था, जो यहूदियों का सरदार था।" },
+                    { num: 2, text: "उसने रात को यीशु के पास आकर उससे कहा, 'हे रब्बी, हम जानते हैं कि तू परमेश्वर की ओर से गुरु होकर आया है; क्योंकि कोई इन चिह्नों को जो तू दिखाता है, नहीं दिखा सकता जब तक परमेश्वर उसके साथ न हो।'" },
+                    { num: 3, text: "यीशु ने उसको उत्तर दिया, 'मैं तुझ से सच सच कहता हूं, यदि कोई नये सिरे से न जन्मे तो परमेश्वर का राज्य देख नहीं सकता।'" },
+                    { num: 4, text: "निकुदेमुस ने उससे कहा, 'मनुष्य जब बूढ़ा हो गया, तो कैसे जन्म ले सकता है? क्या वह अपनी माता के गर्भ में दूसरी बार प्रवेश करके जन्म ले सकता है?'" },
+                    { num: 5, text: "यीशु ने उत्तर दिया, 'मैं तुझ से सच सच कहता हूं कि जब तक कोई मनुष्य जल और आत्मा से न जन्मे तो वह परमेश्वर के राज्य में प्रवेश नहीं कर सकता।'" },
+                    { num: 6, text: "जो शरीर से जन्मा है, वह शरीर है; और जो आत्मा से जन्मा है, वह आत्मा है।" },
+                    { num: 7, text: "आश्चर्य न कर कि मैं ने तुझ से कहा, 'तुम्हें नये सिरे से जन्म लेना अवश्य है।'" },
+                    { num: 8, text: "हवा जिधर चाहती है उधर चलती है, और तू उसका शब्द सुनता है, परन्तु नहीं जानता कि वह कहां से आती और कहां को जाती है। जो कोई आत्मा से जन्मा है वह ऐसा ही है।" },
+                    { num: 9, text: "निकुदेमुस ने उससे पूछा, 'ये बातें कैसे हो सकती हैं?'" },
+                    { num: 10, text: "यीशु ने उसको उत्तर दिया, 'तू इस्राएलियों का गुरु होकर भी इन बातों को नहीं समझता?'" },
+                    { num: 11, text: "मैं तुझ से सच सच कहता हूं कि हम जो जानते हैं, वह कहते हैं; और जो हम ने देखा है, उसकी गवाही देते हैं; और तुम हमारी गवाही ग्रहण नहीं करते।" },
+                    { num: 12, text: "जब मैं ने तुम से पृथ्वी की बातें कहीं, और तुम विश्वास नहीं करते, तो यदि मैं तुम से स्वर्ग की बातें कहूं, तो कैसे विश्वास करोगे?" },
+                    { num: 13, text: "कोई स्वर्ग पर नहीं चढ़ा, केवल वही जो स्वर्ग से उतरा, अर्थात् मनुष्य का पुत्र जो स्वर्ग में है।" },
+                    { num: 14, text: "और जैसे मूसा ने जंगल में सांप को ऊंचे पर चढ़ाया, वैसे ही अवश्य है कि मनुष्य का पुत्र भी ऊंचे पर चढ़ाया जाए;" },
+                    { num: 15, text: "ताकि जो कोई उस पर विश्वास करे, वह अनन्त जीवन पाए।" },
+                    { num: 16, text: "क्योंकि परमेश्वर ने जगत से ऐसा प्रेम रखा कि उसने अपना एकलौता पुत्र दे दिया, ताकि जो कोई उस पर विश्वास करे वह नष्ट न हो, परन्तु अनन्त जीवन पाए।" },
+                    { num: 17, text: "परमेश्वर ने अपने पुत्र को जगत में इसलिये नहीं भेजा कि जगत पर दण्ड की आज्ञा दे, परन्तु इसलिये कि जगत उसके द्वारा उद्धार पाए।" },
+                    { num: 18, text: "जो उस पर विश्वास करता है, उस पर दण्ड की आज्ञा नहीं होती; परन्तु जो उस पर विश्वास नहीं करता, वह दोषी ठहर चुका; इसलिये कि उसने परमेश्वर के एकलौते पुत्र के नाम पर विश्वास नहीं किया।" },
+                    { num: 19, text: "और दण्ड की आज्ञा का कारण यह है कि ज्योति जगत में आई है, और मनुष्यों ने अपने बुरे कामों के कारण ज्योति से अधिक अन्धकार को प्रिय जाना।" },
+                    { num: 20, text: "क्योंकि जो कोई बुराई करता है, वह ज्योति से बैर रखता है और ज्योति के निकट नहीं आता, ऐसा न हो कि उसके कामों पर दोष लगाया जाए।" },
+                    { num: 21, text: "परन्तु जो सत्य पर चलता है, वह ज्योति के निकट आता है, ताकि उसके काम प्रगट हों कि वे परमेश्वर की ओर से किए गए हैं।" }
+                ],
+                as: [
+                    { num: 1, text: "ফৰীচীসকলৰ মাজত নীকদীম নামৰ এজন মানুহ আছিল, তেওঁ যিহূদীসকলৰ এজন শাসক আছিল।" },
+                    { num: 2, text: "তেওঁ ৰাতি যীচুৰ ওচৰলৈ আহি ক'লে, 'ৰব্বি, আমি জানো যে আপুনি ঈশ্বৰৰ পৰা অহা এজন শিক্ষক; কিয়নো আপুনি যি চিন দেখুৱায়, সেইবোৰ কোনোৱে দেখুৱাব নোৱাৰে যদিহে ঈশ্বৰ তেওঁৰ সৈতে নাথাকে।'" },
+                    { num: 3, text: "যীচুৱে উত্তৰ দি তেওঁক ক'লে, 'মই তোমাক সঁচাকৈয়ে কওঁ, যদি কোনোৱে নতুনকৈ জন্ম নহয়, তেন্তে তেওঁ ঈশ্বৰৰ ৰাজ্য দেখিব নোৱাৰে।'" },
+                    { num: 4, text: "নীকদীমে তেওঁক ক'লে, 'এজন মানুহ বৃদ্ধ হ'লে কেনেকৈ জন্ম ল'ব পাৰে? তেওঁ দ্বিতীয়বাৰ মাকৰ গৰ্ভত প্ৰৱেশ কৰি জন্ম ল'ব পাৰে নেকি?'" },
+                    { num: 5, text: "যীচুৱে উত্তৰ দিলে, 'মই তোমাক সঁচাকৈয়ে কওঁ, যদি কোনোৱে পানী আৰু আত্মাৰ পৰা জন্ম নহয়, তেন্তে তেওঁ ঈশ্বৰৰ ৰাজ্যত প্ৰৱেশ কৰিব নোৱাৰে।'" },
+                    { num: 6, text: "যি শৰীৰৰ পৰা জন্মা, সি শৰীৰ; আৰু যি আত্মাৰ পৰা জন্মা, সি আত্মা।" },
+                    { num: 7, text: "মই তোমাক কৈছিলো, 'তোমালোকে নতুনকৈ জন্ম ল'ব লাগিব' - ইয়াত আচৰিত নহ'বা।" },
+                    { num: 8, text: "বতাহ য'লৈ ইচ্ছা কৰে তালৈ বলে, আৰু তুমি তাৰ শব্দ শুনা, কিন্তু ক'ৰ পৰা আহে আৰু ক'লৈ যায় নাজানা। আত্মাৰ পৰা জন্মা প্ৰতিজনো তেনেকুৱা।" },
+                    { num: 9, text: "নীকদীমে উত্তৰ দি তেওঁক ক'লে, 'এইবোৰ কেনেকৈ হ'ব পাৰে?'" },
+                    { num: 10, text: "যীচুৱে তেওঁক উত্তৰ দিলে, 'তুমি ইস্ৰায়েলৰ শিক্ষক, তথাপি এইবোৰ নাজানা নেকি?'" },
+                    { num: 11, text: "মই তোমাক সঁচাকৈয়ে কওঁ, আমি যি জানো সেই কওঁ, আৰু যি দেখিছো তাৰ সাক্ষ্য দিওঁ; কিন্তু তোমালোকে আমাৰ সাক্ষ্য গ্ৰহণ নকৰা।" },
+                    { num: 12, text: "মই তোমালোকক পাৰ্থিৱ কথা ক'লোঁ আৰু তোমালোকে বিশ্বাস নকৰা, তেন্তে যদি মই স্বৰ্গীয় কথা কওঁ, তেন্তে কেনেকৈ বিশ্বাস কৰিবা?" },
+                    { num: 13, text: "কোনোৱে স্বৰ্গলৈ উঠা নাই, কেৱল তেওঁহে যি স্বৰ্গৰ পৰা নামি আহিছে, অৰ্থাৎ মনুষ্য পুত্ৰ যি স্বৰ্গত আছে।" },
+                    { num: 14, text: "আৰু মোচিয়ে যেনেকৈ মৰুভূমিত সাপক ওপৰলৈ তুলিছিল, তেনেকৈয়ে মনুষ্য পুত্ৰকো ওপৰলৈ তোলা হ'ব লাগিব;" },
+                    { num: 15, text: "যাতে যি কোনোৱে তেওঁত বিশ্বাস কৰে, তেওঁ অনন্ত জীৱন পায়।" },
+                    { num: 16, text: "কিয়নো ঈশ্বৰে জগতক ইমান প্ৰেম কৰিলে যে তেওঁ নিজৰ একমাত্ৰ পুত্ৰক দান কৰিলে, যাতে যি কোনোৱে তেওঁত বিশ্বাস কৰে, তেওঁ বিনষ্ট নহয়, কিন্তু অনন্ত জীৱন পায়।" },
+                    { num: 17, text: "কিয়নো ঈশ্বৰে নিজৰ পুত্ৰক জগতলৈ পঠিওৱা নাছিল জগতক দোষী কৰিবলৈ, কিন্তু জগত তেওঁৰ যোগেদি পৰিত্ৰাণ পাবলৈ।" },
+                    { num: 18, text: "যি জনে তেওঁত বিশ্বাস কৰে, তেওঁ দোষী নহয়; কিন্তু যি জনে বিশ্বাস নকৰে, তেওঁ ইতিমধ্যে দোষী হৈছে, কিয়নো তেওঁ ঈশ্বৰৰ একমাত্ৰ পুত্ৰৰ নামত বিশ্বাস কৰা নাই।" },
+                    { num: 19, text: "আৰু এই দোষ এইবাবে যে পোহৰ জগতলৈ আহিছে, কিন্তু মানুহে পোহৰতকৈ আন্ধাৰ বেছি ভাল পালে, কাৰণ তেওঁলোকৰ কাৰ্য বেয়া আছিল।" },
+                    { num: 20, text: "কিয়নো যি কোনোৱে বেয়া কৰে, তেওঁ পোহৰক ঘৃণা কৰে, আৰু পোহৰলৈ নাহে, যাতে তেওঁৰ কাৰ্যবোৰ প্ৰকাশ নহয়।" },
+                    { num: 21, text: "কিন্তু যি জনে সত্যত চলে, তেওঁ পোহৰলৈ আহে, যাতে তেওঁৰ কাৰ্যবোৰ প্ৰকাশ হয় যে সেইবোৰ ঈশ্বৰৰ যোগেদি কৰা হৈছে।" }
+                ]
+            },
+            'Psalms-23': {
+                en: [
+                    { num: 1, text: "The LORD is my shepherd; I shall not want." },
+                    { num: 2, text: "He maketh me to lie down in green pastures: he leadeth me beside the still waters." },
+                    { num: 3, text: "He restoreth my soul: he leadeth me in the paths of righteousness for his name's sake." },
+                    { num: 4, text: "Yea, though I walk through the valley of the shadow of death, I will fear no evil: for thou art with me; thy rod and thy staff they comfort me." },
+                    { num: 5, text: "Thou preparest a table before me in the presence of mine enemies: thou anointest my head with oil; my cup runneth over." },
+                    { num: 6, text: "Surely goodness and mercy shall follow me all the days of my life: and I will dwell in the house of the LORD for ever." }
+                ],
+                hi: [
+                    { num: 1, text: "यहोवा मेरा चरवाहा है; मुझे किसी वस्तु की घटी न होगी।" },
+                    { num: 2, text: "वह मुझे हरी हरी चराइयों में बैठाता है; और ठहरे हुए जल के पास ले चलता है।" },
+                    { num: 3, text: "वह मेरे प्राण को बहाल करता है; वह अपने नाम के निमित्त धर्म के मार्गों में मेरी अगुवाई करता है।" },
+                    { num: 4, text: "चाहे मैं घोर अन्धकार से भरी हुई तराई में होकर चलूं, तौभी मैं किसी आपत्ति से न डरूंगा क्योंकि तू मेरे साथ रहता है; तेरे सोटे और तेरी लाठी से मुझे शान्ति मिलती है।" },
+                    { num: 5, text: "तू मेरे शत्रुओं के सामने मेरे आगे मेज बिछाता है; तू ने मेरे सिर पर तेल मला है, मेरा कटोरा लबालब भर गया है।" },
+                    { num: 6, text: "निश्चय मेरे जीवन भर कल्याण और करुणा मेरे साथ साथ बनी रहेंगी; और मैं सर्वदा यहोवा के भवन में वास करूंगा।" }
+                ],
+                as: [
+                    { num: 1, text: "যিহোৱা মোৰ ৰখীয়া; মোৰ কোনো অভাৱ নহ'ব।" },
+                    { num: 2, text: "তেওঁ মোক সেউজীয়া চৰণীয়া ঠাইত শুৱায়; তেওঁ মোক শান্ত জলৰ দাঁতিলৈ লৈ যায়।" },
+                    { num: 3, text: "তেওঁ মোৰ আত্মা সতেজ কৰে; তেওঁ নিজৰ নামৰ বাবে মোক ধাৰ্মিকতাৰ পথত লৈ যায়।" },
+                    { num: 4, text: "যদিও মই মৃত্যুৰ ছাঁৰ উপত্যকাৰ মাজেদি যাওঁ, মই কোনো অনিষ্টৰ ভয় নকৰিম; কিয়নো তুমি মোৰ সৈতে আছা; তোমাৰ দণ্ড আৰু তোমাৰ লাখুটিয়ে মোক সান্ত্বনা দিয়ে।" },
+                    { num: 5, text: "তুমি মোৰ শত্ৰুবোৰৰ সন্মুখত মোৰ বাবে মেজ প্ৰস্তুত কৰা; তুমি মোৰ মূৰত তেল ঢালি দিয়া; মোৰ পিয়লা উপচি পৰে।" },
+                    { num: 6, text: "নিশ্চয়ে মঙ্গল আৰু দয়াই মোৰ জীৱনৰ সকলো দিন মোৰ পাছে পাছে যাব; আৰু মই চিৰকাল যিহোৱাৰ গৃহত বাস কৰিম।" }
+                ]
+            }
+        };
+
+        // Hymns Data
+        const HYMNS_DATA = {
+            'Amazing Grace': {
+                author: 'John Newton (1779)',
+                verses: [
+                    {
+                        num: 1,
+                        text: "Amazing grace! How sweet the sound\nThat saved a wretch like me!\nI once was lost, but now am found;\nWas blind, but now I see."
+                    },
+                    {
+                        num: 2,
+                        text: "'Twas grace that taught my heart to fear,\nAnd grace my fears relieved;\nHow precious did that grace appear\nThe hour I first believed."
+                    },
+                    {
+                        num: 3,
+                        text: "Through many dangers, toils, and snares,\nI have already come;\n'Tis grace hath brought me safe thus far,\nAnd grace will lead me home."
+                    },
+                    {
+                        num: 4,
+                        text: "The Lord has promised good to me,\nHis Word my hope secures;\nHe will my Shield and Portion be,\nAs long as life endures."
+                    },
+                    {
+                        num: 5,
+                        text: "When we've been there ten thousand years,\nBright shining as the sun,\nWe've no less days to sing God's praise\nThan when we'd first begun."
+                    }
+                ]
+            },
+            'How Great Thou Art': {
+                author: 'Carl Boberg (1885)',
+                verses: [
+                    {
+                        num: 1,
+                        text: "O Lord my God, when I in awesome wonder\nConsider all the worlds Thy hands have made,\nI see the stars, I hear the rolling thunder,\nThy power throughout the universe displayed."
+                    },
+                    {
+                        num: 'Chorus',
+                        text: "Then sings my soul, my Savior God, to Thee,\nHow great Thou art! How great Thou art!\nThen sings my soul, my Savior God, to Thee,\nHow great Thou art! How great Thou art!"
+                    },
+                    {
+                        num: 2,
+                        text: "When through the woods and forest glades I wander\nAnd hear the birds sing sweetly in the trees,\nWhen I look down from lofty mountain grandeur\nAnd hear the brook and feel the gentle breeze."
+                    },
+                    {
+                        num: 3,
+                        text: "And when I think that God, His Son not sparing,\nSent Him to die, I scarce can take it in;\nThat on the Cross, my burden gladly bearing,\nHe bled and died to take away my sin."
+                    },
+                    {
+                        num: 4,
+                        text: "When Christ shall come with shout of acclamation\nAnd take me home, what joy shall fill my heart!\nThen I shall bow in humble adoration,\nAnd there proclaim, my God, how great Thou art!"
+                    }
+                ]
+            },
+            'Holy Holy Holy': {
+                author: 'Reginald Heber (1826)',
+                verses: [
+                    {
+                        num: 1,
+                        text: "Holy, holy, holy! Lord God Almighty!\nEarly in the morning our song shall rise to Thee;\nHoly, holy, holy! Merciful and mighty!\nGod in three Persons, blessèd Trinity!"
+                    },
+                    {
+                        num: 2,
+                        text: "Holy, holy, holy! All the saints adore Thee,\nCasting down their golden crowns around the glassy sea;\nCherubim and seraphim falling down before Thee,\nWhich wert, and art, and evermore shalt be."
+                    },
+                    {
+                        num: 3,
+                        text: "Holy, holy, holy! Though the darkness hide Thee,\nThough the eye of sinful man Thy glory may not see,\nOnly Thou art holy; there is none beside Thee\nPerfect in power, in love, and purity."
+                    },
+                    {
+                        num: 4,
+                        text: "Holy, holy, holy! Lord God Almighty!\nAll Thy works shall praise Thy name in earth and sky and sea;\nHoly, holy, holy! Merciful and mighty!\nGod in three Persons, blessèd Trinity!"
+                    }
+                ]
+            }
+        };
+
+        let currentBook = null;
+        let currentChapter = null;
+        let currentLanguage = 'en';
+        let currentViewMode = 'verse';
+        let bookmarkedVerses = new Set();
+        let highlightedVerses = new Set();
+
+        function showBibleBooks() {
+            hideAllScreens();
+            document.getElementById('bible-books-screen').classList.add('active');
+            scrollToTop();
+        }
+
+        function showChapters(bookName, totalChapters) {
+            currentBook = { name: bookName, chapters: totalChapters };
+            
+            document.getElementById('chapterBookName').textContent = bookName;
+            document.getElementById('chapterCount').textContent = `${totalChapters} Chapters`;
+
+            const chaptersGrid = document.getElementById('chaptersGrid');
+            chaptersGrid.innerHTML = '';
+
+            for (let i = 1; i <= Math.min(totalChapters, 50); i++) {
+                const btn = document.createElement('button');
+                btn.className = 'chapter-btn';
+                btn.textContent = i;
+                btn.onclick = () => showVerses(bookName, i);
+                chaptersGrid.appendChild(btn);
+            }
+
+            hideAllScreens();
+            document.getElementById('bible-chapters-screen').classList.add('active');
+            scrollToTop();
+        }
+
+        function showVerses(bookName, chapterNum) {
+            currentChapter = chapterNum;
+            
+            document.getElementById('verseBookName').textContent = bookName;
+            document.getElementById('verseChapterNum').textContent = `Chapter ${chapterNum}`;
+
+            const key = `${bookName}-${chapterNum}`;
+            const verses = BIBLE_DATA[key] ? BIBLE_DATA[key][currentLanguage] : [];
+
+            renderVerses(verses);
+
+            hideAllScreens();
+            document.getElementById('bible-verses-screen').classList.add('active');
+            scrollToTop();
+        }
+
+        function renderVerses(verses) {
+            const container = document.getElementById('versesContainer');
+            container.className = currentViewMode === 'paragraph' ? 'verse-container paragraph-view' : 'verse-container';
+            
+            container.innerHTML = verses.map((verse, idx) => {
+                const verseId = `${currentBook.name}-${currentChapter}-${verse.num}`;
+                const isBookmarked = bookmarkedVerses.has(verseId);
+                const isHighlighted = highlightedVerses.has(verseId);
+                
+                return `
+                    <div class="verse-item ${isHighlighted ? 'highlighted' : ''} ${isBookmarked ? 'bookmarked' : ''}" data-verse-id="${verseId}">
+                        <span class="verse-number">${verse.num}</span>
+                        <span class="verse-text">${verse.text}</span>
+                        <div class="verse-actions">
+                            <button class="verse-action-btn ${isBookmarked ? 'active' : ''}" onclick="toggleBookmark('${verseId}')">
+                                🔖 Bookmark
+                            </button>
+                            <button class="verse-action-btn ${isHighlighted ? 'active' : ''}" onclick="toggleHighlight('${verseId}')">
+                                💛 Highlight
+                            </button>
+                            <button class="verse-action-btn" onclick="shareVerse('${verse.num}', \`${verse.text}\`)">
+                                📤 Share
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleView(mode) {
+            currentViewMode = mode;
+            
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            const key = `${currentBook.name}-${currentChapter}`;
+            const verses = BIBLE_DATA[key] ? BIBLE_DATA[key][currentLanguage] : [];
+            renderVerses(verses);
+        }
+
+        function toggleBookmark(verseId) {
+            if (bookmarkedVerses.has(verseId)) {
+                bookmarkedVerses.delete(verseId);
+            } else {
+                bookmarkedVerses.add(verseId);
+            }
+            
+            const key = `${currentBook.name}-${currentChapter}`;
+            const verses = BIBLE_DATA[key] ? BIBLE_DATA[key][currentLanguage] : [];
+            renderVerses(verses);
+        }
+
+        function toggleHighlight(verseId) {
+            if (highlightedVerses.has(verseId)) {
+                highlightedVerses.delete(verseId);
+            } else {
+                highlightedVerses.add(verseId);
+            }
+            
+            const key = `${currentBook.name}-${currentChapter}`;
+            const verses = BIBLE_DATA[key] ? BIBLE_DATA[key][currentLanguage] : [];
+            renderVerses(verses);
+        }
+
+        function shareVerse(verseNum, verseText) {
+            const shareText = `"${verseText}" - ${currentBook.name} ${currentChapter}:${verseNum}\n\nShared via HYMNORA App`;
+            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+            
+            alert('📤 Opening WhatsApp to share this verse!');
+            window.open(whatsappUrl, '_blank');
+        }
+
+        function showHymns() {
+            hideAllScreens();
+            document.getElementById('hymns-screen').classList.add('active');
+            scrollToTop();
+        }
+
+        function showHymnLyrics(hymnName) {
+            const hymn = HYMNS_DATA[hymnName];
+            
+            document.getElementById('hymnTitle').textContent = hymnName;
+            document.getElementById('hymnAuthor').textContent = hymn.author;
+            
+            const lyricsHTML = hymn.verses.map(verse => `
+                <div class="hymn-verse">
+                    <div class="hymn-verse-num">${typeof verse.num === 'number' ? 'Verse ' + verse.num : verse.num}</div>
+                    <div>${verse.text}</div>
+                </div>
+            `).join('');
+            
+            document.getElementById('hymnLyricsContent').innerHTML = lyricsHTML;
+            
+            hideAllScreens();
+            document.getElementById('hymn-lyrics-screen').classList.add('active');
+            scrollToTop();
+        }
+
+        function backToChapters() {
+            if (currentBook) {
+                showChapters(currentBook.name, currentBook.chapters);
+            }
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            event.currentTarget.classList.add('active');
+
+            if (tab === 'home') {
+                hideAllScreens();
+                document.getElementById('home-screen').classList.add('active');
+            } else if (tab === 'bible') {
+                showBibleBooks();
+            } else if (tab === 'hymns') {
+                showHymns();
+            }
+
+            scrollToTop();
+        }
+
+        function hideAllScreens() {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+        }
+
+        function scrollToTop() {
+            document.getElementById('screenContent').scrollTop = 0;
+        }
+    </script>
+</body>
+</html>
