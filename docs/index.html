@@ -6,6 +6,9 @@
     <title>HYMNORA - Premium Bible</title>
     <style>
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+/* Stop text getting selected/copied when tapping buttons & cards */
+.nav, .nav-item, .glass-btn, .glass-card, .book-card, .chapter-btn, .toggle-btn, .theme-card, .language-card, .hymn-card, .stat-card, .header { -webkit-user-select: none; -ms-user-select: none; user-select: none; }
+.nav-item, .glass-card, .book-card, .theme-card, .language-card, .hymn-card { cursor: pointer; }
 html, body { width: 100%; height: 100%; overflow: hidden; position: fixed; }
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); position: relative; }
 
@@ -96,8 +99,12 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .nav-item:active { transform: scale(0.95); }
 
 /* Glowing Premium Icons */
-.nav-icon { font-size: 14px; filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.3)) drop-shadow(0 0 8px rgba(255, 255, 255, 0.25)); transition: all 0.3s ease; }
+.nav-icon { font-size: 14px; line-height: 1; filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.3)) drop-shadow(0 0 8px rgba(255, 255, 255, 0.25)); transition: all 0.3s ease; }
 .nav-item.active .nav-icon { font-size: 16px; filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 12px rgba(255, 255, 255, 0.4)); }
+
+/* Profile photo inside nav */
+.nav-profile-img { display: none; width: 18px; height: 18px; border-radius: 50%; object-fit: cover; border: 1.5px solid rgba(255, 255, 255, 0.7); box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3), 0 0 8px rgba(255, 255, 255, 0.35); vertical-align: middle; }
+.nav-item.active .nav-profile-img { width: 22px; height: 22px; border-color: rgba(255, 255, 255, 0.95); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35), 0 0 12px rgba(255, 255, 255, 0.5); }
 
 .hymn-card { background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.1)); backdrop-filter: blur(15px); border: 1.5px solid rgba(255, 255, 255, 0.3); border-radius: 16px; padding: 16px; margin-bottom: 12px; cursor: pointer; transition: all 0.3s; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(255, 255, 255, 0.1) inset; }
 .hymn-title { font-size: 16px; font-weight: 700; color: white; margin-bottom: 6px; text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); }
@@ -490,9 +497,9 @@ body.theme-light .header p, body.theme-light .book-info, body.theme-light .stat-
             <div class="nav-item" onclick="showTab('hymns')"><div class="nav-icon">🎵</div><div>Hymns</div></div>
             <div class="nav-item" onclick="showTab('favorites')"><div class="nav-icon">❤️</div><div>Saved</div></div>
             <div class="nav-item" onclick="showTab('profile')">
-                <div class="nav-icon" style="position: relative;">
+                <div class="nav-icon">
                     <span id="navProfileIcon">👤</span>
-                    <img id="navProfileImg" src="" alt="Profile" style="width: 20px; height: 20px; border-radius: 50%; object-fit: cover; display: none; border: 1px solid rgba(255, 255, 255, 0.5);">
+                    <img id="navProfileImg" class="nav-profile-img" alt="" onerror="this.style.display='none';document.getElementById('navProfileIcon').style.display='inline-block';">
                 </div>
                 <div>Profile</div>
             </div>
@@ -580,7 +587,7 @@ const TRANSLATIONS={
         bible:'বাইবেল',
         hymns:'স্তুতি',
         saved:'সংৰক্ষিত',
-        profile:'প্ৰ'ফাইল',
+        profile:"প্ৰ'ফাইল",
         verseOfDay:'আজিৰ পদ',
         startReading:'পঢ়া আৰম্ভ কৰক',
         exploreHymns:'স্তুতি চাওক',
@@ -592,13 +599,13 @@ const TRANSLATIONS={
         paragraph:'অনুচ্ছেদ',
         favorites:'প্ৰিয়',
         bookmarks:'বুকমাৰ্ক',
-        editProfile:'প্ৰ'ফাইল সম্পাদনা কৰক',
+        editProfile:"প্ৰ'ফাইল সম্পাদনা কৰক",
         settings:'ছেটিংছ',
         choosetheme:'থিম বাছনি কৰক',
         chooseLanguage:'ভাষা বাছনি কৰক',
         name:'নাম',
         bio:'জীৱনী',
-        saveProfile:'প্ৰ'ফাইল সংৰক্ষণ কৰক',
+        saveProfile:"প্ৰ'ফাইল সংৰক্ষণ কৰক",
         loading:'লোড হৈ আছে...',
         searchBooks:'কিতাপ সন্ধান কৰক...'
     }
@@ -612,8 +619,6 @@ const BIBLE_APIS={
 };
 
 async function loadBibleData(){if(bibleData)return bibleData;try{const apiUrl=BIBLE_APIS[currentLanguage]||BIBLE_APIS.english;const urls=[apiUrl];for(const url of urls){try{const r=await fetch(url);if(r.ok){bibleData=await r.json();return bibleData;}}catch(e){continue;}}return null;}catch(e){return null;}}
-
-function init(){renderBooks();renderHymns();renderFavorites();loadBibleData();loadProfile();applyTheme();updateNavProfilePic();}
 
 // Profile Functions
 function loadProfile(){
@@ -675,6 +680,9 @@ function showSettings(){
     updateLanguageIndicator();
 }
 
+// Theme file map (exact filenames, avoids 404 guessing)
+const THEME_FILES={theme:'theme.png',theme1:'theme1.jpg',theme2:'theme2.jpg',theme3:'theme3.png',theme4:'theme4.png',theme5:'theme5.png',theme6:'theme6.png'};
+
 // Theme Functions
 function applyTheme(){
     document.body.className='';
@@ -684,9 +692,8 @@ function applyTheme(){
         document.body.style.background='linear-gradient(135deg, #1a1a1a 0%, #000000 100%)';
         document.body.classList.add('theme-dark');
     }else{
-        const themeFile=currentTheme+'.jpg';
-        const themePng=currentTheme+'.png';
-        document.body.style.background=`url('${themeFile}'), url('${themePng}')`;
+        const file=THEME_FILES[currentTheme]||THEME_FILES.theme;
+        document.body.style.background=`url('${file}')`;
         document.body.style.backgroundSize='cover';
         document.body.style.backgroundPosition='center';
         document.body.style.backgroundRepeat='no-repeat';
@@ -775,13 +782,15 @@ function showTab(tab){
 function updateNavProfilePic(){
     const navProfileIcon=document.getElementById('navProfileIcon');
     const navProfileImg=document.getElementById('navProfileImg');
-    if(profileData.image){
+    if(!navProfileIcon||!navProfileImg)return;
+    if(profileData&&profileData.image){
         navProfileImg.src=profileData.image;
         navProfileImg.style.display='block';
         navProfileIcon.style.display='none';
     }else{
+        navProfileImg.removeAttribute('src');
         navProfileImg.style.display='none';
-        navProfileIcon.style.display='block';
+        navProfileIcon.style.display='inline-block';
     }
 }
 
