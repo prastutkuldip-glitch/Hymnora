@@ -22,9 +22,9 @@ Hymnora embodies the intersection of timeless faith and modern design. The visua
 
 ---
 
-## Color Palette
+## Color Palette v2.0 (Blue, Black, White)
 
-### Primary Colors
+### Primary Blues (30% Usage)
 
 ```css
 /* Pure White & Soft Whites */

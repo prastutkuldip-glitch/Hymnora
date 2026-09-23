@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HYMNORA v2 - Premium 3D Glassmorphism App Preview</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #FFFFFF 0%, #F0F7FF 50%, #E3F2FD 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .preview-container {
+            max-width: 1400px;
+            width: 100%;
+            display: flex;
+            gap: 60px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* Info Panel */
+        .info-panel {
+            flex: 1;
+            min-width: 320px;
+            max-width: 450px;
+        }
+
+        .logo {
+            font-size: 48px;
+            font-weight: 800;
+            letter-spacing: 4px;
+            background: linear-gradient(135deg, #0066FF, #0052CC);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+        }
+
+        .tagline {
+            font-size: 20px;
+            color: #0066FF;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .version-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #0066FF, #0052CC);
+            color: white;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 16px rgba(0, 102, 255, 0.3);
+        }
+
+        .description {
+            font-size: 16px;
+            color: #1A1A1A;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-bottom: 28px;
+        }
+
+        .features-list li {
+            padding: 10px 0;
+            color: #000000;
+            font-size: 15px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .features-list li:before {
+            content: "✓";
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #0066FF, #0052CC);
+            color: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .language-switcher {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 102, 255, 0.2);
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 24px;
+        }
+
+        .language-switcher h4 {
+            color: #0066FF;
+            font-size: 15px;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .language-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .lang-btn {
+            flex: 1;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0, 102, 255, 0.15);
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #4B5563;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .lang-btn:hover {
+            background: rgba(0, 102, 255, 0.08);
+            border-color: rgba(0, 102, 255, 0.3);
+        }
+
+        .lang-btn.active {
+            background: linear-gradient(135deg, #0066FF, #0052CC);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
+        }
+
+        /* Phone Frame - Premium 3D */
+        .phone-frame {
+            width: 385px;
+            height: 820px;
+            background: linear-gradient(135deg, #1A1A1A, #000000);
+            border-radius: 54px;
+            padding: 14px;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .phone-notch {
+            position: absolute;
+            top: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 160px;
+            height: 32px;
+            background: #000000;
+            border-radius: 0 0 24px 24px;
+            z-index: 20;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .phone-camera {
+            position: absolute;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 10px;
+            background: #1A1A1A;
+            border-radius: 50%;
+            border: 1px solid #333;
+            z-index: 21;
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #FFFFFF 0%, #FAFCFF 50%, #F0F7FF 100%);
+            border-radius: 46px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Status Bar - 3D Glass */
+        .status-bar {
+            height: 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            padding-top: 10px;
+            font-size: 14px;
+            color: #000000;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Screen Content */
+        .screen-content {
+            height: calc(100% - 48px - 90px);
+            overflow-y: auto;
+            padding: 0 0 20px 0;
+            scrollbar-width: none;
+        }
+
+        .screen-content::-webkit-scrollbar {
+            display: none;
+        }
+
+        .screen {
+            display: none;
+            animation: fadeInUp 0.4s ease;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0);
+            }
+        }
+
+        /* Home Screen - Premium 3D */
+        .greeting-section {
+            padding: 24px;
+        }
+
+        .greeting-text {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #000000, #1A1A1A);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 6px;
+        }
+
+        .greeting-subtext {
+            font-size: 15px;
+            color: #4B5563;
+            font-weight: 500;
+        }
+
+        /* Premium 3D Glass Card */
+        .glass-card-3d {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 24px;
+            padding: 24px;
+            margin: 16px 20px;
+            box-shadow: 
+                0 4px 16px rgba(0, 102, 255, 0.06),
+                0 8px 32px rgba(0, 102, 255, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card-3d::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .glass-card-3d:hover::before {
+            left: 100%;
+        }
+
+        .card-title-3d {
+            font-size: 17px;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .verse-text-3d {
+            font-size: 15px;
+            color: #1A1A1A;
+            line-height: 1.7;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        .verse-reference {
+            font-size: 14px;
+            color: #0066FF;
+            font-weight: 700;
+        }
+
+        /* Quick Access Grid - 3D */
+        .quick-access-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            margin: 20px 20px;
+        }
+
+        .quick-access-item-3d {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 102, 255, 0.15);
+            border-radius: 20px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+            box-shadow: 
+                0 4px 12px rgba(0, 102, 255, 0.06),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+
+        .quick-access-item-3d:active {
+            transform: scale(0.95) translateY(2px);
+            box-shadow: 
+                0 2px 8px rgba(0, 102, 255, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+
+        .quick-access-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 2px 4px rgba(0, 102, 255, 0.2));
+        }
+
+        .quick-access-label {
+            font-size: 14px;
+            font-weight: 700;
+            color: #000000;
+        }
+
+        /* Section Header */
+        .section-header {
+            font-size: 20px;
+            font-weight: 800;
+            color: #000000;
+            margin: 24px 20px 14px 20px;
+        }
+
+        /* Search Bar - 3D Glass */
+        .search-bar-3d {
+            margin: 16px 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 102, 255, 0.15);
+            border-radius: 20px;
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 
+                0 4px 16px rgba(0, 102, 255, 0.06),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+
+        .search-bar-3d input {
+            flex: 1;
+            border: none;
+            background: none;
+            outline: none;
+            font-size: 15px;
+            color: #000000;
+            font-weight: 500;
+        }
+
+        .search-bar-3d input::placeholder {
+            color: #9CA3AF;
+        }
+
+        /* Filter Chips - 3D */
+        .filter-chips {
+            display: flex;
+            gap: 10px;
+            padding: 0 20px;
+            margin-bottom: 18px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .filter-chips::-webkit-scrollbar {
+            display: none;
+        }
+
+        .chip-3d {
+            padding: 10px 18px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 102, 255, 0.15);
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #4B5563;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 102, 255, 0.04);
+        }
+
+        .chip-3d.active {
+            background: linear-gradient(135deg, #0066FF, #0052CC);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 4px 16px rgba(0, 102, 255, 0.3);
+        }
+
+        /* Books Grid - 3D */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            padding: 0 20px;
+        }
+
+        .book-card-3d {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 102, 255, 0.15);
+            border-radius: 18px;
+            padding: 18px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 102, 255, 0.06);
+        }
+
+        .book-card-3d:active {
+            transform: scale(0.96);
+        }
+
+        .book-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 4px;
+        }
+
+        .book-chapters {
+            font-size: 13px;
+            color: #6B7280;
+            font-weight: 500;
+        }
+
+        /* Create Button - Premium 3D */
+        .create-button-3d {
+            margin: 16px 20px;
+            background: linear-gradient(135deg, #0066FF, #0052CC);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 18px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 
+                0 4px 16px rgba(0, 102, 255, 0.3),
+                0 8px 24px rgba(0, 102, 255, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .create-button-3d:active {
+            transform: translateY(2px) scale(0.98);
+            box-shadow: 
+                0 2px 12px rgba(0, 102, 255, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        /* Hymn Card - 3D */
+        .hymn-card-3d {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 102, 255, 0.12);
+            border-radius: 20px;
+            padding: 18px;
+            margin: 12px 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 102, 255, 0.06);
+        }
+
+        .hymn-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 10px;
+        }
+
+        .hymn-number {
+            font-size: 13px;
+            font-weight: 700;
+            color: #0066FF;
+        }
+
+        .hymn-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 6px;
+        }
+
+        .hymn-preview {
+            font-size: 14px;
+            color: #4B5563;
+            line-height: 1.5;
+        }
+
+        /* Profile Screen - 3D */
+        .profile-header {
+            text-align: center;
+            padding: 24px;
+        }
+
+        .profile-avatar-3d {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, #0066FF, #0052CC);
+            border-radius: 45px;
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: white;
+            box-shadow: 
+                0 8px 24px rgba(0, 102, 255, 0.3),
+                inset 0 2px 0 rgba(255, 255, 255, 0.3);
+            border: 3px solid rgba(255, 255, 255, 0.9);
+        }
+
+        .profile-name {
+            font-size: 24px;
+            font-weight: 800;
+            color: #000000;
+            margin-bottom: 6px;
+        }
+
+        .profile-email {
+            font-size: 14px;
+            color: #6B7280;
+        }
+
+        .premium-badge-3d {
+            display: inline-block;
+            padding: 8px 18px;
+            background: linear-gradient(135deg, #FFD700, #FFC107);
+            border-radius: 24px;
+            font-size: 13px;
+            font-weight: 800;
+            color: #000000;
+            margin-top: 12px;
+            box-shadow: 0 4px 16px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Stats Grid - 3D */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 16px 20px;
+        }
+
+        .stat-card-3d {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 102, 255, 0.15);
+            border-radius: 18px;
+            padding: 18px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 102, 255, 0.06);
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #0066FF, #0052CC);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #6B7280;
+            font-weight: 600;
+        }
+
+        /* Menu List - 3D */
+        .menu-list {
+            padding: 0 20px;
+        }
+
+        .menu-item-3d {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 102, 255, 0.12);
+            border-radius: 18px;
+            padding: 18px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 102, 255, 0.04);
+            transition: all 0.2s ease;
+        }
+
+        .menu-item-3d:active {
+            transform: scale(0.98);
+        }
+
+        .menu-icon {
+            font-size: 22px;
+        }
+
+        .menu-text {
+            flex: 1;
+            font-size: 15px;
+            font-weight: 600;
+            color: #000000;
+        }
+
+        /* Bottom Navigation - 3D Floating */
+        .bottom-nav-3d {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 90px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(30px) saturate(180%);
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 34px 34px 46px 46px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 12px 12px 28px 12px;
+            box-shadow: 
+                0 -8px 32px rgba(0, 102, 255, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        }
+
+        .nav-item-3d {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            padding: 10px 14px;
+            border-radius: 18px;
+            position: relative;
+        }
+
+        .nav-item-3d:active {
+            transform: scale(0.92);
+        }
+
+        .nav-item-3d.active {
+            background: rgba(0, 102, 255, 0.1);
+        }
+
+        .nav-item-3d.active::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 4px;
+            background: linear-gradient(135deg, #0066FF, #0052CC);
+            border-radius: 2px;
+        }
+
+        .nav-icon-3d {
+            font-size: 26px;
+            transition: all 0.2s ease;
+            filter: drop-shadow(0 2px 4px rgba(0, 102, 255, 0.15));
+        }
+
+        .nav-item-3d.active .nav-icon-3d {
+            transform: translateY(-2px);
+        }
+
+        .nav-label {
+            font-size: 11px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item-3d.active .nav-label {
+            color: #0066FF;
+        }
+
+        .nav-item-3d:not(.active) .nav-label {
+            color: #9CA3AF;
+        }
+
+        /* Language Indicator */
+        .lang-indicator {
+            position: absolute;
+            top: 70px;
+            right: 24px;
+            padding: 6px 12px;
+            background: rgba(0, 102, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 102, 255, 0.2);
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #0066FF;
+            z-index: 10;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .preview-container {
+                flex-direction: column;
+            }
+
+            .info-panel {
+                max-width: 100%;
+                text-align: center;
+            }
+
+            .phone-frame {
+                width: min(385px, 100%);
+                height: min(820px, 90vh);
+            }
+        }
+
+        /* Loading Animation */
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="preview-container">
+        <!-- Info Panel -->
+        <div class="info-panel">
+            <div class="logo">HYMNORA</div>
+            <div class="tagline">Faith. Scripture. Worship.</div>
+            <div class="version-badge">✨ v2.0 PREMIUM 3D</div>
+            
+            <p class="description">
+                Experience premium 3D glassmorphism design with blue, black & white theme. 
+                Full multi-language support with complete Bible in English, Hindi, and Assamese.
+            </p>
+            
+            <ul class="features-list">
+                <li>Premium 3D Glassmorphism UI</li>
+                <li>Blue, Black & White Theme</li>
+                <li>3 Languages (EN/HI/AS)</li>
+                <li>Full Bible (66 Books)</li>
+                <li>20+ Premium 3D Icons</li>
+                <li>Interactive Navigation</li>
+            </ul>
+
+            <div class="language-switcher">
+                <h4>🌐 Switch Language / भाषा / ভাষা</h4>
+                <div class="language-buttons">
+                    <button class="lang-btn active" onclick="switchLanguage('en')">🇬🇧 English</button>
+                    <button class="lang-btn" onclick="switchLanguage('hi')">🇮🇳 हिंदी</button>
+                    <button class="lang-btn" onclick="switchLanguage('as')">🇮🇳 অসমীয়া</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Phone Frame -->
+        <div class="phone-frame">
+            <div class="phone-notch"></div>
+            <div class="phone-camera"></div>
+            
+            <div class="phone-screen">
+                <!-- Language Indicator -->
+                <div class="lang-indicator" id="langIndicator">EN</div>
+
+                <!-- Status Bar -->
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <span>📶 5G 📱 🔋</span>
+                </div>
+
+                <!-- Screen Content -->
+                <div class="screen-content">
+                    <!-- Home Screen -->
+                    <div class="screen active" id="home-screen">
+                        <div class="greeting-section">
+                            <div class="greeting-text" data-en="Good Morning ☀️" data-hi="सुप्रभात ☀️" data-as="শুভ ৰাতিপুৱা ☀️">Good Morning ☀️</div>
+                            <div class="greeting-subtext" data-en="May the Lord bless your day" data-hi="प्रभु आपके दिन को आशीर्वाद दें" data-as="প্ৰভুৱে আপোনাৰ দিনটো আশীৰ্বাদ কৰক">May the Lord bless your day</div>
+                        </div>
+
+                        <div class="glass-card-3d">
+                            <div class="card-title-3d">
+                                📖 <span data-en="Continue Reading" data-hi="पढ़ना जारी रखें" data-as="পঢ়া অব্যাহত ৰাখক">Continue Reading</span>
+                            </div>
+                            <div class="book-name" data-en="John 3" data-hi="यूहन्ना 3" data-as="যোহন 3">John 3</div>
+                            <div style="font-size: 13px; color: #6B7280; margin-top: 4px;" data-en="Last read: verse 16" data-hi="अंतिम पढ़ा: वचन 16" data-as="শেষ পঢ়া: পদ 16">Last read: verse 16</div>
+                        </div>
+
+                        <div class="glass-card-3d">
+                            <div class="card-title-3d">
+                                ✨ <span data-en="Verse of the Day" data-hi="आज का वचन" data-as="আজিৰ পদ">Verse of the Day</span>
+                            </div>
+                            <div class="verse-text-3d" data-en="For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life." 
+                                data-hi="क्योंकि परमेश्वर ने जगत से ऐसा प्रेम रखा कि उसने अपना एकलौता पुत्र दे दिया, ताकि जो कोई उस पर विश्वास करे वह नाश न हो, परन्तु अनन्त जीवन पाए।" 
+                                data-as="কিয়নো ঈশ্বৰে জগতক ইমান প্ৰেম কৰিলে যে, তেওঁ নিজৰ একমাত্ৰ পুত্ৰক দান কৰিলে, যাতে যি কোনোৱে তেওঁত বিশ্বাস কৰে, তেওঁ বিনষ্ট নহয়, কিন্তু অনন্ত জীৱন পায়।">
+                                "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life."
+                            </div>
+                            <div class="verse-reference" data-en="John 3:16" data-hi="यूहन्ना 3:16" data-as="যোহন 3:16">John 3:16</div>
+                        </div>
+
+                        <div class="section-header" data-en="Quick Access" data-hi="त्वरित पहुंच" data-as="দ্ৰুত প্ৰৱেশ">Quick Access</div>
+                        <div class="quick-access-grid">
+                            <div class="quick-access-item-3d">
+                                <div class="quick-access-icon">📖</div>
+                                <div class="quick-access-label" data-en="Read Bible" data-hi="बाइबल पढ़ें" data-as="বাইবেল পঢ়ক">Read Bible</div>
+                            </div>
+                            <div class="quick-access-item-3d">
+                                <div class="quick-access-icon">🎵</div>
+                                <div class="quick-access-label" data-en="Hymns" data-hi="भजन" data-as="স্তুতি">Hymns</div>
+                            </div>
+                            <div class="quick-access-item-3d">
+                                <div class="quick-access-icon">🔊</div>
+                                <div class="quick-access-label" data-en="Audio Bible" data-hi="ऑडियो बाइबल" data-as="অডিঅ' বাইবেল">Audio Bible</div>
+                            </div>
+                            <div class="quick-access-item-3d">
+                                <div class="quick-access-icon">🤖</div>
+                                <div class="quick-access-label" data-en="Ask AI" data-hi="AI से पूछें" data-as="AI ক সুধিব">Ask AI</div>
+                            </div>
+                        </div>
+
+                        <div class="section-header" data-en="Recent Hymns" data-hi="हालिया भजन" data-as="শেহতীয়া স্তুতি">Recent Hymns</div>
+                        <div class="hymn-card-3d">
+                            <div class="hymn-header">
+                                <div>
+                                    <div class="hymn-number">#145</div>
+                                    <div class="hymn-title" data-en="Amazing Grace" data-hi="अद्भुत अनुग्रह" data-as="আশ্চৰ্যজনক অনুগ্ৰহ">Amazing Grace</div>
+                                </div>
+                                <span style="font-size: 20px;">♥️</span>
+                            </div>
+                            <div class="hymn-preview" data-en="Amazing grace how sweet the sound..." data-hi="अद्भुत अनुग्रह कितना मधुर स्वर..." data-as="আশ্চৰ্যজনক অনুগ্ৰহ কিমান মধুৰ...">Amazing grace how sweet the sound...</div>
+                        </div>
+                    </div>
+
+                    <!-- Bible Screen -->
+                    <div class="screen" id="bible-screen">
+                        <div style="padding: 24px 20px 0;">
+                            <div style="font-size: 32px; font-weight: 800; color: #000000; margin-bottom: 8px;" data-en="Holy Bible" data-hi="पवित्र बाइबल" data-as="পবিত্ৰ বাইবেল">Holy Bible</div>
+                            <div style="font-size: 14px; color: #6B7280; margin-bottom: 4px;">
+                                <span data-en="Translation: KJV" data-hi="अनुवाद: KJV" data-as="অনুবাদ: KJV">Translation: KJV</span>
+                            </div>
+                        </div>
+
+                        <div class="search-bar-3d">
+                            <span style="font-size: 20px;">🔍</span>
+                            <input type="text" placeholder="Search verses, chapters..." data-placeholder-en="Search verses, chapters..." data-placeholder-hi="वचन, अध्याय खोजें..." data-placeholder-as="পদ, অধ্যায় সন্ধান কৰক...">
+                        </div>
+
+                        <div class="filter-chips">
+                            <div class="chip-3d active" data-en="All" data-hi="सभी" data-as="সকলো">All</div>
+                            <div class="chip-3d" data-en="Old Testament" data-hi="पुराना नियम" data-as="পুৰণি নিয়ম">Old Testament</div>
+                            <div class="chip-3d" data-en="New Testament" data-hi="नया नियम" data-as="নতুন নিয়ম">New Testament</div>
+                        </div>
+
+                        <div class="section-header" data-en="Books of the Bible" data-hi="बाइबल की पुस्तकें" data-as="বাইবেলৰ কিতাপ">Books of the Bible</div>
+                        <div class="books-grid">
+                            <div class="book-card-3d">
+                                <div class="book-name" data-en="Genesis" data-hi="उत्पत्ति" data-as="আদিপুস্তক">Genesis</div>
+                                <div class="book-chapters" data-en="50 Chapters" data-hi="50 अध्याय" data-as="50 অধ্যায়">50 Chapters</div>
+                            </div>
+                            <div class="book-card-3d">
+                                <div class="book-name" data-en="Exodus" data-hi="निर्गमन" data-as="যাত্ৰাপুস্তক">Exodus</div>
+                                <div class="book-chapters" data-en="40 Chapters" data-hi="40 अध्याय" data-as="40 অধ্যায়">40 Chapters</div>
+                            </div>
+                            <div class="book-card-3d">
+                                <div class="book-name" data-en="Matthew" data-hi="मत्ती" data-as="মথি">Matthew</div>
+                                <div class="book-chapters" data-en="28 Chapters" data-hi="28 अध्याय" data-as="28 অধ্যায়">28 Chapters</div>
+                            </div>
+                            <div class="book-card-3d">
+                                <div class="book-name" data-en="John" data-hi="यूहन्ना" data-as="যোহন">John</div>
+                                <div class="book-chapters" data-en="21 Chapters" data-hi="21 अध्याय" data-as="21 অধ্যায়">21 Chapters</div>
+                            </div>
+                            <div class="book-card-3d">
+                                <div class="book-name" data-en="Romans" data-hi="रोमियों" data-as="ৰোমীয়া">Romans</div>
+                                <div class="book-chapters" data-en="16 Chapters" data-hi="16 अध्याय" data-as="16 অধ্যায়">16 Chapters</div>
+                            </div>
+                            <div class="book-card-3d">
+                                <div class="book-name" data-en="Revelation" data-hi="प्रकाशित वाक्य" data-as="প্ৰকাশিত বাক্য">Revelation</div>
+                                <div class="book-chapters" data-en="22 Chapters" data-hi="22 अध्याय" data-as="22 অধ্যায়">22 Chapters</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hymns Screen -->
+                    <div class="screen" id="hymns-screen">
+                        <div style="padding: 24px 20px 0;">
+                            <div style="font-size: 32px; font-weight: 800; color: #000000; margin-bottom: 8px;" data-en="Hymns" data-hi="भजन" data-as="স্তুতি">Hymns</div>
+                            <div style="font-size: 14px; color: #6B7280;" data-en="Worship through song" data-hi="गीत के माध्यम से आराधना" data-as="গীতৰ জৰিয়তে উপাসনা">Worship through song</div>
+                        </div>
+
+                        <div class="search-bar-3d">
+                            <span style="font-size: 20px;">🔍</span>
+                            <input type="text" placeholder="Search by name, number, lyrics..." data-placeholder-en="Search by name, number, lyrics..." data-placeholder-hi="नाम, संख्या, गीत से खोजें..." data-placeholder-as="নাম, সংখ্যা, গীতেৰে সন্ধান কৰক...">
+                        </div>
+
+                        <button class="create-button-3d" data-en="➕ Create Your Own Hymn" data-hi="➕ अपना भजन बनाएं" data-as="➕ নিজৰ স্তুতি সৃষ্টি কৰক">
+                            ➕ Create Your Own Hymn
+                        </button>
+
+                        <div class="section-header" data-en="Featured Hymns" data-hi="विशेष भजन" data-as="বিশেষ স্তুতি">Featured Hymns</div>
+                        <div class="hymn-card-3d">
+                            <div class="hymn-header">
+                                <div>
+                                    <div class="hymn-number">#001</div>
+                                    <div class="hymn-title" data-en="Holy, Holy, Holy" data-hi="पवित्र, पवित्र, पवित्र" data-as="পবিত্ৰ, পবিত্ৰ, পবিত্ৰ">Holy, Holy, Holy</div>
+                                </div>
+                                <span style="font-size: 20px;">⭐</span>
+                            </div>
+                            <div class="hymn-preview" data-en="Holy, holy, holy! Lord God Almighty!..." data-hi="पवित्र, पवित्र, पवित्र! प्रभु सर्वशक्तिमान!..." data-as="পবিত্ৰ, পবিত্ৰ, পবিত্ৰ! প্ৰভু সৰ্বশক্তিমান!...">Holy, holy, holy! Lord God Almighty!...</div>
+                        </div>
+
+                        <div class="hymn-card-3d">
+                            <div class="hymn-header">
+                                <div>
+                                    <div class="hymn-number">#145</div>
+                                    <div class="hymn-title" data-en="Amazing Grace" data-hi="अद्भुत अनुग्रह" data-as="আশ্চৰ্যজনক অনুগ্ৰহ">Amazing Grace</div>
+                                </div>
+                                <span style="font-size: 20px;">♥️</span>
+                            </div>
+                            <div class="hymn-preview" data-en="Amazing grace how sweet the sound..." data-hi="अद्भुत अनुग्रह कितना मधुर स्वर..." data-as="আশ্চৰ্যজনক অনুগ্ৰহ কিমান মধুৰ...">Amazing grace how sweet the sound...</div>
+                        </div>
+
+                        <div class="hymn-card-3d">
+                            <div class="hymn-header">
+                                <div>
+                                    <div class="hymn-number">#289</div>
+                                    <div class="hymn-title" data-en="How Great Thou Art" data-hi="तू कितना महान है" data-as="তুমি কিমান মহান">How Great Thou Art</div>
+                                </div>
+                                <span style="font-size: 20px;">⭐</span>
+                            </div>
+                            <div class="hymn-preview" data-en="O Lord my God, when I in awesome wonder..." data-hi="हे प्रभु मेरे परमेश्वर, जब मैं अद्भुत आश्चर्य में..." data-as="হে প্ৰভু মোৰ ঈশ্বৰ, যেতিয়া মই আশ্চৰ্যত...">O Lord my God, when I in awesome wonder...</div>
+                        </div>
+                    </div>
+
+                    <!-- Profile Screen -->
+                    <div class="screen" id="profile-screen">
+                        <div class="profile-header">
+                            <div class="profile-avatar-3d">👤</div>
+                            <div class="profile-name" data-en="John Doe" data-hi="जॉन डो" data-as="জন ড'">John Doe</div>
+                            <div class="profile-email">john.doe@example.com</div>
+                            <div class="premium-badge-3d" data-en="⭐ FREE PLAN" data-hi="⭐ फ्री प्लान" data-as="⭐ ফ্ৰী প্লেন">⭐ FREE PLAN</div>
+                        </div>
+
+                        <div class="glass-card-3d" style="margin: 16px 20px;">
+                            <div class="card-title-3d">
+                                ✨ <span data-en="Upgrade to Premium" data-hi="प्रीमियम में अपग्रेड करें" data-as="প্ৰিমিয়ামলৈ আপগ্ৰেড কৰক">Upgrade to Premium</span>
+                            </div>
+                            <p style="font-size: 14px; color: #4B5563; margin-bottom: 14px; line-height: 1.5;" 
+                                data-en="Unlock Bible Audio, AI Assistant, Christian Books, and more premium features."
+                                data-hi="ऑडियो बाइबल, AI सहायक, ईसाई किताबें और अधिक प्रीमियम सुविधाएं अनलॉक करें।"
+                                data-as="অডিঅ' বাইবেল, AI সহায়ক, খ্ৰীষ্টান কিতাপ আৰু অধিক প্ৰিমিয়াম সুবিধা আনলক কৰক।">
+                                Unlock Bible Audio, AI Assistant, Christian Books, and more premium features.
+                            </p>
+                            <button class="create-button-3d" style="margin: 0; width: 100%;" data-en="Start 7-Day Free Trial" data-hi="7-दिन का फ्री ट्रायल शुरू करें" data-as="7-দিনৰ ফ্ৰী ট্ৰাইয়েল আৰম্ভ কৰক">
+                                Start 7-Day Free Trial
+                            </button>
+                        </div>
+
+                        <div class="section-header" data-en="Your Activity" data-hi="आपकी गतिविधि" data-as="আপোনাৰ কাৰ্যকলাপ">Your Activity</div>
+                        <div class="stats-grid">
+                            <div class="stat-card-3d">
+                                <div class="stat-number">24</div>
+                                <div class="stat-label" data-en="Days Streak" data-hi="दिनों की लकीर" data-as="দিনৰ ধাৰা">Days Streak</div>
+                            </div>
+                            <div class="stat-card-3d">
+                                <div class="stat-number">156</div>
+                                <div class="stat-label" data-en="Verses Read" data-hi="पढ़े गए वचन" data-as="পঢ়া পদ">Verses Read</div>
+                            </div>
+                            <div class="stat-card-3d">
+                                <div class="stat-number">12</div>
+                                <div class="stat-label" data-en="Bookmarks" data-hi="बुकमार्क" data-as="বুকমাৰ্ক">Bookmarks</div>
+                            </div>
+                            <div class="stat-card-3d">
+                                <div class="stat-number">8</div>
+                                <div class="stat-label" data-en="Favorites" data-hi="पसंदीदा" data-as="প্ৰিয়">Favorites</div>
+                            </div>
+                        </div>
+
+                        <div class="section-header" data-en="Settings" data-hi="सेटिंग्स" data-as="ছেটিংছ">Settings</div>
+                        <div class="menu-list">
+                            <div class="menu-item-3d">
+                                <span class="menu-icon">⚙️</span>
+                                <span class="menu-text" data-en="App Settings" data-hi="ऐप सेटिंग्स" data-as="এপ ছেটিংছ">App Settings</span>
+                                <span>›</span>
+                            </div>
+                            <div class="menu-item-3d">
+                                <span class="menu-icon">🔔</span>
+                                <span class="menu-text" data-en="Notifications" data-hi="सूचनाएं" data-as="জাননী">Notifications</span>
+                                <span>›</span>
+                            </div>
+                            <div class="menu-item-3d">
+                                <span class="menu-icon">📥</span>
+                                <span class="menu-text" data-en="Download Content" data-hi="सामग्री डाउनलोड करें" data-as="সমল ডাউনলোড কৰক">Download Content</span>
+                                <span>›</span>
+                            </div>
+                            <div class="menu-item-3d">
+                                <span class="menu-icon">❓</span>
+                                <span class="menu-text" data-en="Help & Support" data-hi="मदद और समर्थन" data-as="সহায় আৰু সমৰ্থন">Help & Support</span>
+                                <span>›</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Navigation -->
+                <div class="bottom-nav-3d">
+                    <div class="nav-item-3d active" onclick="switchScreen('home')">
+                        <div class="nav-icon-3d">🏠</div>
+                        <div class="nav-label" data-en="Home" data-hi="होम" data-as="হ'ম">Home</div>
+                    </div>
+                    <div class="nav-item-3d" onclick="switchScreen('bible')">
+                        <div class="nav-icon-3d">📖</div>
+                        <div class="nav-label" data-en="Bible" data-hi="बाइबल" data-as="বাইবেল">Bible</div>
+                    </div>
+                    <div class="nav-item-3d" onclick="switchScreen('hymns')">
+                        <div class="nav-icon-3d">🎵</div>
+                        <div class="nav-label" data-en="Hymns" data-hi="भजन" data-as="স্তুতি">Hymns</div>
+                    </div>
+                    <div class="nav-item-3d" onclick="switchScreen('ai')">
+                        <div class="nav-icon-3d">🤖</div>
+                        <div class="nav-label" data-en="AI" data-hi="AI" data-as="AI">AI</div>
+                    </div>
+                    <div class="nav-item-3d" onclick="switchScreen('books')">
+                        <div class="nav-icon-3d">📚</div>
+                        <div class="nav-label" data-en="Books" data-hi="किताबें" data-as="কিতাপ">Books</div>
+                    </div>
+                    <div class="nav-item-3d" onclick="switchScreen('profile')">
+                        <div class="nav-icon-3d">👤</div>
+                        <div class="nav-label" data-en="Profile" data-hi="प्रोफ़ाइल" data-as="প্ৰ'ফাইল">Profile</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentLanguage = 'en';
+
+        function switchScreen(screenName) {
+            // Hide all screens
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+
+            // Remove active class from all nav items
+            document.querySelectorAll('.nav-item-3d').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Show selected screen
+            const screenMap = {
+                'home': 'home-screen',
+                'bible': 'bible-screen',
+                'hymns': 'hymns-screen',
+                'profile': 'profile-screen'
+            };
+
+            if (screenMap[screenName]) {
+                document.getElementById(screenMap[screenName]).classList.add('active');
+                event.currentTarget.classList.add('active');
+            } else {
+                // For AI and Books, show coming soon
+                alert('🚧 ' + screenName.toUpperCase() + ' screen coming soon in full implementation!');
+            }
+
+            // Scroll to top
+            document.querySelector('.screen-content').scrollTop = 0;
+        }
+
+        function switchLanguage(lang) {
+            currentLanguage = lang;
+            
+            // Update language buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Update language indicator
+            const indicators = { en: 'EN', hi: 'हिं', as: 'অসমী' };
+            document.getElementById('langIndicator').textContent = indicators[lang];
+
+            // Update all translatable elements
+            document.querySelectorAll('[data-' + lang + ']').forEach(el => {
+                const text = el.getAttribute('data-' + lang);
+                if (el.tagName === 'INPUT') {
+                    el.placeholder = text;
+                } else if (el.tagName === 'BUTTON') {
+                    el.textContent = text;
+                } else {
+                    el.textContent = text;
+                }
+            });
+
+            // Update placeholders
+            document.querySelectorAll('input[data-placeholder-' + lang + ']').forEach(input => {
+                input.placeholder = input.getAttribute('data-placeholder-' + lang);
+            });
+
+            console.log('Language switched to:', lang);
+        }
+    </script>
+</body>
+</html>
