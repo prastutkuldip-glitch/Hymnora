@@ -3,30 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#4a2c19">
     <title>HYMNORA - Premium Bible</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&display=swap" rel="stylesheet">
     <style>
+/* ============================================================
+   HYMNORA DESIGN SYSTEM  — premium tokens (visual only)
+   ============================================================ */
+:root{
+  /* type */
+  --font-ui:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --font-scripture:'Fraunces',Georgia,'Times New Roman',serif;
+  /* accent + semantic */
+  --accent:#34d399; --accent-deep:#059669; --accent-glow:rgba(52,211,153,.45);
+  --violet:#a78bfa; --violet-deep:#7c3aed;
+  --brown-1:#5c3a20; --brown-2:#4a2c19; --brown-3:#35200f; --cream:#f6ebdc; --cream-bright:#fff8ec;
+  /* glass surfaces */
+  --glass-1:linear-gradient(135deg,rgba(255,255,255,.14),rgba(255,255,255,.06));
+  --glass-2:linear-gradient(135deg,rgba(255,255,255,.20),rgba(255,255,255,.09));
+  --glass-3:linear-gradient(135deg,rgba(255,255,255,.28),rgba(255,255,255,.14));
+  --hair:rgba(255,255,255,.22);
+  --hair-strong:rgba(255,255,255,.4);
+  /* radii */
+  --r-sm:12px; --r-md:16px; --r-lg:20px; --r-xl:26px; --r-pill:999px;
+  /* elevation */
+  --e1:0 2px 10px rgba(16,24,40,.14), 0 1px 3px rgba(255,255,255,.10) inset;
+  --e2:0 8px 26px rgba(16,24,40,.20), 0 1px 4px rgba(255,255,255,.14) inset;
+  --e3:0 16px 44px rgba(16,24,40,.28), 0 1px 6px rgba(255,255,255,.16) inset;
+  --ease:cubic-bezier(.4,0,.2,1);
+}
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 /* Stop text getting selected/copied when tapping buttons & cards */
 .nav, .nav-item, .glass-btn, .glass-card, .book-card, .chapter-btn, .toggle-btn, .theme-card, .language-card, .hymn-card, .stat-card, .header, .version-btn { -webkit-user-select: none; -ms-user-select: none; user-select: none; }
 .nav-item, .glass-card, .book-card, .theme-card, .language-card, .hymn-card, .version-btn { cursor: pointer; }
 html, body { width: 100%; height: 100%; overflow: hidden; position: fixed; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); position: relative; }
+body { font-family: var(--font-ui); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); position: relative; }
 
 /* height: plain 100vh sits partly behind the mobile browser toolbar, which cut off
    the lower content. dvh tracks the real visible area. */
 .glass-container { position: relative; max-width: 430px; margin: 0 auto; height: 100vh; height: -webkit-fill-available; height: 100dvh; background: transparent; backdrop-filter: none; display: flex; flex-direction: column; overflow: hidden; box-shadow: none; }
 
-.header { background: linear-gradient(135deg, rgba(173, 216, 230, 0.25), rgba(255, 255, 255, 0.15), rgba(135, 206, 250, 0.2)); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-bottom: 1.5px solid rgba(173, 216, 230, 0.4); padding: 16px 20px; position: sticky; top: 0; flex-shrink: 0; z-index: 999; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 20px rgba(135, 206, 250, 0.3), 0 2px 8px rgba(255, 255, 255, 0.2) inset, 0 0 30px rgba(173, 216, 230, 0.15); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.header.scrolled { padding: 10px 20px; box-shadow: 0 6px 30px rgba(135, 206, 250, 0.4), 0 2px 10px rgba(255, 255, 255, 0.25) inset, 0 0 40px rgba(173, 216, 230, 0.2); background: linear-gradient(135deg, rgba(173, 216, 230, 0.3), rgba(255, 255, 255, 0.2), rgba(135, 206, 250, 0.25)); }
+.header { background: linear-gradient(135deg, rgba(173, 216, 230, 0.22), rgba(255, 255, 255, 0.14), rgba(135, 206, 250, 0.18)); backdrop-filter: blur(28px) saturate(1.4); -webkit-backdrop-filter: blur(28px) saturate(1.4); border-bottom: 1px solid rgba(255, 255, 255, 0.28); padding: 15px 20px; position: sticky; top: 0; flex-shrink: 0; z-index: 999; transition: all 0.4s var(--ease); box-shadow: 0 6px 24px rgba(53, 32, 15, 0.12), 0 1px 0 rgba(255, 255, 255, 0.35) inset; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.header.scrolled { padding: 9px 20px; box-shadow: 0 8px 30px rgba(53, 32, 15, 0.2), 0 1px 0 rgba(255, 255, 255, 0.4) inset; background: linear-gradient(135deg, rgba(173, 216, 230, 0.28), rgba(255, 255, 255, 0.2), rgba(135, 206, 250, 0.24)); }
 
-.header-logo { width: 32px; height: 32px; border-radius: 8px; box-shadow: 0 4px 12px rgba(135, 206, 250, 0.4), 0 2px 6px rgba(173, 216, 230, 0.3) inset, 0 0 15px rgba(173, 216, 230, 0.2); transition: all 0.3s; flex-shrink: 0; border: 1.5px solid rgba(173, 216, 230, 0.5); }
-.header.scrolled .header-logo { width: 28px; height: 28px; box-shadow: 0 2px 8px rgba(135, 206, 250, 0.3), 0 1px 4px rgba(173, 216, 230, 0.25) inset, 0 0 12px rgba(173, 216, 230, 0.15); }
+.header-logo { width: 34px; height: 34px; border-radius: 10px; box-shadow: 0 4px 14px rgba(53, 32, 15, 0.28), 0 1px 3px rgba(255, 255, 255, 0.4) inset; transition: all 0.3s var(--ease); flex-shrink: 0; border: 1.5px solid rgba(255, 255, 255, 0.55); }
+.header.scrolled .header-logo { width: 29px; height: 29px; }
 
 .header-text { flex: 1; }
-.header h1 { font-size: 22px; font-weight: 700; color: white; text-shadow: 0 2px 8px rgba(0,0,0,0.2); transition: all 0.3s; line-height: 1.2; margin: 0; display: inline-block; }
-.header.scrolled h1 { font-size: 18px; }
-.header p { font-size: 12px; color: rgba(255, 255, 255, 0.9); font-weight: 500; transition: all 0.3s; margin: 0; }
-.header.scrolled p { font-size: 10px; opacity: 0.8; }
+.header h1 { font-size: 23px; font-weight: 800; color: white; letter-spacing: 1.5px; text-shadow: 0 2px 10px rgba(53, 32, 15, 0.35); transition: all 0.3s var(--ease); line-height: 1.15; margin: 0; display: inline-block; }
+.header.scrolled h1 { font-size: 19px; }
+.header p { font-size: 11.5px; color: rgba(255, 255, 255, 0.92); font-weight: 500; letter-spacing: 0.3px; transition: all 0.3s var(--ease); margin: 2px 0 0; }
+.header.scrolled p { font-size: 10px; opacity: 0.85; }
 
 .header-side-logo { width: 50px; height: 50px; object-fit: contain; transition: all 0.3s; border: none; box-shadow: none; flex-shrink: 0; vertical-align: middle; display: inline-block; margin-left: 8px; margin-bottom: -8px; }
 .header.scrolled .header-side-logo { width: 42px; height: 42px; margin-bottom: -6px; }
@@ -38,14 +67,21 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
 /* Premium Glassmorphism Cards */
-.glass-card { background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.06)); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1.5px solid rgba(255, 255, 255, 0.25); border-radius: 20px; padding: 18px; margin-bottom: 14px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15), 0 2px 8px rgba(255, 255, 255, 0.1) inset; position: relative; overflow: hidden; }
-.glass-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%); opacity: 0; transition: opacity 0.3s; }
+.glass-card { background: var(--glass-1); backdrop-filter: blur(16px) saturate(1.3); -webkit-backdrop-filter: blur(16px) saturate(1.3); border: 1px solid var(--hair); border-radius: var(--r-lg); padding: 18px; margin-bottom: 14px; cursor: pointer; transition: transform 0.28s var(--ease), box-shadow 0.28s var(--ease), border-color 0.28s var(--ease); box-shadow: var(--e2); position: relative; overflow: hidden; }
+.glass-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.5), transparent); opacity: .7; }
+.glass-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
 .glass-card:hover::before { opacity: 1; }
-.glass-card:active { transform: scale(0.98); box-shadow: 0 4px 16px rgba(31, 38, 135, 0.2); }
+.glass-card:active { transform: scale(0.975); box-shadow: var(--e1); }
 
-/* Glowing Bubble Icons */
-.bubble-icon { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.15)); backdrop-filter: blur(10px); border: 2px solid rgba(255, 255, 255, 0.5); display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(255, 255, 255, 0.2) inset, 0 0 20px rgba(255, 255, 255, 0.3); margin-bottom: 10px; }
-@keyframes glow { 0%, 100% { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(255, 255, 255, 0.2) inset, 0 0 20px rgba(255, 255, 255, 0.3); } 50% { box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2), 0 4px 10px rgba(255, 255, 255, 0.3) inset, 0 0 30px rgba(255, 255, 255, 0.5); } }
+/* Consistent glowing icon chips (used across the whole app) */
+.bubble-icon { width: 46px; height: 46px; border-radius: 15px; background: linear-gradient(150deg, rgba(255,255,255,.34), rgba(255,255,255,.14)); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,.5); display: flex; align-items: center; justify-content: center; font-size: 23px; line-height: 1; box-shadow: 0 6px 18px rgba(16,24,40,.20), 0 1px 3px rgba(255,255,255,.5) inset; margin-bottom: 10px; }
+@keyframes glow { 0%, 100% { box-shadow: 0 6px 18px rgba(16,24,40,.20), 0 1px 3px rgba(255,255,255,.5) inset; } 50% { box-shadow: 0 8px 26px rgba(16,24,40,.28), 0 1px 4px rgba(255,255,255,.6) inset; } }
+
+/* Uniform quick-action tile — one consistent look for every emoji shortcut */
+.quick-tile { background: var(--glass-1); backdrop-filter: blur(16px) saturate(1.3); -webkit-backdrop-filter: blur(16px) saturate(1.3); border: 1px solid var(--hair); border-radius: var(--r-md); padding: 15px 8px 12px; cursor: pointer; transition: transform 0.24s var(--ease), box-shadow 0.24s var(--ease), border-color 0.24s var(--ease); box-shadow: var(--e1); display: flex; flex-direction: column; align-items: center; gap: 9px; position: relative; overflow: hidden; }
+.quick-tile:active { transform: scale(0.95); }
+.quick-tile .qt-ic { width: 44px; height: 44px; border-radius: 13px; display: flex; align-items: center; justify-content: center; font-size: 22px; line-height: 1; background: linear-gradient(150deg, rgba(255,255,255,.30), rgba(255,255,255,.12)); border: 1px solid rgba(255,255,255,.45); box-shadow: 0 4px 12px rgba(16,24,40,.18), 0 1px 2px rgba(255,255,255,.5) inset; }
+.quick-tile .qt-lbl { font-size: 11.5px; font-weight: 600; letter-spacing: .2px; color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,.25); text-align: center; }
 
 .compact-hero { background: linear-gradient(135deg, rgba(255, 215, 0, 0.25), rgba(255, 165, 0, 0.25)); backdrop-filter: blur(20px); border: 2px solid rgba(255, 215, 0, 0.4); border-radius: 18px; padding: 20px; margin-bottom: 16px; text-align: center; box-shadow: 0 8px 32px rgba(255, 215, 0, 0.2), 0 2px 8px rgba(255, 255, 255, 0.15) inset; animation: heroGlow 3s ease-in-out infinite; }
 @keyframes heroGlow { 0%, 100% { box-shadow: 0 8px 32px rgba(255, 215, 0, 0.2), 0 2px 8px rgba(255, 255, 255, 0.15) inset; } 50% { box-shadow: 0 12px 40px rgba(255, 215, 0, 0.35), 0 4px 12px rgba(255, 255, 255, 0.25) inset; } }
@@ -60,78 +96,84 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .verse-of-day-ref { font-size: 14px; font-weight: 800; color: #ffffff; text-align: right; letter-spacing: 0.6px; padding-top: 12px; border-top: 1.5px solid rgba(255, 248, 236, 0.3); text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5); }
 
 .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
-.stat-card { background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1)); backdrop-filter: blur(20px); border: 1.5px solid rgba(255, 255, 255, 0.3); border-radius: 16px; padding: 14px 10px; text-align: center; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(255, 255, 255, 0.1) inset; }
-.stat-num { font-size: 22px; font-weight: 700; color: white; margin-bottom: 4px; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); }
-.stat-label { font-size: 11px; color: rgba(255, 255, 255, 0.9); font-weight: 600; }
+.stat-card { background: var(--glass-2); backdrop-filter: blur(18px) saturate(1.3); -webkit-backdrop-filter: blur(18px) saturate(1.3); border: 1px solid var(--hair); border-radius: var(--r-md); padding: 15px 10px; text-align: center; box-shadow: var(--e1); }
+.stat-num { font-size: 24px; font-weight: 800; color: white; letter-spacing: -0.5px; margin-bottom: 3px; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.22); }
+.stat-label { font-size: 10.5px; color: rgba(255, 255, 255, 0.88); font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase; }
 
 .books-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
-.book-card { background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.1)); backdrop-filter: blur(15px); border: 1.5px solid rgba(255, 255, 255, 0.3); border-radius: 16px; padding: 16px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(255, 255, 255, 0.1) inset; }
-.book-card:active { transform: scale(0.96); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
-.book-name { font-size: 15px; font-weight: 600; color: white; text-shadow: 0 2px 6px rgba(0,0,0,0.2); margin-bottom: 5px; }
-.book-info { font-size: 12px; color: rgba(255, 255, 255, 0.85); font-weight: 500; }
+.book-card { background: var(--glass-1); backdrop-filter: blur(16px) saturate(1.3); -webkit-backdrop-filter: blur(16px) saturate(1.3); border: 1px solid var(--hair); border-radius: var(--r-md); padding: 16px; cursor: pointer; transition: transform 0.24s var(--ease), box-shadow 0.24s var(--ease), border-color 0.24s var(--ease); box-shadow: var(--e1); position: relative; overflow: hidden; }
+.book-card::after { content: ''; position: absolute; top: 0; left: 14px; right: 14px; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.4), transparent); }
+.book-card:active { transform: scale(0.96); border-color: var(--hair-strong); box-shadow: var(--e2); }
+.book-name { font-size: 15px; font-weight: 700; color: white; letter-spacing: 0.1px; text-shadow: 0 2px 6px rgba(0,0,0,0.2); margin-bottom: 4px; }
+.book-info { font-size: 11.5px; color: rgba(255, 255, 255, 0.82); font-weight: 500; }
 
-.section-title { font-size: 17px; font-weight: 700; margin: 20px 0 12px; color: white; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); display: flex; align-items: center; gap: 8px; }
+.section-title { font-size: 18px; font-weight: 800; letter-spacing: 0.2px; margin: 22px 0 13px; color: white; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.22); display: flex; align-items: center; gap: 9px; }
+.section-title::before { content: ''; width: 4px; height: 18px; border-radius: 2px; background: linear-gradient(180deg, #fff, rgba(255,255,255,.4)); box-shadow: 0 0 10px rgba(255,255,255,.4); flex-shrink: 0; }
 
 .chapters-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 16px; }
-.chapter-btn { aspect-ratio: 1; background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1)); backdrop-filter: blur(10px); border: 1.5px solid rgba(255, 255, 255, 0.3); border-radius: 12px; font-size: 15px; font-weight: 700; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(255, 255, 255, 0.1) inset; }
-.chapter-btn:active { transform: scale(0.94); background: rgba(255, 255, 255, 0.3); }
+.chapter-btn { aspect-ratio: 1; background: var(--glass-2); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--hair); border-radius: 14px; font-size: 15px; font-weight: 700; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.2s var(--ease), background 0.2s var(--ease); box-shadow: var(--e1); }
+.chapter-btn:active { transform: scale(0.92); background: linear-gradient(150deg, var(--accent), var(--accent-deep)); border-color: var(--accent); }
 
-.verse { background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08)); backdrop-filter: blur(15px); border-left: 4px solid rgba(255, 255, 255, 0.7); border-radius: 12px; padding: 14px; margin-bottom: 12px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(255, 255, 255, 0.1) inset; animation: slideIn 0.4s ease-out; }
-@keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
-.verse-num { display: inline-flex; align-items: center; justify-content: center; min-width: 32px; height: 32px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.2)); backdrop-filter: blur(10px); border: 1.5px solid rgba(255, 255, 255, 0.5); border-radius: 50%; font-size: 14px; font-weight: 700; color: white; margin-right: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 1px 4px rgba(255, 255, 255, 0.2) inset; flex-shrink: 0; }
-.verse-text { font-size: 15px; line-height: 1.7; color: white; font-weight: 500; text-shadow: 0 1px 4px rgba(0, 0, 0, 0.15); }
+.verse { background: var(--glass-1); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid var(--hair); border-left: 3px solid rgba(255, 255, 255, 0.75); border-radius: 14px; padding: 15px 16px; margin-bottom: 11px; box-shadow: var(--e1); animation: slideIn 0.4s var(--ease); }
+@keyframes slideIn { from { opacity: 0; transform: translateX(-16px); } to { opacity: 1; transform: translateX(0); } }
+.verse-num { display: inline-flex; align-items: center; justify-content: center; min-width: 30px; height: 30px; background: linear-gradient(150deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0.18)); border: 1px solid rgba(255, 255, 255, 0.5); border-radius: 50%; font-size: 13px; font-weight: 800; color: white; margin-right: 12px; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16), 0 1px 3px rgba(255, 255, 255, 0.3) inset; flex-shrink: 0; }
+.verse-text { font-family: var(--font-scripture); font-size: 16.5px; line-height: 1.72; color: white; font-weight: 500; text-shadow: 0 1px 4px rgba(0, 0, 0, 0.18); }
 
-.glass-btn { background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1)); backdrop-filter: blur(15px); border: 1.5px solid rgba(255, 255, 255, 0.3); border-radius: 12px; padding: 12px 20px; font-weight: 600; color: white; cursor: pointer; margin-bottom: 14px; display: inline-flex; align-items: center; gap: 6px; transition: all 0.3s; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(255, 255, 255, 0.1) inset; font-size: 14px; border: none; }
+.glass-btn { background: var(--glass-2); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid var(--hair); border-radius: 14px; padding: 13px 20px; font-weight: 700; letter-spacing: 0.2px; color: white; cursor: pointer; margin-bottom: 14px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease); box-shadow: var(--e1); font-size: 14px; }
 .glass-btn:active { transform: scale(0.96); }
 
 /* Bible Version Selector */
 .version-row { display: flex; gap: 8px; margin-bottom: 14px; }
-.version-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 10px 6px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08)); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1.5px solid rgba(255, 255, 255, 0.28); border-radius: 14px; color: rgba(255, 255, 255, 0.85); cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(255, 255, 255, 0.12) inset; }
+.version-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 11px 6px; background: var(--glass-1); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid var(--hair); border-radius: 14px; color: rgba(255, 255, 255, 0.85); cursor: pointer; transition: all 0.3s var(--ease); box-shadow: var(--e1); }
 .version-btn:active { transform: scale(0.96); }
 .version-btn .version-short { font-size: 15px; font-weight: 800; letter-spacing: 0.5px; }
 .version-btn .version-name { font-size: 11px; font-weight: 600; opacity: 0.9; }
-.version-btn.active { color: #fff; background: linear-gradient(135deg, rgba(76, 175, 80, 0.55), rgba(46, 125, 50, 0.45)); border-color: rgba(76, 175, 80, 0.85); box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4), 0 2px 6px rgba(255, 255, 255, 0.25) inset, 0 0 18px rgba(76, 175, 80, 0.35); }
+.version-btn.active { color: #fff; background: linear-gradient(150deg, var(--accent), var(--accent-deep)); border-color: rgba(255,255,255,.5); box-shadow: 0 6px 20px var(--accent-glow), 0 1px 3px rgba(255, 255, 255, 0.4) inset; }
 
-.toggle-btns { display: flex; gap: 8px; margin-bottom: 14px; }
-.toggle-btn { flex: 1; padding: 10px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08)); backdrop-filter: blur(10px); border: 1.5px solid rgba(255, 255, 255, 0.3); border-radius: 10px; color: rgba(255, 255, 255, 0.85); font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 13px; }
-.toggle-btn.active { background: linear-gradient(135deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.25)); color: white; border-color: rgba(255, 255, 255, 0.6); box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2) inset; }
+.toggle-btns { display: flex; gap: 8px; margin-bottom: 14px; padding: 4px; background: rgba(255,255,255,.08); border: 1px solid var(--hair); border-radius: 14px; }
+.toggle-btn { flex: 1; padding: 10px; background: transparent; border: none; border-radius: 10px; color: rgba(255, 255, 255, 0.8); font-weight: 700; letter-spacing: 0.2px; cursor: pointer; transition: all 0.28s var(--ease); font-size: 13px; }
+.toggle-btn.active { background: linear-gradient(150deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.2)); color: white; box-shadow: 0 2px 8px rgba(16,24,40,.16), 0 1px 3px rgba(255,255,255,.4) inset; }
 
-.search-box { width: 100%; padding: 12px 16px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08)); backdrop-filter: blur(10px); border: 1.5px solid rgba(255, 255, 255, 0.3); border-radius: 12px; color: white; font-size: 14px; font-weight: 500; margin-bottom: 14px; }
-.search-box::placeholder { color: rgba(255, 255, 255, 0.7); }
+.search-box { width: 100%; padding: 13px 16px; background: var(--glass-1); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--hair); border-radius: 14px; color: white; font-size: 14px; font-weight: 500; margin-bottom: 14px; transition: border-color 0.24s var(--ease), box-shadow 0.24s var(--ease); font-family: var(--font-ui); }
+.search-box:focus { outline: none; border-color: rgba(255,255,255,.55); box-shadow: 0 0 0 3px rgba(255,255,255,.12); }
+.search-box::placeholder { color: rgba(255, 255, 255, 0.65); }
 
 /* ULTRA PREMIUM 3D FLOATING NAVIGATION - RIGHT CORNER */
-.nav { position: fixed; bottom: 50%; right: 2px; transform: translateY(50%); width: auto; background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.15)); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 18px; display: flex; flex-direction: column; z-index: 1000; padding: 4px 2px; gap: 6px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(255, 255, 255, 0.08) inset, 0 0 20px rgba(255, 255, 255, 0.1); animation: navFloat 4s ease-in-out infinite; }
+.nav { position: fixed; bottom: 50%; right: 6px; transform: translateY(50%); width: auto; background: linear-gradient(150deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.14)); backdrop-filter: blur(30px) saturate(1.4); -webkit-backdrop-filter: blur(30px) saturate(1.4); border: 1px solid rgba(255, 255, 255, 0.35); border-radius: 20px; display: flex; flex-direction: column; z-index: 1000; padding: 6px 4px; gap: 4px; box-shadow: 0 10px 30px rgba(16,24,40,.28), 0 1px 3px rgba(255, 255, 255, 0.5) inset; animation: navFloat 5s ease-in-out infinite; }
 
 /* Blur effect for content behind navigation */
 .nav::before { display: none; }
 
 @keyframes navFloat { 0%, 100% { transform: translateY(50%) translateX(0px); } 50% { transform: translateY(50%) translateX(-3px); } }
 
-.nav-item { flex: none; padding: 4px 2px; text-align: center; cursor: pointer; color: rgba(255, 255, 255, 0.75); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; align-items: center; gap: 1px; font-size: 7px; font-weight: 600; border-radius: 10px; position: relative; min-width: 28px; background: transparent; }
-.nav-item.active { color: white; background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.15)); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), 0 1px 4px rgba(255, 255, 255, 0.2) inset, 0 0 12px rgba(255, 255, 255, 0.3); transform: scale(1.05); }
-.nav-item:active { transform: scale(0.95); }
+.nav-item { flex: none; padding: 7px 5px; text-align: center; cursor: pointer; color: rgba(255, 255, 255, 0.75); transition: all 0.3s var(--ease); display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 7px; font-weight: 700; letter-spacing: 0.2px; border-radius: 13px; position: relative; min-width: 34px; background: transparent; }
+.nav-item.active { color: white; background: linear-gradient(150deg, rgba(255, 255, 255, 0.32), rgba(255, 255, 255, 0.16)); box-shadow: 0 3px 10px rgba(16,24,40,.18), 0 1px 3px rgba(255, 255, 255, 0.5) inset; }
+.nav-item:active { transform: scale(0.9); }
 
 /* Glowing Premium Icons */
-.nav-icon { font-size: 14px; line-height: 1; filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.3)) drop-shadow(0 0 8px rgba(255, 255, 255, 0.25)); transition: all 0.3s ease; }
-.nav-item.active .nav-icon { font-size: 16px; filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 12px rgba(255, 255, 255, 0.4)); }
+.nav-icon { font-size: 17px; line-height: 1; filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.35)); transition: all 0.3s var(--ease); }
+.nav-item.active .nav-icon { transform: scale(1.08); filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.45)); }
 
 /* Profile photo inside nav */
-.nav-profile-img { display: none; width: 18px; height: 18px; border-radius: 50%; object-fit: cover; border: 1.5px solid rgba(255, 255, 255, 0.7); box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3), 0 0 8px rgba(255, 255, 255, 0.35); vertical-align: middle; }
-.nav-item.active .nav-profile-img { width: 22px; height: 22px; border-color: rgba(255, 255, 255, 0.95); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35), 0 0 12px rgba(255, 255, 255, 0.5); }
+.nav-profile-img { display: none; width: 20px; height: 20px; border-radius: 50%; object-fit: cover; border: 1.5px solid rgba(255, 255, 255, 0.8); box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); vertical-align: middle; }
+.nav-item.active .nav-profile-img { width: 23px; height: 23px; border-color: #fff; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35); }
 
-.hymn-card { background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.1)); backdrop-filter: blur(15px); border: 1.5px solid rgba(255, 255, 255, 0.3); border-radius: 16px; padding: 16px; margin-bottom: 12px; cursor: pointer; transition: all 0.3s; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(255, 255, 255, 0.1) inset; }
-.hymn-title { font-size: 16px; font-weight: 700; color: white; margin-bottom: 6px; text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); }
-.hymn-lyrics { font-size: 14px; line-height: 1.7; color: rgba(255, 255, 255, 0.95); white-space: pre-wrap; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.3); font-weight: 500; display: none; }
+.hymn-card { background: var(--glass-1); backdrop-filter: blur(16px) saturate(1.3); -webkit-backdrop-filter: blur(16px) saturate(1.3); border: 1px solid var(--hair); border-radius: var(--r-md); padding: 17px; margin-bottom: 12px; cursor: pointer; transition: transform 0.24s var(--ease), box-shadow 0.24s var(--ease); box-shadow: var(--e1); position: relative; overflow: hidden; }
+.hymn-card::after { content: ''; position: absolute; top: 0; left: 16px; right: 16px; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.4), transparent); }
+.hymn-card:active { transform: scale(0.98); }
+.hymn-title { font-size: 16px; font-weight: 700; color: white; letter-spacing: 0.1px; margin-bottom: 4px; text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); }
+.hymn-lyrics { font-family: var(--font-scripture); font-size: 15px; line-height: 1.75; color: rgba(255, 255, 255, 0.96); white-space: pre-wrap; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.25); font-weight: 500; display: none; }
 .hymn-lyrics.show { display: block; }
 
-/* Theme Card Styles */
-.theme-card { background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08)); backdrop-filter: blur(15px); border: 2px solid rgba(255, 255, 255, 0.25); border-radius: 16px; padding: 12px; cursor: pointer; transition: all 0.3s; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); position: relative; }
+/* Theme + Language selection cards */
+.theme-card { background: var(--glass-1); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 2px solid var(--hair); border-radius: var(--r-md); padding: 12px; cursor: pointer; transition: transform 0.24s var(--ease), box-shadow 0.24s var(--ease), border-color 0.24s var(--ease); box-shadow: var(--e1); position: relative; }
 .theme-card:active { transform: scale(0.96); }
-.theme-card.active { border-color: rgba(76, 175, 80, 0.8); box-shadow: 0 8px 24px rgba(76, 175, 80, 0.4); }
-.language-card { background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08)); backdrop-filter: blur(15px); border: 2px solid rgba(255, 255, 255, 0.25); border-radius: 16px; padding: 16px 12px; cursor: pointer; transition: all 0.3s; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); position: relative; text-align: center; }
+.theme-card.active { border-color: var(--accent); box-shadow: 0 8px 24px var(--accent-glow); }
+.theme-card img { box-shadow: 0 4px 12px rgba(16,24,40,.2); }
+.language-card { background: var(--glass-1); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 2px solid var(--hair); border-radius: var(--r-md); padding: 16px 12px; cursor: pointer; transition: transform 0.24s var(--ease), box-shadow 0.24s var(--ease), border-color 0.24s var(--ease); box-shadow: var(--e1); position: relative; text-align: center; }
 .language-card:active { transform: scale(0.96); }
-.language-card.active { border-color: rgba(76, 175, 80, 0.8); box-shadow: 0 8px 24px rgba(76, 175, 80, 0.4); }
-.theme-indicator { position: absolute; top: 8px; right: 8px; width: 28px; height: 28px; background: linear-gradient(135deg, rgba(76, 175, 80, 0.95), rgba(46, 125, 50, 0.95)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 16px; box-shadow: 0 4px 12px rgba(76, 175, 80, 0.5); }
+.language-card.active { border-color: var(--accent); box-shadow: 0 8px 24px var(--accent-glow); }
+.theme-indicator { position: absolute; top: 8px; right: 8px; width: 28px; height: 28px; background: linear-gradient(150deg, var(--accent), var(--accent-deep)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 15px; box-shadow: 0 4px 12px var(--accent-glow); }
 .theme-card.active .theme-indicator { display: flex !important; }
 .language-card.active .theme-indicator { display: flex !important; }
 
@@ -232,96 +274,49 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
             </div>
             
             <!-- Featured Section -->
-            <div style="font-size: 18px; font-weight: 700; color: white; margin: 24px 0 16px; text-shadow: 0 2px 8px rgba(0,0,0,0.2); display: flex; justify-content: space-between; align-items: center;">
-                <span>Featured</span>
-            </div>
+            <div class="section-title">Featured</div>
             
-            <button class="glass-card" style="width: 100%; border: none; text-align: left; padding: 20px; border-radius: 24px; margin-bottom: 12px; display: flex; align-items: center; gap: 16px;" onclick="showTab('bible')">
-                <div class="bubble-icon" style="width: 56px; height: 56px; font-size: 28px; margin: 0; flex-shrink: 0;">📚</div>
+            <button class="glass-card" style="width: 100%; border: none; text-align: left; padding: 18px; display: flex; align-items: center; gap: 15px;" onclick="showTab('bible')">
+                <div class="bubble-icon" style="width: 54px; height: 54px; font-size: 27px; margin: 0; flex-shrink: 0;">📚</div>
                 <div style="flex: 1;">
-                    <div class="book-name" style="font-size: 17px; margin-bottom: 6px;">Complete Bible</div>
+                    <div class="book-name" style="font-size: 17px; margin-bottom: 4px;">Complete Bible</div>
                     <div class="book-info">66 books • All verses • 3 languages</div>
                 </div>
+                <div style="font-size: 20px; color: rgba(255,255,255,.6);">›</div>
             </button>
             
-            <button class="glass-card" style="width: 100%; border: none; text-align: left; padding: 20px; border-radius: 24px; display: flex; align-items: center; gap: 16px;" onclick="showTab('hymns')">
-                <div class="bubble-icon" style="width: 56px; height: 56px; font-size: 28px; margin: 0; flex-shrink: 0;">🎵</div>
+            <button class="glass-card" style="width: 100%; border: none; text-align: left; padding: 18px; display: flex; align-items: center; gap: 15px;" onclick="showTab('hymns')">
+                <div class="bubble-icon" style="width: 54px; height: 54px; font-size: 27px; margin: 0; flex-shrink: 0;">🎵</div>
                 <div style="flex: 1;">
-                    <div class="book-name" style="font-size: 17px; margin-bottom: 6px;">Worship Hymns</div>
+                    <div class="book-name" style="font-size: 17px; margin-bottom: 4px;">Worship Hymns</div>
                     <div class="book-info">Classic hymns • Sing praises</div>
                 </div>
+                <div style="font-size: 20px; color: rgba(255,255,255,.6);">›</div>
             </button>
 
             <!-- Quick Access Section -->
-            <div style="font-size: 18px; font-weight: 700; color: white; margin: 24px 0 16px; text-shadow: 0 2px 8px rgba(0,0,0,0.2);">
-                <span>Quick Access</span>
-            </div>
-
-            <!-- Quick Access Grid -->
-            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px;">
-                <button class="glass-card" style="border: none; padding: 16px 12px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px;" onclick="showTab('favorites')">
-                    <div style="font-size: 32px;">❤️</div>
-                    <div style="font-size: 11px; font-weight: 600; color: white;">Favorites</div>
-                </button>
-                
-                <button class="glass-card" style="border: none; padding: 16px 12px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px;" onclick="showTab('favorites')">
-                    <div style="font-size: 32px;">🔖</div>
-                    <div style="font-size: 11px; font-weight: 600; color: white;">Bookmarks</div>
-                </button>
-                
-                <button class="glass-card" style="border: none; padding: 16px 12px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px;" onclick="alert('🔍 Search feature coming soon!')">
-                    <div style="font-size: 32px;">🔍</div>
-                    <div style="font-size: 11px; font-weight: 600; color: white;">Search</div>
-                </button>
-                
-                <button class="glass-card" style="border: none; padding: 16px 12px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px;" onclick="showTab('profile')">
-                    <div style="font-size: 32px;">⚙️</div>
-                    <div style="font-size: 11px; font-weight: 600; color: white;">Settings</div>
-                </button>
+            <div class="section-title">Quick Access</div>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 11px; margin-bottom: 8px;">
+                <button class="quick-tile" onclick="showTab('favorites')"><span class="qt-ic">❤️</span><span class="qt-lbl">Favorites</span></button>
+                <button class="quick-tile" onclick="showTab('favorites')"><span class="qt-ic">🔖</span><span class="qt-lbl">Bookmarks</span></button>
+                <button class="quick-tile" onclick="alert('🔍 Search feature coming soon!')"><span class="qt-ic">🔍</span><span class="qt-lbl">Search</span></button>
+                <button class="quick-tile" onclick="showTab('profile')"><span class="qt-ic">⚙️</span><span class="qt-lbl">Settings</span></button>
             </div>
 
             <!-- Community Section -->
-            <div style="font-size: 18px; font-weight: 700; color: white; margin: 24px 0 16px; text-shadow: 0 2px 8px rgba(0,0,0,0.2);">
-                <span>Community</span>
-            </div>
-
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px;">
-                <button class="glass-card" style="border: none; padding: 16px 12px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px;" onclick="alert('📿 Prayer Requests coming soon!')">
-                    <div style="font-size: 32px;">📿</div>
-                    <div style="font-size: 11px; font-weight: 600; color: white;">Prayers</div>
-                </button>
-                
-                <button class="glass-card" style="border: none; padding: 16px 12px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px;" onclick="alert('👥 Community feature coming soon!')">
-                    <div style="font-size: 32px;">👥</div>
-                    <div style="font-size: 11px; font-weight: 600; color: white;">Groups</div>
-                </button>
-                
-                <button class="glass-card" style="border: none; padding: 16px 12px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px;" onclick="alert('💬 Share feature coming soon!')">
-                    <div style="font-size: 32px;">💬</div>
-                    <div style="font-size: 11px; font-weight: 600; color: white;">Share</div>
-                </button>
+            <div class="section-title">Community</div>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 11px; margin-bottom: 8px;">
+                <button class="quick-tile" onclick="alert('📿 Prayer Requests coming soon!')"><span class="qt-ic">📿</span><span class="qt-lbl">Prayers</span></button>
+                <button class="quick-tile" onclick="alert('👥 Community feature coming soon!')"><span class="qt-ic">👥</span><span class="qt-lbl">Groups</span></button>
+                <button class="quick-tile" onclick="alert('💬 Share feature coming soon!')"><span class="qt-ic">💬</span><span class="qt-lbl">Share</span></button>
             </div>
 
             <!-- Daily Tools Section -->
-            <div style="font-size: 18px; font-weight: 700; color: white; margin: 24px 0 16px; text-shadow: 0 2px 8px rgba(0,0,0,0.2);">
-                <span>Daily Tools</span>
-            </div>
-
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 40px;">
-                <button class="glass-card" style="border: none; padding: 16px 12px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px;" onclick="alert('📅 Reading Plan coming soon!')">
-                    <div style="font-size: 32px;">📅</div>
-                    <div style="font-size: 11px; font-weight: 600; color: white;">Reading Plan</div>
-                </button>
-                
-                <button class="glass-card" style="border: none; padding: 16px 12px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px;" onclick="alert('📝 Notes coming soon!')">
-                    <div style="font-size: 32px;">📝</div>
-                    <div style="font-size: 11px; font-weight: 600; color: white;">Notes</div>
-                </button>
-                
-                <button class="glass-card" style="border: none; padding: 16px 12px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px;" onclick="alert('🎧 Audio Bible coming soon!')">
-                    <div style="font-size: 32px;">🎧</div>
-                    <div style="font-size: 11px; font-weight: 600; color: white;">Audio</div>
-                </button>
+            <div class="section-title">Daily Tools</div>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 11px; margin-bottom: 20px;">
+                <button class="quick-tile" onclick="alert('📅 Reading Plan coming soon!')"><span class="qt-ic">📅</span><span class="qt-lbl">Reading Plan</span></button>
+                <button class="quick-tile" onclick="alert('📝 Notes coming soon!')"><span class="qt-ic">📝</span><span class="qt-lbl">Notes</span></button>
+                <button class="quick-tile" onclick="alert('🎧 Audio Bible coming soon!')"><span class="qt-ic">🎧</span><span class="qt-lbl">Audio</span></button>
             </div>
         </div>
 
@@ -429,7 +424,7 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
                 <textarea id="bioInput" class="search-box" placeholder="Tell us about yourself..." style="height: 100px; resize: vertical; font-family: inherit; margin-bottom: 24px;"></textarea>
 
                 <!-- Save Button -->
-                <button class="glass-btn" style="width: 100%; background: linear-gradient(135deg, rgba(76, 175, 80, 0.4), rgba(46, 125, 50, 0.3)); border: 2px solid rgba(76, 175, 80, 0.5); box-shadow: 0 4px 16px rgba(76, 175, 80, 0.3);" onclick="saveProfile()">💾 Save Profile</button>
+                <button class="glass-btn" style="width: 100%; background: linear-gradient(150deg, var(--accent), var(--accent-deep)); border: 1px solid rgba(255,255,255,.4); box-shadow: 0 6px 20px var(--accent-glow), 0 1px 3px rgba(255,255,255,.4) inset;" onclick="saveProfile()">💾 Save Profile</button>
             </div>
         </div>
 
@@ -445,23 +440,23 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
                 
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 24px;">
                     <!-- English -->
-                    <div class="language-card" onclick="changeLanguage('english')" data-lang="english" style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08)); backdrop-filter: blur(15px); border: 2px solid rgba(255, 255, 255, 0.25); border-radius: 16px; padding: 16px 12px; cursor: pointer; transition: all 0.3s; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); position: relative; text-align: center;">
-                        <div style="font-size: 32px; margin-bottom: 8px;">🇬🇧</div>
-                        <div style="color: white; font-size: 13px; font-weight: 600;">English</div>
+                    <div class="language-card" onclick="changeLanguage('english')" data-lang="english">
+                        <div style="font-size: 30px; margin-bottom: 8px;">🇬🇧</div>
+                        <div style="color: white; font-size: 13px; font-weight: 700;">English</div>
                         <div class="theme-indicator" style="display: none;">✓</div>
                     </div>
                     
                     <!-- Hindi -->
-                    <div class="language-card" onclick="changeLanguage('hindi')" data-lang="hindi" style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08)); backdrop-filter: blur(15px); border: 2px solid rgba(255, 255, 255, 0.25); border-radius: 16px; padding: 16px 12px; cursor: pointer; transition: all 0.3s; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); position: relative; text-align: center;">
-                        <div style="font-size: 32px; margin-bottom: 8px;">🇮🇳</div>
-                        <div style="color: white; font-size: 13px; font-weight: 600;">हिन्दी</div>
+                    <div class="language-card" onclick="changeLanguage('hindi')" data-lang="hindi">
+                        <div style="font-size: 30px; margin-bottom: 8px;">🇮🇳</div>
+                        <div style="color: white; font-size: 13px; font-weight: 700;">हिन्दी</div>
                         <div class="theme-indicator" style="display: none;">✓</div>
                     </div>
                     
                     <!-- Assamese -->
-                    <div class="language-card" onclick="changeLanguage('assamese')" data-lang="assamese" style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08)); backdrop-filter: blur(15px); border: 2px solid rgba(255, 255, 255, 0.25); border-radius: 16px; padding: 16px 12px; cursor: pointer; transition: all 0.3s; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); position: relative; text-align: center;">
-                        <div style="font-size: 32px; margin-bottom: 8px;">🇮🇳</div>
-                        <div style="color: white; font-size: 13px; font-weight: 600;">অসমীয়া</div>
+                    <div class="language-card" onclick="changeLanguage('assamese')" data-lang="assamese">
+                        <div style="font-size: 30px; margin-bottom: 8px;">🇮🇳</div>
+                        <div style="color: white; font-size: 13px; font-weight: 700;">অসমীয়া</div>
                         <div class="theme-indicator" style="display: none;">✓</div>
                     </div>
                 </div>
