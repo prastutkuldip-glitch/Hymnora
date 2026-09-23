@@ -108,8 +108,12 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .theme-card { background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08)); backdrop-filter: blur(15px); border: 2px solid rgba(255, 255, 255, 0.25); border-radius: 16px; padding: 12px; cursor: pointer; transition: all 0.3s; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); position: relative; }
 .theme-card:active { transform: scale(0.96); }
 .theme-card.active { border-color: rgba(76, 175, 80, 0.8); box-shadow: 0 8px 24px rgba(76, 175, 80, 0.4); }
+.language-card { background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08)); backdrop-filter: blur(15px); border: 2px solid rgba(255, 255, 255, 0.25); border-radius: 16px; padding: 16px 12px; cursor: pointer; transition: all 0.3s; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); position: relative; text-align: center; }
+.language-card:active { transform: scale(0.96); }
+.language-card.active { border-color: rgba(76, 175, 80, 0.8); box-shadow: 0 8px 24px rgba(76, 175, 80, 0.4); }
 .theme-indicator { position: absolute; top: 8px; right: 8px; width: 28px; height: 28px; background: linear-gradient(135deg, rgba(76, 175, 80, 0.95), rgba(46, 125, 50, 0.95)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 16px; box-shadow: 0 4px 12px rgba(76, 175, 80, 0.5); }
 .theme-card.active .theme-indicator { display: flex !important; }
+.language-card.active .theme-indicator { display: flex !important; }
 
 /* Dynamic Theme Classes */
 body.theme-dark { background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%) !important; }
@@ -392,6 +396,35 @@ body.theme-light .header p, body.theme-light .book-info, body.theme-light .stat-
             <button class="glass-btn" onclick="showTab('profile')">← Back</button>
             <div class="section-title">⚙️ Settings</div>
             
+            <!-- Language Selection -->
+            <div style="margin-bottom: 24px;">
+                <h3 style="color: white; font-size: 16px; font-weight: 700; margin-bottom: 12px; text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);">🌐 Choose Language</h3>
+                <p style="color: rgba(255, 255, 255, 0.9); font-size: 13px; margin-bottom: 16px;">Select your preferred language</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 24px;">
+                    <!-- English -->
+                    <div class="language-card" onclick="changeLanguage('english')" data-lang="english" style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08)); backdrop-filter: blur(15px); border: 2px solid rgba(255, 255, 255, 0.25); border-radius: 16px; padding: 16px 12px; cursor: pointer; transition: all 0.3s; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); position: relative; text-align: center;">
+                        <div style="font-size: 32px; margin-bottom: 8px;">🇬🇧</div>
+                        <div style="color: white; font-size: 13px; font-weight: 600;">English</div>
+                        <div class="theme-indicator" style="display: none;">✓</div>
+                    </div>
+                    
+                    <!-- Hindi -->
+                    <div class="language-card" onclick="changeLanguage('hindi')" data-lang="hindi" style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08)); backdrop-filter: blur(15px); border: 2px solid rgba(255, 255, 255, 0.25); border-radius: 16px; padding: 16px 12px; cursor: pointer; transition: all 0.3s; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); position: relative; text-align: center;">
+                        <div style="font-size: 32px; margin-bottom: 8px;">🇮🇳</div>
+                        <div style="color: white; font-size: 13px; font-weight: 600;">हिन्दी</div>
+                        <div class="theme-indicator" style="display: none;">✓</div>
+                    </div>
+                    
+                    <!-- Assamese -->
+                    <div class="language-card" onclick="changeLanguage('assamese')" data-lang="assamese" style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08)); backdrop-filter: blur(15px); border: 2px solid rgba(255, 255, 255, 0.25); border-radius: 16px; padding: 16px 12px; cursor: pointer; transition: all 0.3s; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); position: relative; text-align: center;">
+                        <div style="font-size: 32px; margin-bottom: 8px;">🇮🇳</div>
+                        <div style="color: white; font-size: 13px; font-weight: 600;">অসমীয়া</div>
+                        <div class="theme-indicator" style="display: none;">✓</div>
+                    </div>
+                </div>
+            </div>
+            
             <div style="margin-bottom: 20px;">
                 <h3 style="color: white; font-size: 16px; font-weight: 700; margin-bottom: 12px; text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);">🎨 Choose Theme</h3>
                 <p style="color: rgba(255, 255, 255, 0.9); font-size: 13px; margin-bottom: 16px;">Select your preferred background theme</p>
@@ -478,10 +511,109 @@ let favorites=JSON.parse(localStorage.getItem('favorites')||'[]');
 let longPressTimer,longPressVerse;
 let profileData=JSON.parse(localStorage.getItem('profileData')||'{"name":"Guest User","bio":"No bio yet","image":""}');
 let currentTheme=localStorage.getItem('currentTheme')||'theme';
+let currentLanguage=localStorage.getItem('currentLanguage')||'english';
 
-async function loadBibleData(){if(bibleData)return bibleData;try{const urls=['https://cdn.jsdelivr.net/gh/thiagobodruk/bible@master/json/en_kjv.json'];for(const url of urls){try{const r=await fetch(url);if(r.ok){bibleData=await r.json();return bibleData;}}catch(e){continue;}}return null;}catch(e){return null;}}
+// Language Translations
+const TRANSLATIONS={
+    english:{
+        appName:'HYMNORA',
+        tagline:'Complete Bible & Worship',
+        home:'Home',
+        bible:'Bible',
+        hymns:'Hymns',
+        saved:'Saved',
+        profile:'Profile',
+        verseOfDay:'Verse of the Day',
+        startReading:'Start Reading',
+        exploreHymns:'Explore Hymns',
+        oldTestament:'Old Testament',
+        newTestament:'New Testament',
+        chapters:'Chapters',
+        back:'Back',
+        verse:'Verse',
+        paragraph:'Paragraph',
+        favorites:'Favorites',
+        bookmarks:'Bookmarks',
+        editProfile:'Edit Profile',
+        settings:'Settings',
+        choosetheme:'Choose Theme',
+        chooseLanguage:'Choose Language',
+        name:'Name',
+        bio:'Bio',
+        saveProfile:'Save Profile',
+        loading:'Loading...',
+        searchBooks:'Search books...'
+    },
+    hindi:{
+        appName:'HYMNORA',
+        tagline:'संपूर्ण बाइबिल और उपासना',
+        home:'होम',
+        bible:'बाइबिल',
+        hymns:'भजन',
+        saved:'सहेजे गए',
+        profile:'प्रोफ़ाइल',
+        verseOfDay:'आज का पद',
+        startReading:'पढ़ना शुरू करें',
+        exploreHymns:'भजन देखें',
+        oldTestament:'पुराना नियम',
+        newTestament:'नया नियम',
+        chapters:'अध्याय',
+        back:'वापस',
+        verse:'पद',
+        paragraph:'पैराग्राफ',
+        favorites:'पसंदीदा',
+        bookmarks:'बुकमार्क',
+        editProfile:'प्रोफ़ाइल संपादित करें',
+        settings:'सेटिंग्स',
+        choosetheme:'थीम चुनें',
+        chooseLanguage:'भाषा चुनें',
+        name:'नाम',
+        bio:'जीवनी',
+        saveProfile:'प्रोफ़ाइल सहेजें',
+        loading:'लोड हो रहा है...',
+        searchBooks:'पुस्तकें खोजें...'
+    },
+    assamese:{
+        appName:'HYMNORA',
+        tagline:'সম্পূৰ্ণ বাইবেল আৰু উপাসনা',
+        home:'হোম',
+        bible:'বাইবেল',
+        hymns:'স্তুতি',
+        saved:'সংৰক্ষিত',
+        profile:'প্ৰ'ফাইল',
+        verseOfDay:'আজিৰ পদ',
+        startReading:'পঢ়া আৰম্ভ কৰক',
+        exploreHymns:'স্তুতি চাওক',
+        oldTestament:'পুৰণি নিয়ম',
+        newTestament:'নতুন নিয়ম',
+        chapters:'অধ্যায়',
+        back:'উভতি যাওক',
+        verse:'পদ',
+        paragraph:'অনুচ্ছেদ',
+        favorites:'প্ৰিয়',
+        bookmarks:'বুকমাৰ্ক',
+        editProfile:'প্ৰ'ফাইল সম্পাদনা কৰক',
+        settings:'ছেটিংছ',
+        choosetheme:'থিম বাছনি কৰক',
+        chooseLanguage:'ভাষা বাছনি কৰক',
+        name:'নাম',
+        bio:'জীৱনী',
+        saveProfile:'প্ৰ'ফাইল সংৰক্ষণ কৰক',
+        loading:'লোড হৈ আছে...',
+        searchBooks:'কিতাপ সন্ধান কৰক...'
+    }
+};
 
-function init(){renderBooks();renderHymns();renderFavorites();loadBibleData();loadProfile();applyTheme();updateNavProfilePic();}
+// Bible API URLs for different languages
+const BIBLE_APIS={
+    english:'https://cdn.jsdelivr.net/gh/thiagobodruk/bible@master/json/en_kjv.json',
+    hindi:'https://cdn.jsdelivr.net/gh/aruljohn/Bible-kjv@master/Hindi.json',
+    assamese:'https://getbible.net/v2/assamese.json'
+};
+
+async function loadBibleData(){if(bibleData)return bibleData;try{const apiUrl=BIBLE_APIS[currentLanguage]||BIBLE_APIS.english;const urls=[apiUrl];for(const url of urls){try{const r=await fetch(url);if(r.ok){bibleData=await r.json();return bibleData;}}catch(e){continue;}}return null;}catch(e){return null;}}
+
+function init(){renderBooks();renderHymns();renderFavorites();loadBibleData();loadProfile();applyTheme();updateNavProfilePic();updateAllText();}
 
 // Profile Functions
 function loadProfile(){
@@ -540,6 +672,7 @@ function saveProfile(){
 function showSettings(){
     showScreen('settingsScreen');
     updateThemeIndicator();
+    updateLanguageIndicator();
 }
 
 // Theme Functions
@@ -577,7 +710,37 @@ function updateThemeIndicator(){
     });
 }
 
-function init(){renderBooks();renderHymns();renderFavorites();loadBibleData();loadProfile();applyTheme();updateNavProfilePic();}
+// Language Functions
+function changeLanguage(lang){
+    currentLanguage=lang;
+    localStorage.setItem('currentLanguage',lang);
+    bibleData=null;
+    loadBibleData();
+    updateAllText();
+    updateLanguageIndicator();
+}
+
+function updateAllText(){
+    const t=TRANSLATIONS[currentLanguage];
+    document.querySelector('.header h1').textContent=t.appName;
+    document.querySelector('.header p').textContent=t.tagline;
+    document.querySelectorAll('.nav-item div:last-child')[0].textContent=t.home;
+    document.querySelectorAll('.nav-item div:last-child')[1].textContent=t.bible;
+    document.querySelectorAll('.nav-item div:last-child')[2].textContent=t.hymns;
+    document.querySelectorAll('.nav-item div:last-child')[3].textContent=t.saved;
+    document.querySelectorAll('.nav-item div:last-child')[4].textContent=t.profile;
+}
+
+function updateLanguageIndicator(){
+    document.querySelectorAll('.language-card').forEach(card=>{
+        card.classList.remove('active');
+        if(card.getAttribute('data-lang')===currentLanguage){
+            card.classList.add('active');
+        }
+    });
+}
+
+function init(){renderBooks();renderHymns();renderFavorites();loadBibleData();loadProfile();applyTheme();updateNavProfilePic();updateAllText();}
 
 function renderBooks(){document.getElementById('otBooks').innerHTML=BOOKS.OT.map(b=>`<div class="book-card" data-name="${b.n.toLowerCase()}" onclick="showChapters('${b.n}',${b.c},'${b.abbr}')"><div class="book-name">${b.n}</div><div class="book-info">${b.c} Ch</div></div>`).join('');document.getElementById('ntBooks').innerHTML=BOOKS.NT.map(b=>`<div class="book-card" data-name="${b.n.toLowerCase()}" onclick="showChapters('${b.n}',${b.c},'${b.abbr}')"><div class="book-name">${b.n}</div><div class="book-info">${b.c} Ch</div></div>`).join('');}
 
