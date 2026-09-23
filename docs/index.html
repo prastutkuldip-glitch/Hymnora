@@ -11,8 +11,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 
 .glass-container { position: relative; max-width: 430px; margin: 0 auto; height: 100vh; background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(20px); display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 0 40px rgba(0, 0, 0, 0.2); }
 
-.status-bar { background: rgba(0, 0, 0, 0.25); backdrop-filter: blur(10px); color: white; padding: 6px 20px; display: flex; justify-content: space-between; font-size: 13px; font-weight: 500; flex-shrink: 0; }
-
 .header { background: linear-gradient(135deg, rgba(102, 126, 234, 0.95), rgba(118, 75, 162, 0.95)); backdrop-filter: blur(25px); padding: 16px 20px; position: sticky; top: 0; flex-shrink: 0; z-index: 999; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); display: flex; align-items: center; gap: 12px; }
 .header.scrolled { padding: 10px 20px; box-shadow: 0 6px 30px rgba(0, 0, 0, 0.25); }
 
@@ -125,7 +123,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 </head>
 <body>
     <div class="glass-container">
-        <div class="status-bar"><span>⏰ <span id="time"></span></span><span>📶 5G 🔋 100%</span></div>
         <div class="header">
             <img src="logo.png" alt="HYMNORA" class="header-logo" id="headerLogo" onerror="this.style.display='none'">
             <div class="header-text">
@@ -257,8 +254,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     </div>
 
     <script>
-function updateTime(){const now=new Date();document.getElementById('time').textContent=now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});}updateTime();setInterval(updateTime,1000);
-
 const BOOKS={OT:[{n:'Genesis',c:50,abbr:'gen'},{n:'Exodus',c:40,abbr:'exo'},{n:'Leviticus',c:27,abbr:'lev'},{n:'Numbers',c:36,abbr:'num'},{n:'Deuteronomy',c:34,abbr:'deu'},{n:'Joshua',c:24,abbr:'jos'},{n:'Judges',c:21,abbr:'jdg'},{n:'Ruth',c:4,abbr:'rut'},{n:'1 Samuel',c:31,abbr:'1sa'},{n:'2 Samuel',c:24,abbr:'2sa'},{n:'1 Kings',c:22,abbr:'1ki'},{n:'2 Kings',c:25,abbr:'2ki'},{n:'1 Chronicles',c:29,abbr:'1ch'},{n:'2 Chronicles',c:36,abbr:'2ch'},{n:'Ezra',c:10,abbr:'ezr'},{n:'Nehemiah',c:13,abbr:'neh'},{n:'Esther',c:10,abbr:'est'},{n:'Job',c:42,abbr:'job'},{n:'Psalms',c:150,abbr:'psa'},{n:'Proverbs',c:31,abbr:'pro'},{n:'Ecclesiastes',c:12,abbr:'ecc'},{n:'Song of Solomon',c:8,abbr:'sol'},{n:'Isaiah',c:66,abbr:'isa'},{n:'Jeremiah',c:52,abbr:'jer'},{n:'Lamentations',c:5,abbr:'lam'},{n:'Ezekiel',c:48,abbr:'eze'},{n:'Daniel',c:12,abbr:'dan'},{n:'Hosea',c:14,abbr:'hos'},{n:'Joel',c:3,abbr:'joe'},{n:'Amos',c:9,abbr:'amo'},{n:'Obadiah',c:1,abbr:'oba'},{n:'Jonah',c:4,abbr:'jon'},{n:'Micah',c:7,abbr:'mic'},{n:'Nahum',c:3,abbr:'nah'},{n:'Habakkuk',c:3,abbr:'hab'},{n:'Zephaniah',c:3,abbr:'zep'},{n:'Haggai',c:2,abbr:'hag'},{n:'Zechariah',c:14,abbr:'zec'},{n:'Malachi',c:4,abbr:'mal'}],NT:[{n:'Matthew',c:28,abbr:'mat'},{n:'Mark',c:16,abbr:'mar'},{n:'Luke',c:24,abbr:'luk'},{n:'John',c:21,abbr:'joh'},{n:'Acts',c:28,abbr:'act'},{n:'Romans',c:16,abbr:'rom'},{n:'1 Corinthians',c:16,abbr:'1co'},{n:'2 Corinthians',c:13,abbr:'2co'},{n:'Galatians',c:6,abbr:'gal'},{n:'Ephesians',c:6,abbr:'eph'},{n:'Philippians',c:4,abbr:'phi'},{n:'Colossians',c:4,abbr:'col'},{n:'1 Thessalonians',c:5,abbr:'1th'},{n:'2 Thessalonians',c:3,abbr:'2th'},{n:'1 Timothy',c:6,abbr:'1ti'},{n:'2 Timothy',c:4,abbr:'2ti'},{n:'Titus',c:3,abbr:'tit'},{n:'Philemon',c:1,abbr:'phm'},{n:'Hebrews',c:13,abbr:'heb'},{n:'James',c:5,abbr:'jas'},{n:'1 Peter',c:5,abbr:'1pe'},{n:'2 Peter',c:3,abbr:'2pe'},{n:'1 John',c:5,abbr:'1jo'},{n:'2 John',c:1,abbr:'2jo'},{n:'3 John',c:1,abbr:'3jo'},{n:'Jude',c:1,abbr:'jud'},{n:'Revelation',c:22,abbr:'rev'}]};
 
 const HYMNS=[{title:"Amazing Grace",text:"A hymn about divine mercy and redemption. Theme: God's grace saves us from sin and transforms our lives."},{title:"How Great Thou Art",text:"A worship song celebrating God's majesty. Theme: Observing nature's wonders leads us to praise God's greatness."},{title:"Blessed Assurance",text:"A hymn expressing confidence in salvation. Theme: Joy in knowing Jesus, filled with the Holy Spirit."},{title:"Great Is Thy Faithfulness",text:"About God's unchanging nature. Theme: God's mercies are new every morning, His faithfulness endures forever."},{title:"It Is Well With My Soul",text:"A hymn of peace during trials. Theme: Finding spiritual peace and trusting God through all circumstances."},{title:"Holy, Holy, Holy",text:"A trinitarian worship hymn. Theme: Praising the holy Trinity in perfect unity and glory."},{title:"Rock of Ages",text:"About finding refuge in Christ. Theme: Jesus as our shelter, cleansing us from sin."},{title:"What a Friend We Have in Jesus",text:"About prayer. Theme: Jesus as our faithful friend who bears our burdens and hears our prayers."}];
