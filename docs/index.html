@@ -456,7 +456,13 @@ body.theme-light .header p, body.theme-light .book-info, body.theme-light .stat-
             <div class="nav-item" onclick="showTab('bible')"><div class="nav-icon">📖</div><div>Bible</div></div>
             <div class="nav-item" onclick="showTab('hymns')"><div class="nav-icon">🎵</div><div>Hymns</div></div>
             <div class="nav-item" onclick="showTab('favorites')"><div class="nav-icon">❤️</div><div>Saved</div></div>
-            <div class="nav-item" onclick="showTab('profile')"><div class="nav-icon">👤</div><div>Profile</div></div>
+            <div class="nav-item" onclick="showTab('profile')">
+                <div class="nav-icon" style="position: relative;">
+                    <span id="navProfileIcon">👤</span>
+                    <img id="navProfileImg" src="" alt="Profile" style="width: 20px; height: 20px; border-radius: 50%; object-fit: cover; display: none; border: 1px solid rgba(255, 255, 255, 0.5);">
+                </div>
+                <div>Profile</div>
+            </div>
         </div>
     </div>
 
@@ -475,7 +481,7 @@ let currentTheme=localStorage.getItem('currentTheme')||'theme';
 
 async function loadBibleData(){if(bibleData)return bibleData;try{const urls=['https://cdn.jsdelivr.net/gh/thiagobodruk/bible@master/json/en_kjv.json'];for(const url of urls){try{const r=await fetch(url);if(r.ok){bibleData=await r.json();return bibleData;}}catch(e){continue;}}return null;}catch(e){return null;}}
 
-function init(){renderBooks();renderHymns();renderFavorites();loadBibleData();loadProfile();applyTheme();}
+function init(){renderBooks();renderHymns();renderFavorites();loadBibleData();loadProfile();applyTheme();updateNavProfilePic();}
 
 // Profile Functions
 function loadProfile(){
@@ -509,6 +515,7 @@ function handleProfilePicUpload(event){
             document.getElementById('editProfileImage').style.display='block';
             document.getElementById('editProfilePlaceholder').style.display='none';
             profileData.image=imgSrc;
+            updateNavProfilePic();
         };
         reader.readAsDataURL(file);
     }
@@ -522,6 +529,7 @@ function saveProfile(){
         profileData.bio=bio||'No bio yet';
         localStorage.setItem('profileData',JSON.stringify(profileData));
         loadProfile();
+        updateNavProfilePic();
         alert('✅ Profile saved successfully!');
         showTab('profile');
     }else{
@@ -569,7 +577,7 @@ function updateThemeIndicator(){
     });
 }
 
-function init(){renderBooks();renderHymns();renderFavorites();loadBibleData();loadProfile();applyTheme();}
+function init(){renderBooks();renderHymns();renderFavorites();loadBibleData();loadProfile();applyTheme();updateNavProfilePic();}
 
 function renderBooks(){document.getElementById('otBooks').innerHTML=BOOKS.OT.map(b=>`<div class="book-card" data-name="${b.n.toLowerCase()}" onclick="showChapters('${b.n}',${b.c},'${b.abbr}')"><div class="book-name">${b.n}</div><div class="book-info">${b.c} Ch</div></div>`).join('');document.getElementById('ntBooks').innerHTML=BOOKS.NT.map(b=>`<div class="book-card" data-name="${b.n.toLowerCase()}" onclick="showChapters('${b.n}',${b.c},'${b.abbr}')"><div class="book-name">${b.n}</div><div class="book-info">${b.c} Ch</div></div>`).join('');}
 
@@ -596,6 +604,20 @@ function showTab(tab){
     else if(tab==='hymns')showScreen('hymnsScreen');
     else if(tab==='favorites'){renderFavorites();showScreen('favoritesScreen');}
     else if(tab==='profile'){loadProfile();showScreen('profileScreen');}
+    updateNavProfilePic();
+}
+
+function updateNavProfilePic(){
+    const navProfileIcon=document.getElementById('navProfileIcon');
+    const navProfileImg=document.getElementById('navProfileImg');
+    if(profileData.image){
+        navProfileImg.src=profileData.image;
+        navProfileImg.style.display='block';
+        navProfileIcon.style.display='none';
+    }else{
+        navProfileImg.style.display='none';
+        navProfileIcon.style.display='block';
+    }
 }
 
 function showChapters(book,total,abbr){curBook=book;document.getElementById('chapTitle').innerHTML=book;const grid=document.getElementById('chaptersGrid');grid.innerHTML='';for(let i=1;i<=total;i++){const btn=document.createElement('button');btn.className='chapter-btn';btn.textContent=i;btn.onclick=()=>loadVerses(book,i,abbr);grid.appendChild(btn);}showScreen('chaptersScreen');}
