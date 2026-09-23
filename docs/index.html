@@ -613,7 +613,7 @@ const BIBLE_APIS={
 
 async function loadBibleData(){if(bibleData)return bibleData;try{const apiUrl=BIBLE_APIS[currentLanguage]||BIBLE_APIS.english;const urls=[apiUrl];for(const url of urls){try{const r=await fetch(url);if(r.ok){bibleData=await r.json();return bibleData;}}catch(e){continue;}}return null;}catch(e){return null;}}
 
-function init(){renderBooks();renderHymns();renderFavorites();loadBibleData();loadProfile();applyTheme();updateNavProfilePic();updateAllText();}
+function init(){renderBooks();renderHymns();renderFavorites();loadBibleData();loadProfile();applyTheme();updateNavProfilePic();}
 
 // Profile Functions
 function loadProfile(){
@@ -724,11 +724,13 @@ function updateAllText(){
     const t=TRANSLATIONS[currentLanguage];
     document.querySelector('.header h1').textContent=t.appName;
     document.querySelector('.header p').textContent=t.tagline;
-    document.querySelectorAll('.nav-item div:last-child')[0].textContent=t.home;
-    document.querySelectorAll('.nav-item div:last-child')[1].textContent=t.bible;
-    document.querySelectorAll('.nav-item div:last-child')[2].textContent=t.hymns;
-    document.querySelectorAll('.nav-item div:last-child')[3].textContent=t.saved;
-    document.querySelectorAll('.nav-item div:last-child')[4].textContent=t.profile;
+    // Update navigation text without removing onclick handlers
+    const navTexts=document.querySelectorAll('.nav-item > div:last-child');
+    if(navTexts[0])navTexts[0].textContent=t.home;
+    if(navTexts[1])navTexts[1].textContent=t.bible;
+    if(navTexts[2])navTexts[2].textContent=t.hymns;
+    if(navTexts[3])navTexts[3].textContent=t.saved;
+    if(navTexts[4])navTexts[4].textContent=t.profile;
 }
 
 function updateLanguageIndicator(){
@@ -740,7 +742,7 @@ function updateLanguageIndicator(){
     });
 }
 
-function init(){renderBooks();renderHymns();renderFavorites();loadBibleData();loadProfile();applyTheme();updateNavProfilePic();updateAllText();}
+function init(){renderBooks();renderHymns();renderFavorites();loadBibleData();loadProfile();applyTheme();updateNavProfilePic();}
 
 function renderBooks(){document.getElementById('otBooks').innerHTML=BOOKS.OT.map(b=>`<div class="book-card" data-name="${b.n.toLowerCase()}" onclick="showChapters('${b.n}',${b.c},'${b.abbr}')"><div class="book-name">${b.n}</div><div class="book-info">${b.c} Ch</div></div>`).join('');document.getElementById('ntBooks').innerHTML=BOOKS.NT.map(b=>`<div class="book-card" data-name="${b.n.toLowerCase()}" onclick="showChapters('${b.n}',${b.c},'${b.abbr}')"><div class="book-name">${b.n}</div><div class="book-info">${b.c} Ch</div></div>`).join('');}
 
