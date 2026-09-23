@@ -138,11 +138,13 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
         <div class="screen active" id="homeScreen">
             <!-- Hero Card - Main Visual Focus -->
             <div class="compact-hero" style="padding: 32px 28px; border-radius: 30px; margin-bottom: 20px;">
-                <div style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08)); border-radius: 20px; padding: 40px 20px; margin-bottom: 24px; text-align: center;">
-                    <div class="bubble-icon" style="width: 100px; height: 100px; font-size: 56px; margin: 0 auto;">📖</div>
+                <!-- 3D Glassmorphism Warrior Image Card -->
+                <div style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08)); backdrop-filter: blur(20px); border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 24px; padding: 20px; margin-bottom: 24px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(255, 255, 255, 0.1) inset, 0 0 30px rgba(255, 255, 255, 0.2); animation: float 4s ease-in-out infinite;">
+                    <img src="warrior.png" alt="Warrior of Faith" style="width: 100%; height: auto; border-radius: 20px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); display: block;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="bubble-icon" style="width: 100px; height: 100px; font-size: 56px; margin: 0 auto; display: none;">🗡️</div>
                 </div>
                 <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 12px;">Worship in Every Moment</h2>
-                <p style="font-size: 15px; line-height: 1.6; margin-bottom: 24px;">Experience the complete Bible with hymns and timeless worship.</p>
+                <p style="font-size: 15px; line-height: 1.6; margin-bottom: 24px;">Be a warrior of faith. Experience the complete Bible with hymns and timeless worship.</p>
                 <div style="display: flex; gap: 12px;">
                     <button class="glass-btn" style="flex: 1; padding: 16px; border-radius: 16px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2));" onclick="showTab('bible')">Start Reading</button>
                     <button class="glass-btn" style="flex: 1; padding: 16px; border-radius: 16px;" onclick="showTab('hymns')">Explore Hymns</button>
