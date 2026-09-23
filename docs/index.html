@@ -657,9 +657,58 @@ const BOOK_NAMES={
 };
 
 function stripHtml(s){return String(s).replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim();}
+function flattenText(c){
+    if(c==null)return '';
+    if(typeof c==='string')return c;
+    if(typeof c==='number')return '';
+    if(Array.isArray(c))return c.map(flattenText).filter(Boolean).join(' ');
+    if(typeof c==='object'){
+        // keep real text, ignore metadata such as {noteId: 3}
+        if(c.text!==undefined)return flattenText(c.text);
+        if(c.content!==undefined)return flattenText(c.content);
+        return '';
+    }
+    return String(c);
+}
+function verseText(v){
+    const c=[v.text,v.content,v.value,v.t].find(x=>x!==undefined);
+    return stripHtml(flattenText(c));
+}
 function parseGetBible(d){if(d&&Array.isArray(d.verses))return d.verses.map(v=>stripHtml(v.text));return null;}
-function parseBolls(d){if(Array.isArray(d)&&d.length&&d[0].text!==undefined)return d.map(v=>stripHtml(v.text));return null;}
-function parseWldeh(d){if(d&&Array.isArray(d.data))return d.data.map(v=>stripHtml(v.text));return null;}
+function parseBolls(d){if(Array.isArray(d)&&d.length&&d[0]&&d[0].text!==undefined)return d.map(v=>stripHtml(v.text));return null;}
+function parseWldeh(d){if(d&&Array.isArray(d.data))return d.data.map(v=>stripHtml(flattenText(v.text)));return null;}
+function parseHelloao(d){
+    const content=d&&d.chapter&&d.chapter.content;
+    if(!Array.isArray(content))return null;
+    const out=[];
+    content.forEach(n=>{if(n&&n.type==='verse')out.push(stripHtml(flattenText(n.content)));});
+    return out.length?out:null;
+}
+// Last-resort parser: walks any JSON and picks the biggest array that looks like verses.
+// Lets an unknown provider still work instead of failing outright.
+function parseAny(d){
+    for(const p of [parseGetBible,parseBolls,parseWldeh,parseHelloao]){
+        try{const v=p(d);if(v&&v.length)return v;}catch(e){}
+    }
+    let best=null;
+    const visit=(node,depth)=>{
+        if(!node||depth>7)return;
+        if(Array.isArray(node)){
+            if(node.length&&typeof node[0]==='object'&&node[0]!==null){
+                const keys=Object.keys(node[0]).map(k=>k.toLowerCase());
+                const hasNum=keys.some(k=>['verse','number','verseid','v','num'].includes(k));
+                const hasTxt=keys.some(k=>['text','content','t','value'].includes(k));
+                if(hasNum&&hasTxt&&(!best||node.length>best.length))best=node;
+            }
+            node.forEach(n=>visit(n,depth+1));
+            return;
+        }
+        if(typeof node==='object')Object.values(node).forEach(v=>visit(v,depth+1));
+    };
+    try{visit(d,0);}catch(e){}
+    if(best)return best.map(verseText);
+    return null;
+}
 
 // Bible versions. Each version tries its sources in order until one returns verses.
 // bn = book number 1-66, ch = chapter, bk = book object {n,c,abbr}
@@ -678,9 +727,12 @@ const BIBLE_VERSIONS={
         {name:'wldeh-hi-irv',url:(bn,ch,bk)=>`https://cdn.jsdelivr.net/gh/wldeh/bible-api/bibles/hi-irv/books/${bk.abbr}/chapters/${ch}.json`,parse:parseWldeh}
     ]},
     assamese:{label:'অসমীয়া বাইবেল',short:'AS',sources:[
+        {name:'helloao-asm',url:(bn,ch,bk)=>`https://bible.helloao.org/api/asm/${bk.usfm}/${ch}.json`,parse:parseHelloao},
+        {name:'helloao-as-asm',url:(bn,ch,bk)=>`https://bible.helloao.org/api/as-asm/${bk.usfm}/${ch}.json`,parse:parseHelloao},
+        {name:'helloao-BSB-asm',url:(bn,ch,bk)=>`https://bible.helloao.org/api/asmBSI/${bk.usfm}/${ch}.json`,parse:parseHelloao},
         {name:'getbible-assamese',url:(bn,ch)=>`https://api.getbible.net/v2/assamese/${bn}/${ch}.json`,parse:parseGetBible},
         {name:'bolls-ASM',url:(bn,ch)=>`https://bolls.life/get-text/ASM/${bn}/${ch}/`,parse:parseBolls},
-        {name:'wldeh-as',url:(bn,ch,bk)=>`https://cdn.jsdelivr.net/gh/wldeh/bible-api/bibles/as-asm/books/${bk.abbr}/chapters/${ch}.json`,parse:parseWldeh}
+        {name:'wldeh-as-asm',url:(bn,ch,bk)=>`https://cdn.jsdelivr.net/gh/wldeh/bible-api/bibles/as-asm/books/${String(bk.usfm).toLowerCase()}/chapters/${ch}.json`,parse:parseWldeh}
     ]}
 };
 
@@ -716,6 +768,39 @@ const CATALOGS={
         },
         chapter:(key,bn,ch)=>`https://bolls.life/get-text/${key}/${bn}/${ch}/`,
         parse:parseBolls
+    },
+    // Free Use Bible API — built from eBible.org, very wide language coverage
+    helloao:{
+        url:'https://bible.helloao.org/api/available_translations.json',
+        find:(data,re)=>{
+            const list=(data&&(data.translations||data))||[];
+            const out=[];
+            (Array.isArray(list)?list:Object.values(list)).forEach(t=>{
+                if(!t)return;
+                const hay=[t.languageEnglishName,t.languageName,t.language,t.name,t.englishName].filter(x=>typeof x==='string').join(' ');
+                if(t.id&&re.test(hay))out.push({key:t.id,label:t.englishName||t.name||t.id});
+            });
+            return out;
+        },
+        chapter:(key,bn,ch,bk)=>`https://bible.helloao.org/api/${key}/${bk.usfm}/${ch}.json`,
+        parse:parseHelloao
+    },
+    // wldeh/bible-api dataset on jsDelivr — many Indian-language Bibles
+    wldeh:{
+        url:'https://cdn.jsdelivr.net/gh/wldeh/bible-api/bibles/bibles.json',
+        find:(data,re)=>{
+            const list=Array.isArray(data)?data:Object.values(data||{});
+            const out=[];
+            list.forEach(t=>{
+                if(!t)return;
+                const lang=[t.language&&t.language.name,t.language&&t.language.nameLocal,typeof t.language==='string'?t.language:'',t.languageName].filter(Boolean).join(' ');
+                const id=t.id||t.version;
+                if(id&&re.test(lang))out.push({key:id,label:t.name||id});
+            });
+            return out;
+        },
+        chapter:(key,bn,ch,bk)=>`https://cdn.jsdelivr.net/gh/wldeh/bible-api/bibles/${key}/books/${String(bk.usfm||'').toLowerCase()}/chapters/${ch}.json`,
+        parse:parseWldeh
     }
 };
 
@@ -741,11 +826,22 @@ async function discoverSources(version){
 
 function toSource(d){
     const cat=CATALOGS[d.provider];
-    return {name:d.provider+':'+d.key,url:(bn,ch)=>cat.chapter(d.key,bn,ch),parse:cat.parse};
+    // bk must be forwarded: helloao/wldeh build their URLs from the USFM book code
+    return {name:d.provider+':'+d.key,url:(bn,ch,bk)=>cat.chapter(d.key,bn,ch,bk),parse:cat.parse};
 }
 
+// Standard USFM book codes (required by helloao / wldeh style APIs)
+const USFM={
+    OT:['GEN','EXO','LEV','NUM','DEU','JOS','JDG','RUT','1SA','2SA','1KI','2KI','1CH','2CH','EZR','NEH','EST','JOB','PSA','PRO','ECC','SNG','ISA','JER','LAM','EZK','DAN','HOS','JOL','AMO','OBA','JON','MIC','NAM','HAB','ZEP','HAG','ZEC','MAL'],
+    NT:['MAT','MRK','LUK','JHN','ACT','ROM','1CO','2CO','GAL','EPH','PHP','COL','1TH','2TH','1TI','2TI','TIT','PHM','HEB','JAS','1PE','2PE','1JN','2JN','3JN','JUD','REV']
+};
+
 const ALL_BOOKS=[];
-function buildBookIndex(){ALL_BOOKS.length=0;BOOKS.OT.forEach((b,i)=>ALL_BOOKS.push(Object.assign({},b,{num:i+1,part:'OT',idx:i})));BOOKS.NT.forEach((b,i)=>ALL_BOOKS.push(Object.assign({},b,{num:40+i,part:'NT',idx:i})));}
+function buildBookIndex(){
+    ALL_BOOKS.length=0;
+    BOOKS.OT.forEach((b,i)=>ALL_BOOKS.push(Object.assign({},b,{num:i+1,part:'OT',idx:i,usfm:USFM.OT[i]})));
+    BOOKS.NT.forEach((b,i)=>ALL_BOOKS.push(Object.assign({},b,{num:40+i,part:'NT',idx:i,usfm:USFM.NT[i]})));
+}
 
 function bookLabel(part,idx,englishName){
     const names=BOOK_NAMES[bibleVersion];
@@ -963,6 +1059,8 @@ function changeBibleVersion(version){
     localStorage.setItem('bibleVersion',version);
     renderBooks();
     updateVersionButtons();
+    // warm up: find out what this language offers before a chapter is opened
+    if(!cachedSources(version).length)discoverSources(version);
     // if a chapter is open, reload it in the new version
     if(curBookObj&&curChap)loadVerses(curBookObj.n,curChap,curBookObj.abbr);
 }
@@ -1043,7 +1141,10 @@ async function tryEachSource(list,bk,ch){
             }
             const r=await fetch(src.url(bk.num,ch,bk));
             if(!r.ok)continue;
-            const verses=src.parse(await r.json());
+            const data=await r.json();
+            let verses=null;
+            try{verses=src.parse?src.parse(data):null;}catch(e){}
+            if(!verses||!verses.length)verses=parseAny(data);
             if(verses&&verses.length)return {verses:verses,source:src.name};
         }catch(e){continue;}
     }
