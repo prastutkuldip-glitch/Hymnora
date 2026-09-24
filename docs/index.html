@@ -139,12 +139,26 @@ body { font-family: var(--font-ui); -webkit-font-smoothing: antialiased; -moz-os
 .search-box::placeholder { color: rgba(255, 255, 255, 0.65); }
 
 /* ULTRA PREMIUM 3D FLOATING NAVIGATION - RIGHT CORNER */
-.nav { position: fixed; bottom: 50%; right: 6px; transform: translateY(50%); width: auto; background: linear-gradient(150deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.14)); backdrop-filter: blur(30px) saturate(1.4); -webkit-backdrop-filter: blur(30px) saturate(1.4); border: 1px solid rgba(255, 255, 255, 0.35); border-radius: 20px; display: flex; flex-direction: column; z-index: 1000; padding: 6px 4px; gap: 4px; box-shadow: 0 10px 30px rgba(16,24,40,.28), 0 1px 3px rgba(255, 255, 255, 0.5) inset; animation: navFloat 5s ease-in-out infinite; }
+/* Dock holds the toggle arrow + the nav, and owns the floating drift so the
+   nav itself is free to use transform for sliding away. */
+/* pointer-events:none on the dock is essential — the dock box still spans the
+   area after the nav slides away, and without this it kept swallowing taps
+   meant for the content underneath. Children opt back in. */
+.nav-dock { position: fixed; top: 50%; right: 6px; transform: translateY(-50%); z-index: 1000; display: flex; flex-direction: column; align-items: center; gap: 7px; animation: navFloat 5s ease-in-out infinite; pointer-events: none; }
+@keyframes navFloat { 0%, 100% { transform: translateY(-50%) translateX(0px); } 50% { transform: translateY(-50%) translateX(-3px); } }
+
+/* Toggle arrow — always stays put so the nav can be brought back */
+.nav-toggle { pointer-events: auto; width: 30px; height: 30px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; padding: 0; border-radius: 50%; cursor: pointer; color: #fff; font-size: 17px; font-weight: 800; line-height: 1; background: linear-gradient(150deg, rgba(255,255,255,.34), rgba(255,255,255,.16)); backdrop-filter: blur(24px) saturate(1.4); -webkit-backdrop-filter: blur(24px) saturate(1.4); border: 1px solid rgba(255,255,255,.42); box-shadow: 0 6px 18px rgba(16,24,40,.28), 0 1px 3px rgba(255,255,255,.5) inset; transition: transform .25s var(--ease), background .25s var(--ease); -webkit-user-select:none; user-select:none; }
+.nav-toggle:active { transform: scale(.88); }
+.nav-toggle #navToggleIcon { display:block; transition: transform .35s var(--ease); }
+
+.nav { pointer-events: auto; width: auto; background: linear-gradient(150deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.14)); backdrop-filter: blur(30px) saturate(1.4); -webkit-backdrop-filter: blur(30px) saturate(1.4); border: 1px solid rgba(255, 255, 255, 0.35); border-radius: 20px; display: flex; flex-direction: column; padding: 6px 4px; gap: 4px; box-shadow: 0 10px 30px rgba(16,24,40,.28), 0 1px 3px rgba(255, 255, 255, 0.5) inset; transform-origin: right center; transition: transform .38s var(--ease), opacity .3s var(--ease); }
+
+/* Collapsed: slides off to the right and stops taking taps, freeing the screen */
+.nav.collapsed { transform: translateX(calc(100% + 14px)); opacity: 0; pointer-events: none; }
 
 /* Blur effect for content behind navigation */
 .nav::before { display: none; }
-
-@keyframes navFloat { 0%, 100% { transform: translateY(50%) translateX(0px); } 50% { transform: translateY(50%) translateX(-3px); } }
 
 .nav-item { flex: none; padding: 7px 5px; text-align: center; cursor: pointer; color: rgba(255, 255, 255, 0.75); transition: all 0.3s var(--ease); display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 7px; font-weight: 700; letter-spacing: 0.2px; border-radius: 13px; position: relative; min-width: 34px; background: transparent; }
 .nav-item.active { color: white; background: linear-gradient(150deg, rgba(255, 255, 255, 0.32), rgba(255, 255, 255, 0.16)); box-shadow: 0 3px 10px rgba(16,24,40,.18), 0 1px 3px rgba(255, 255, 255, 0.5) inset; }
@@ -597,8 +611,10 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
             <div id="churchContent"></div>
         </div>
 
-        <!-- Premium Floating Nav -->
-        <div class="nav">
+        <!-- Premium Floating Nav (collapsible via the arrow above it) -->
+        <div class="nav-dock" id="navDock">
+        <button class="nav-toggle" id="navToggle" onclick="toggleNav()" aria-label="Hide navigation" aria-expanded="true"><span id="navToggleIcon">›</span></button>
+        <div class="nav" id="navBar">
             <div class="nav-item active" data-tab="home" onclick="showTab('home')"><div class="nav-icon">🏠</div><div>Home</div></div>
             <div class="nav-item" data-tab="bible" onclick="showTab('bible')"><div class="nav-icon">📖</div><div>Bible</div></div>
             <div class="nav-item" data-tab="hymns" onclick="showTab('hymns')"><div class="nav-icon">🎵</div><div>Hymns</div></div>
@@ -617,6 +633,7 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
                 </div>
                 <div>Profile</div>
             </div>
+        </div>
         </div>
     </div>
 
@@ -1173,7 +1190,7 @@ function updateLanguageIndicator(){
     });
 }
 
-function init(){buildBookIndex();renderBooks();updateVersionButtons();renderHymns();renderFavorites();loadBibleData();loadProfile();applyTheme();updateNavProfilePic();}
+function init(){buildBookIndex();renderBooks();updateVersionButtons();renderHymns();renderFavorites();loadBibleData();loadProfile();applyTheme();updateNavProfilePic();restoreNavState();}
 
 function renderBooks(){
     if(!ALL_BOOKS.length)buildBookIndex();
@@ -1343,6 +1360,32 @@ function showTab(tab){
     else if(tab==='favorites'){renderFavorites();showScreen('favoritesScreen');}
     else if(tab==='profile'){loadProfile();showScreen('profileScreen');}
     updateNavProfilePic();
+}
+
+/* Collapsible navigation — the arrow slides the nav away so it stops covering
+   screen content. Preference is remembered between sessions. */
+function setNavCollapsed(collapsed){
+    const bar=document.getElementById('navBar');
+    const btn=document.getElementById('navToggle');
+    const icon=document.getElementById('navToggleIcon');
+    if(!bar||!btn||!icon)return;
+    bar.classList.toggle('collapsed',collapsed);
+    icon.textContent=collapsed?'‹':'›';
+    btn.setAttribute('aria-label',collapsed?'Show navigation':'Hide navigation');
+    btn.setAttribute('aria-expanded',collapsed?'false':'true');
+    try{localStorage.setItem('navCollapsed',collapsed?'1':'0');}catch(e){}
+}
+
+function toggleNav(){
+    const bar=document.getElementById('navBar');
+    if(!bar)return;
+    setNavCollapsed(!bar.classList.contains('collapsed'));
+}
+
+function restoreNavState(){
+    let collapsed=false;
+    try{collapsed=localStorage.getItem('navCollapsed')==='1';}catch(e){}
+    setNavCollapsed(collapsed);
 }
 
 function updateNavProfilePic(){
