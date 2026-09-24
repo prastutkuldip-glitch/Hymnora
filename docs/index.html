@@ -260,22 +260,49 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
 .album-name { font-size:17px; font-weight:800; color:#fff; letter-spacing:.2px; text-shadow:0 2px 10px rgba(0,0,0,.7); }
 .album-meta { font-size:11.5px; font-weight:600; color:rgba(255,255,255,.88); margin-top:3px; text-shadow:0 2px 8px rgba(0,0,0,.6); }
 .album-badge { position:absolute; top:12px; right:12px; min-width:26px; height:26px; padding:0 8px; border-radius:var(--r-pill); background:rgba(0,0,0,.55); backdrop-filter:blur(6px); border:1px solid rgba(255,255,255,.4); color:#fff; font-size:12px; font-weight:800; display:flex; align-items:center; justify-content:center; }
-.album-head { margin-bottom:12px; }
-.album-head-name { font-size:18px; font-weight:800; color:#fff; text-shadow:0 2px 8px rgba(0,0,0,.35); }
-.album-head-sub { font-size:12px; font-weight:600; color:rgba(255,255,255,.82); margin-top:2px; }
+/* Plate behind the album title so it stays readable over busy theme wallpapers */
+.album-head { margin-bottom:14px; padding:12px 16px; width:calc(100% - 46px); background:var(--glass-2); backdrop-filter:blur(16px) saturate(1.3); -webkit-backdrop-filter:blur(16px) saturate(1.3); border:1px solid var(--hair); border-radius:var(--r-md); box-shadow:var(--e1); }
+.album-head-name { font-size:18px; font-weight:800; color:#fff; letter-spacing:.2px; text-shadow:0 2px 8px rgba(0,0,0,.45); }
+.album-head-sub { font-size:12px; font-weight:600; color:rgba(255,255,255,.88); margin-top:3px; text-shadow:0 1px 6px rgba(0,0,0,.4); }
 
-.photo-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; padding-right:46px; }
-.photo-tile { position:relative; aspect-ratio:1; border-radius:12px; overflow:hidden; border:1px solid var(--hair); box-shadow:var(--e1); cursor:pointer; padding:0; background:linear-gradient(150deg,#2b3a67,#14182b); transition:transform .2s var(--ease); }
-.photo-tile img { width:100%; height:100%; object-fit:cover; display:block; }
-.photo-tile:active { transform:scale(.95); }
+/* Full-frame photo feed — whole photo, no square cropping */
+.photo-feed { display:flex; flex-direction:column; gap:16px; padding-right:46px; }
+/* min-height reserves space before the photo loads, so the scroll target is
+   reachable instead of being clamped up to the logo. Once the photo is in, the
+   .loaded class drops it to 0 so wide photos do not get navy letterbox bars. */
+.photo-frame { position:relative; display:block; width:100%; min-height:210px; padding:0; border:1px solid var(--hair); border-radius:var(--r-lg); overflow:hidden; cursor:pointer; background:linear-gradient(150deg,#2b3a67,#14182b); box-shadow:var(--e2); text-align:left; transition:transform .28s var(--ease), box-shadow .28s var(--ease); animation:photoReveal .6s var(--ease) both; line-height:0; }
+.photo-frame.loaded { min-height:0; }
+.photo-frame:active { transform:scale(.985); box-shadow:var(--e1); }
+.photo-frame img { width:100%; height:auto; display:block; }
+.photo-cap { position:absolute; left:0; right:0; bottom:0; padding:22px 14px 13px; background:linear-gradient(to top, rgba(0,0,0,.88), rgba(0,0,0,.25) 60%, transparent); color:#fff; font-size:12.5px; font-weight:600; letter-spacing:.2px; text-shadow:0 2px 8px rgba(0,0,0,.6); }
+.photo-count-chip { position:absolute; top:10px; right:10px; padding:3px 9px; border-radius:var(--r-pill); background:rgba(0,0,0,.5); backdrop-filter:blur(6px); border:1px solid rgba(255,255,255,.3); color:#fff; font-size:10.5px; font-weight:700; letter-spacing:.3px; }
+@keyframes photoReveal { from{opacity:0; transform:translateY(20px) scale(.97);} to{opacity:1; transform:none;} }
+
+/* Album open/close transition */
+@keyframes albumEnter { from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:none;} }
+.album-head { animation:albumEnter .45s var(--ease) both; }
+
 .video-card video { width:100%; aspect-ratio:16/9; display:block; background:#000; }
 
 /* Full-screen photo viewer */
-.lightbox { position:fixed; inset:0; z-index:2000; background:rgba(8,10,18,.94); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); display:none; align-items:center; justify-content:center; flex-direction:column; padding:22px; }
-.lightbox.show { display:flex; }
-.lightbox img { max-width:100%; max-height:76vh; border-radius:14px; box-shadow:0 20px 50px rgba(0,0,0,.6); }
-.lightbox-cap { color:#fff; font-size:13px; font-weight:600; margin-top:14px; text-align:center; text-shadow:0 2px 8px rgba(0,0,0,.5); }
-.lightbox-close { position:absolute; top:16px; right:16px; width:38px; height:38px; border-radius:50%; background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.4); color:#fff; font-size:18px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+.lightbox { position:fixed; inset:0; z-index:2000; background:rgba(8,10,18,.95); backdrop-filter:blur(14px) saturate(1.2); -webkit-backdrop-filter:blur(14px) saturate(1.2); display:none; align-items:center; justify-content:center; flex-direction:column; padding:22px; }
+.lightbox.show { display:flex; animation:lbFade .34s var(--ease) both; }
+@keyframes lbFade { from{opacity:0;} to{opacity:1;} }
+.lightbox img { max-width:100%; max-height:74vh; border-radius:14px; box-shadow:0 24px 60px rgba(0,0,0,.7); }
+.lightbox img.zoom-in { animation:lbZoom .42s var(--ease) both; }
+.lightbox img.slide-left { animation:lbSlideL .34s var(--ease) both; }
+.lightbox img.slide-right { animation:lbSlideR .34s var(--ease) both; }
+@keyframes lbZoom { from{opacity:0; transform:scale(.9);} to{opacity:1; transform:none;} }
+@keyframes lbSlideL { from{opacity:0; transform:translateX(38px);} to{opacity:1; transform:none;} }
+@keyframes lbSlideR { from{opacity:0; transform:translateX(-38px);} to{opacity:1; transform:none;} }
+.lightbox-cap { color:#fff; font-size:13.5px; font-weight:600; margin-top:16px; text-align:center; max-width:92%; text-shadow:0 2px 8px rgba(0,0,0,.5); }
+.lightbox-hint { color:rgba(255,255,255,.5); font-size:10.5px; font-weight:600; letter-spacing:.4px; margin-top:8px; text-transform:uppercase; }
+.lightbox-count { position:absolute; top:20px; left:18px; padding:5px 12px; border-radius:var(--r-pill); background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.3); color:#fff; font-size:12px; font-weight:800; letter-spacing:.4px; }
+.lightbox-close { position:absolute; top:16px; right:16px; width:38px; height:38px; border-radius:50%; background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.4); color:#fff; font-size:18px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:2; }
+.lb-arrow { position:absolute; top:50%; transform:translateY(-50%); width:42px; height:42px; border-radius:50%; background:rgba(255,255,255,.14); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,.34); color:#fff; font-size:24px; font-weight:800; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:2; transition:transform .2s var(--ease); }
+.lb-arrow:active { transform:translateY(-50%) scale(.88); }
+.lb-prev { left:12px; }
+.lb-next { right:12px; }
 
 .loading { text-align: center; padding: 50px 20px; }
 .spinner { width: 48px; height: 48px; border: 4px solid rgba(255, 255, 255, 0.2); border-top-color: white; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px; box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2); }
@@ -643,8 +670,12 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
         <!-- Photo viewer -->
         <div class="lightbox" id="lightbox" onclick="closeLightbox()">
             <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close">✕</button>
-            <img id="lightboxImg" src="" alt="">
+            <div class="lightbox-count" id="lightboxCount"></div>
+            <button class="lb-arrow lb-prev" id="lbPrev" onclick="lightboxStep(-1,event)" aria-label="Previous photo">‹</button>
+            <img id="lightboxImg" src="" alt="" onclick="event.stopPropagation()">
+            <button class="lb-arrow lb-next" id="lbNext" onclick="lightboxStep(1,event)" aria-label="Next photo">›</button>
             <div class="lightbox-cap" id="lightboxCap"></div>
+            <div class="lightbox-hint">Swipe to browse · tap outside to close</div>
         </div>
 
         <!-- Premium Floating Nav (collapsible via the arrow above it) -->
@@ -1368,12 +1399,33 @@ function setGalleryMode(m){galleryMode=m;openAlbum=null;renderGallery();}
 
 function galleryAlbums(){return (CHURCH.gallery&&CHURCH.gallery.albums)||[];}
 
+/* Full-frame photo feed — each photo shown whole at full width, scrolled
+   through like memories, with a staggered reveal. */
 function photoGridHtml(list){
     lightboxList=list;
-    return '<div class="photo-grid">'+list.map((p,i)=>
-        `<button class="photo-tile" onclick="openLightbox(${i})" aria-label="${escapeHtml(p.caption||'Photo')}">
-            <img src="${encodeURI(p.src)}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">
+    return '<div class="photo-feed">'+list.map((p,i)=>
+        `<button class="photo-frame" style="animation-delay:${i*70}ms" onclick="openLightbox(${i})" aria-label="${escapeHtml(p.caption||'Photo')}">
+            <img src="${encodeURI(p.src)}" alt="" loading="lazy" decoding="async" onload="this.closest('.photo-frame').classList.add('loaded')" onerror="this.closest('.photo-frame').style.display='none'">
+            <span class="photo-count-chip">${i+1}/${list.length}</span>
+            ${p.caption?`<span class="photo-cap">${escapeHtml(p.caption)}</span>`:''}
         </button>`).join('')+'</div>';
+}
+
+/* Keeps the album content in view instead of snapping up to the church logo.
+   Instant (not smooth) on purpose: a smooth animation raced with the photos
+   loading and the scroll got clamped back up to the logo. Re-asserted on the
+   next frame so late layout changes cannot pull it away either. */
+function scrollChurchToTabs(){
+    const scr=document.getElementById('churchScreen');
+    const tabs=document.getElementById('churchTabs');
+    if(!scr||!tabs)return;
+    const go=()=>{
+        const delta=tabs.getBoundingClientRect().top-scr.getBoundingClientRect().top;
+        scr.scrollTop=Math.max(0,scr.scrollTop+delta-8);
+    };
+    go();
+    requestAnimationFrame(go);
+    setTimeout(go,120);
 }
 
 function renderGallery(){
@@ -1426,8 +1478,8 @@ function renderGallery(){
     box.innerHTML=html;
 }
 
-function showAlbum(i){openAlbum=i;renderGallery();document.getElementById('churchScreen').scrollTop=0;}
-function closeAlbum(){openAlbum=null;renderGallery();document.getElementById('churchScreen').scrollTop=0;}
+function showAlbum(i){openAlbum=i;renderGallery();scrollChurchToTabs();}
+function closeAlbum(){openAlbum=null;renderGallery();scrollChurchToTabs();}
 
 /* Local files use the native player (works offline, no YouTube needed);
    YouTube entries reuse the inline embed card. */
@@ -1443,15 +1495,74 @@ function galleryVideoCard(i,v){
     return videoCardHtml('cGal',i,v);
 }
 
+let lightboxIndex=0;
+
 function openLightbox(i){
     const p=lightboxList[i];
     if(!p)return;
+    lightboxIndex=i;
     const box=document.getElementById('lightbox');
-    document.getElementById('lightboxImg').src=encodeURI(p.src);
-    document.getElementById('lightboxCap').textContent=p.caption||'';
+    paintLightbox('in');
     box.classList.add('show');
+    bindLightboxSwipe();
 }
+
+function paintLightbox(dir){
+    const p=lightboxList[lightboxIndex];
+    if(!p)return;
+    const img=document.getElementById('lightboxImg');
+    img.classList.remove('slide-left','slide-right','zoom-in');
+    // force the animation to restart on every change
+    void img.offsetWidth;
+    img.src=encodeURI(p.src);
+    img.classList.add(dir==='next'?'slide-left':dir==='prev'?'slide-right':'zoom-in');
+    document.getElementById('lightboxCap').textContent=p.caption||'';
+    const c=document.getElementById('lightboxCount');
+    if(c)c.textContent=(lightboxIndex+1)+' / '+lightboxList.length;
+    const prev=document.getElementById('lbPrev'), next=document.getElementById('lbNext');
+    if(prev)prev.style.visibility=lightboxIndex>0?'visible':'hidden';
+    if(next)next.style.visibility=lightboxIndex<lightboxList.length-1?'visible':'hidden';
+}
+
+function lightboxStep(delta,e){
+    if(e)e.stopPropagation();
+    const n=lightboxIndex+delta;
+    if(n<0||n>=lightboxList.length)return;
+    lightboxIndex=n;
+    paintLightbox(delta>0?'next':'prev');
+}
+
 function closeLightbox(){document.getElementById('lightbox').classList.remove('show');}
+
+/* Swipe left/right to move between photos (bound once) */
+let lightboxSwipeBound=false;
+function bindLightboxSwipe(){
+    if(lightboxSwipeBound)return;
+    const box=document.getElementById('lightbox');
+    if(!box)return;
+    lightboxSwipeBound=true;
+    let x0=null,y0=null;
+    box.addEventListener('touchstart',ev=>{
+        const t=ev.changedTouches[0];x0=t.clientX;y0=t.clientY;
+    },{passive:true});
+    box.addEventListener('touchend',ev=>{
+        if(x0===null)return;
+        const t=ev.changedTouches[0];
+        const dx=t.clientX-x0, dy=t.clientY-y0;
+        x0=null;
+        if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)){
+            ev.stopPropagation();
+            lightboxStep(dx<0?1:-1);
+        }
+    },{passive:true});
+    // keyboard for desktop
+    document.addEventListener('keydown',ev=>{
+        if(!box.classList.contains('show'))return;
+        if(ev.key==='ArrowRight')lightboxStep(1);
+        else if(ev.key==='ArrowLeft')lightboxStep(-1);
+        else if(ev.key==='Escape')closeLightbox();
+    });
+}
 
 /* Accepts any YouTube link form (or a bare id) and returns the 11-char video id */
 function ytId(u){
