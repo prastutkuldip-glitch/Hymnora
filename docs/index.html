@@ -252,6 +252,18 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
 .gal-switch { display:flex; gap:8px; margin-bottom:14px; padding:4px; background:rgba(255,255,255,.08); border:1px solid var(--hair); border-radius:14px; }
 .gal-switch button { flex:1; padding:10px 6px; border:none; background:transparent; border-radius:10px; color:rgba(255,255,255,.8); font-weight:700; font-size:12.5px; font-family:var(--font-ui); cursor:pointer; transition:all .28s var(--ease); }
 .gal-switch button.active { background:linear-gradient(150deg, rgba(255,255,255,.34), rgba(255,255,255,.2)); color:#fff; box-shadow:0 2px 8px rgba(16,24,40,.16), 0 1px 3px rgba(255,255,255,.4) inset; }
+/* Album ("memories") cards — cover photo with a title plate over it */
+.album-card { position:relative; display:block; width:calc(100% - 46px); padding:0; border:1px solid var(--hair); border-radius:var(--r-lg); overflow:hidden; margin-bottom:14px; cursor:pointer; background:linear-gradient(150deg,#2b3a67,#14182b); box-shadow:var(--e2); transition:transform .24s var(--ease); text-align:left; }
+.album-card:active { transform:scale(.98); }
+.album-cover { width:100%; height:170px; object-fit:cover; display:block; }
+.album-overlay { position:absolute; left:0; right:0; bottom:0; padding:16px 16px 14px; background:linear-gradient(to top, rgba(0,0,0,.88), rgba(0,0,0,.35) 55%, transparent); }
+.album-name { font-size:17px; font-weight:800; color:#fff; letter-spacing:.2px; text-shadow:0 2px 10px rgba(0,0,0,.7); }
+.album-meta { font-size:11.5px; font-weight:600; color:rgba(255,255,255,.88); margin-top:3px; text-shadow:0 2px 8px rgba(0,0,0,.6); }
+.album-badge { position:absolute; top:12px; right:12px; min-width:26px; height:26px; padding:0 8px; border-radius:var(--r-pill); background:rgba(0,0,0,.55); backdrop-filter:blur(6px); border:1px solid rgba(255,255,255,.4); color:#fff; font-size:12px; font-weight:800; display:flex; align-items:center; justify-content:center; }
+.album-head { margin-bottom:12px; }
+.album-head-name { font-size:18px; font-weight:800; color:#fff; text-shadow:0 2px 8px rgba(0,0,0,.35); }
+.album-head-sub { font-size:12px; font-weight:600; color:rgba(255,255,255,.82); margin-top:2px; }
+
 .photo-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; padding-right:46px; }
 .photo-tile { position:relative; aspect-ratio:1; border-radius:12px; overflow:hidden; border:1px solid var(--hair); box-shadow:var(--e1); cursor:pointer; padding:0; background:linear-gradient(150deg,#2b3a67,#14182b); transition:transform .2s var(--ease); }
 .photo-tile img { width:100%; height:100%; object-fit:cover; display:block; }
@@ -723,8 +735,24 @@ const CHURCH={
      videos : {title:"...", file:"gallery/clip1.mp4", poster:"gallery/clip1.jpg"}
               ...or a YouTube one: {title:"...", yt:"https://youtu.be/xxxx"}     */
   gallery:{
+    /* Albums = memories. Each album has a cover, a date line and its photos. */
+    albums:[
+      {
+        name:"June Convention 2026",
+        date:"June 2026",
+        cover:"gallery/june-convention-2026-03.jpg",
+        photos:[
+          {src:"gallery/june-convention-2026-01.jpg", caption:"Preparing the fellowship meal together"},
+          {src:"gallery/june-convention-2026-02.jpg", caption:"Convention gathering"},
+          {src:"gallery/june-convention-2026-03.jpg", caption:"The convention stage"},
+          {src:"gallery/june-convention-2026-04.jpg", caption:"Together at the convention"},
+          {src:"gallery/june-convention-2026-05.jpg", caption:"Youth of the fellowship"},
+          {src:"gallery/june-convention-2026-06.jpg", caption:"Brethren at the convention"}
+        ]
+      }
+    ],
     photos:[
-      // {src:"gallery/photo1.jpg", caption:"Sunday service"}
+      // loose photos that do not belong to an album
     ],
     videos:[
       // {title:"Worship night", file:"gallery/video1.mp4"}
@@ -732,6 +760,8 @@ const CHURCH={
   }
 };
 let galleryMode='photos';
+let openAlbum=null;      // index of the album being viewed, null = album list
+let lightboxList=[];     // photos currently shown, so the viewer matches the grid
 let churchTab='books';
 
 let curBook='',curChap=0,bibleData=null,viewMode='verse';
@@ -1334,21 +1364,60 @@ function churchNoLink(){alert('📄 This resource will be available soon.');}
 function galleryPhotos(){return (CHURCH.gallery&&CHURCH.gallery.photos)||[];}
 function galleryVideos(){return ((CHURCH.gallery&&CHURCH.gallery.videos)||[]).concat(CHURCH.videos||[]);}
 
-function setGalleryMode(m){galleryMode=m;renderGallery();}
+function setGalleryMode(m){galleryMode=m;openAlbum=null;renderGallery();}
+
+function galleryAlbums(){return (CHURCH.gallery&&CHURCH.gallery.albums)||[];}
+
+function photoGridHtml(list){
+    lightboxList=list;
+    return '<div class="photo-grid">'+list.map((p,i)=>
+        `<button class="photo-tile" onclick="openLightbox(${i})" aria-label="${escapeHtml(p.caption||'Photo')}">
+            <img src="${encodeURI(p.src)}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">
+        </button>`).join('')+'</div>';
+}
 
 function renderGallery(){
     const box=document.getElementById('churchContent');
     if(!box)return;
-    const photos=galleryPhotos(), vids=galleryVideos();
+    const albums=galleryAlbums(), loose=galleryPhotos(), vids=galleryVideos();
+    const photoTotal=albums.reduce((n,a)=>n+((a.photos||[]).length),0)+loose.length;
+
     let html=`<div class="gal-switch">
-        <button class="${galleryMode==='photos'?'active':''}" onclick="setGalleryMode('photos')">🖼️ Photos${photos.length?' ('+photos.length+')':''}</button>
+        <button class="${galleryMode==='photos'?'active':''}" onclick="setGalleryMode('photos')">🖼️ Photos${photoTotal?' ('+photoTotal+')':''}</button>
         <button class="${galleryMode==='videos'?'active':''}" onclick="setGalleryMode('videos')">🎥 Videos${vids.length?' ('+vids.length+')':''}</button>
     </div>`;
 
     if(galleryMode==='photos'){
-        html+=photos.length
-            ? '<div class="photo-grid">'+photos.map((p,i)=>`<button class="photo-tile" onclick="openLightbox(${i})" aria-label="${escapeHtml(p.caption||'Photo')}"><img src="${encodeURI(p.src)}" alt="" loading="lazy" onerror="this.style.display='none'"></button>`).join('')+'</div>'
-            : churchEmpty('🖼️ No photos yet.<br>Upload them to the <b>docs/gallery</b> folder, then send me the file names.');
+        if(openAlbum!==null&&albums[openAlbum]){
+            // inside one album
+            const a=albums[openAlbum];
+            html+=`<button class="glass-btn" style="margin-bottom:12px;" onclick="closeAlbum()">← Albums</button>
+                <div class="album-head">
+                    <div class="album-head-name">${escapeHtml(a.name)}</div>
+                    <div class="album-head-sub">${escapeHtml(a.date||'')} · ${(a.photos||[]).length} photos</div>
+                </div>`;
+            html+=photoGridHtml(a.photos||[]);
+        }else{
+            // album list — only covers load here, so the tab stays light
+            if(albums.length){
+                html+='<div class="church-subhead">📅 Memories</div>';
+                html+=albums.map((a,i)=>`<button class="album-card" onclick="showAlbum(${i})">
+                    <img class="album-cover" src="${encodeURI(a.cover||((a.photos||[])[0]||{}).src||'')}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">
+                    <div class="album-overlay">
+                        <div class="album-name">${escapeHtml(a.name)}</div>
+                        <div class="album-meta">${escapeHtml(a.date||'')} · ${(a.photos||[]).length} photos</div>
+                    </div>
+                    <span class="album-badge">${(a.photos||[]).length}</span>
+                </button>`).join('');
+            }
+            if(loose.length){
+                html+='<div class="church-subhead">🖼️ Other photos</div>';
+                html+=photoGridHtml(loose);
+            }
+            if(!albums.length&&!loose.length){
+                html+=churchEmpty('🖼️ No photos yet.<br>Upload them to the <b>docs/gallery</b> folder, then send me the file names.');
+            }
+        }
     }else{
         html+=vids.length
             ? vids.map((v,i)=>galleryVideoCard(i,v)).join('')
@@ -1356,6 +1425,9 @@ function renderGallery(){
     }
     box.innerHTML=html;
 }
+
+function showAlbum(i){openAlbum=i;renderGallery();document.getElementById('churchScreen').scrollTop=0;}
+function closeAlbum(){openAlbum=null;renderGallery();document.getElementById('churchScreen').scrollTop=0;}
 
 /* Local files use the native player (works offline, no YouTube needed);
    YouTube entries reuse the inline embed card. */
@@ -1372,7 +1444,7 @@ function galleryVideoCard(i,v){
 }
 
 function openLightbox(i){
-    const p=galleryPhotos()[i];
+    const p=lightboxList[i];
     if(!p)return;
     const box=document.getElementById('lightbox');
     document.getElementById('lightboxImg').src=encodeURI(p.src);
