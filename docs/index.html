@@ -306,6 +306,30 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
 .lb-prev { left:12px; }
 .lb-next { right:12px; }
 
+/* ===== Verse context sheet ===== */
+.ctx-wrap { position:fixed; inset:0; z-index:2050; background:rgba(6,8,14,.6); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); display:none; align-items:flex-end; justify-content:center; }
+.ctx-wrap.show { display:flex; animation:lbFade .28s var(--ease) both; }
+.ctx-card { width:100%; max-width:430px; max-height:88vh; display:flex; flex-direction:column; background:linear-gradient(170deg, #1c2233 0%, #141926 100%); border:1px solid rgba(255,255,255,.18); border-bottom:none; border-radius:24px 24px 0 0; box-shadow:0 -14px 50px rgba(0,0,0,.6); animation:ctxUp .36s var(--ease) both; }
+@keyframes ctxUp { from{transform:translateY(40px); opacity:0;} to{transform:none; opacity:1;} }
+.ctx-grip { width:42px; height:4px; border-radius:2px; background:rgba(255,255,255,.3); margin:10px auto 2px; flex-shrink:0; }
+.ctx-head { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; padding:8px 18px 0; flex-shrink:0; }
+.ctx-title { font-size:11px; font-weight:800; letter-spacing:1.4px; text-transform:uppercase; color:var(--accent); }
+.ctx-ref { font-size:18px; font-weight:800; color:#fff; margin-top:2px; }
+.ctx-close { width:32px; height:32px; flex-shrink:0; border-radius:50%; background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.3); color:#fff; font-size:15px; cursor:pointer; }
+.ctx-modes { display:flex; gap:7px; padding:12px 18px 4px; flex-shrink:0; }
+.ctx-modes button { flex:1; padding:10px; border-radius:12px; border:1px solid var(--hair); background:rgba(255,255,255,.08); color:rgba(255,255,255,.82); font-size:13px; font-weight:700; font-family:var(--font-ui); cursor:pointer; transition:all .26s var(--ease); }
+.ctx-modes button.active { color:#fff; background:linear-gradient(150deg,var(--accent),var(--accent-deep)); border-color:rgba(255,255,255,.4); box-shadow:0 5px 16px var(--accent-glow); }
+.ctx-body { padding:14px 18px 26px; overflow-y:auto; -webkit-overflow-scrolling:touch; }
+.ctx-verse { font-family:var(--font-scripture); font-size:16px; line-height:1.7; color:#fff; font-style:italic; padding:14px; border-radius:14px; background:rgba(255,255,255,.07); border-left:3px solid var(--accent); margin-bottom:16px; }
+.ctx-sec { margin-bottom:16px; }
+.ctx-lbl { font-size:10.5px; font-weight:800; letter-spacing:1.1px; text-transform:uppercase; color:rgba(255,255,255,.55); margin-bottom:6px; }
+.ctx-txt { font-size:14px; line-height:1.65; color:rgba(255,255,255,.93); }
+.ctx-near { font-size:13.5px; line-height:1.6; color:rgba(255,255,255,.8); padding:10px 12px; border-radius:11px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); }
+.ctx-near b { color:var(--accent); font-weight:800; }
+.ctx-svg { width:100%; border-radius:12px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); display:block; }
+.ctx-note { font-size:11px; line-height:1.5; color:rgba(255,255,255,.45); margin-top:6px; }
+.action-btn.context { background:#34d399; }
+
 /* ===== Video viewer ===== */
 .vviewer { position:fixed; inset:0; z-index:2100; background:#05070d; display:none; align-items:center; justify-content:center; flex-direction:column; padding:18px; }
 .vviewer.show { display:flex; animation:lbFade .32s var(--ease) both; }
@@ -323,6 +347,14 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
 .vv-seek::-webkit-slider-thumb { -webkit-appearance:none; width:13px; height:13px; border-radius:50%; background:#fff; box-shadow:0 1px 4px rgba(0,0,0,.5); }
 .vv-seek::-moz-range-thumb { width:13px; height:13px; border:0; border-radius:50%; background:#fff; }
 .vv-close { position:absolute; top:16px; right:16px; width:38px; height:38px; border-radius:50%; background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.4); color:#fff; font-size:18px; font-weight:700; cursor:pointer; z-index:3; display:flex; align-items:center; justify-content:center; }
+/* Quality control, top right next to close */
+.vv-quality { position:absolute; top:18px; right:62px; padding:7px 11px; border-radius:var(--r-pill); background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.4); color:#fff; font-size:11.5px; font-weight:800; letter-spacing:.3px; cursor:pointer; z-index:3; }
+.vv-qmenu { position:absolute; top:58px; right:62px; min-width:124px; display:none; flex-direction:column; gap:2px; padding:6px; border-radius:14px; background:rgba(18,20,30,.97); border:1px solid rgba(255,255,255,.2); box-shadow:0 12px 34px rgba(0,0,0,.6); z-index:4; }
+.vv-qmenu.show { display:flex; }
+.vv-qmenu button { padding:9px 11px; border:none; border-radius:9px; background:transparent; color:#fff; font-size:12.5px; font-weight:700; text-align:left; cursor:pointer; font-family:var(--font-ui); }
+.vv-qmenu button.on { background:linear-gradient(150deg,var(--accent),var(--accent-deep)); }
+.vv-qnote { padding:7px 11px 3px; color:rgba(255,255,255,.55); font-size:9.5px; font-weight:600; line-height:1.4; }
+
 .vv-count { position:absolute; top:20px; left:18px; padding:5px 12px; border-radius:var(--r-pill); background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.3); color:#fff; font-size:12px; font-weight:800; }
 .vv-arrow { position:absolute; top:50%; transform:translateY(-50%); width:42px; height:42px; border-radius:50%; background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.34); color:#fff; font-size:24px; font-weight:800; line-height:1; cursor:pointer; z-index:3; display:flex; align-items:center; justify-content:center; }
 .vv-arrow:active { transform:translateY(-50%) scale(.88); }
@@ -696,6 +728,25 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
             <div id="churchContent"></div>
         </div>
 
+        <!-- Verse context sheet -->
+        <div class="ctx-wrap" id="ctxWrap" onclick="closeContext()">
+            <div class="ctx-card" onclick="event.stopPropagation()">
+                <div class="ctx-grip"></div>
+                <div class="ctx-head">
+                    <div>
+                        <div class="ctx-title" id="ctxTitle">Context</div>
+                        <div class="ctx-ref" id="ctxRef"></div>
+                    </div>
+                    <button class="ctx-close" onclick="closeContext()" aria-label="Close">✕</button>
+                </div>
+                <div class="ctx-modes">
+                    <button id="ctxBtnSimple" class="active" onclick="setCtxMode('simple')">Simple</button>
+                    <button id="ctxBtnDeep" onclick="setCtxMode('deep')">Deeply</button>
+                </div>
+                <div class="ctx-body" id="ctxBody"></div>
+            </div>
+        </div>
+
         <!-- Photo viewer -->
         <div class="lightbox" id="lightbox" onclick="closeLightbox()">
             <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close">✕</button>
@@ -710,6 +761,8 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
         <!-- Video viewer: clean player, swipe between videos, landscape fullscreen -->
         <div class="vviewer" id="vviewer">
             <button class="vv-close" onclick="closeVideoViewer()" aria-label="Close">✕</button>
+            <button class="vv-quality" id="vvQualityBtn" onclick="toggleQualityMenu(event)" aria-label="Video quality">HD ▾</button>
+            <div class="vv-qmenu" id="vvQMenu"></div>
             <div class="vv-count" id="vvCount"></div>
             <button class="vv-arrow vv-prev" id="vvPrev" onclick="videoStep(-1,event)" aria-label="Previous video">‹</button>
             <div class="vv-stage" id="vvStage">
@@ -861,6 +914,7 @@ let currentTheme=localStorage.getItem('currentTheme')||'theme';
 let currentLanguage=localStorage.getItem('currentLanguage')||'english';
 let bibleVersion=localStorage.getItem('bibleVersion')||currentLanguage;
 let curBookObj=null;
+let curVerses=[];   // verses of the open chapter, used to build verse context
 
 // Language Translations
 const TRANSLATIONS={
@@ -963,6 +1017,120 @@ const BOOK_NAMES={
         OT:['আদিপুস্তক','যাত্ৰাপুস্তক','লেবীয়া পুস্তক','গণনা পুস্তক','দ্বিতীয় বিবৰণ','যিহোচূৱা','বিচাৰকৰ্তা','ৰূথ','১ চমূৱেল','২ চমূৱেল','১ ৰাজাবলি','২ ৰাজাবলি','১ বংশাবলি','২ বংশাবলি','ইজ্ৰা','নহিমিয়া','ইষ্টেৰ','ইয়োব','গীতমালা','হিতোপদেশ','উপদেশক','পৰমগীত','যিচয়া','যিৰিমিয়া','বিলাপ-গাথা','ইজিকিয়েল','দানিয়েল','হোচেয়া','যোৱেল','আমোচ','ওবদিয়া','যোনা','মীখা','নাহূম','হবক্কূক','চফনিয়া','হগ্গয়','জখৰিয়া','মালাখী'],
         NT:['মথি','মাৰ্ক','লূক','যোহন','পাঁচনিৰ কৰ্ম','ৰোমীয়া','১ কৰিন্থীয়া','২ কৰিন্থীয়া','গালাতীয়া','ইফিচীয়া','ফিলিপীয়া','কলচীয়া','১ থিচলনীকীয়া','২ থিচলনীকীয়া','১ তীমথিয়','২ তীমথিয়','তীত','ফিলীমন','ইব্ৰী','যাকোব','১ পিতৰ','২ পিতৰ','১ যোহন','২ যোহন','৩ যোহন','যিহূদা','প্ৰকাশিত বাক্য']
     }
+};
+
+/* ==================== VERSE CONTEXT ====================
+   Works for every verse of the Bible without any network call: the explanation
+   is built from the book's genre and theme, where the chapter sits in the book,
+   and the surrounding verses of the chapter that is already loaded.
+   Written out in whichever language the verse is being read in.            */
+const CTX_LABELS={
+  english:{context:'Context',simple:'Simple',deep:'Deeply',verse:'This verse',before:'Comes just before',after:'Comes just after',place:'Where this sits',kind:'Kind of book',theme:'What this book is about',how:'How to read it',chapterOf:'Chapter {c} of {t}',start:'Opening',middle:'Middle',end:'Closing',flow:'Flow of the passage',map:'The book at a glance',meaning:'Meaning',close:'Close',note:'Study context built from the book, its genre and the surrounding verses.',begins:'begins the book',ends:'ends the book',testamentOT:'Old Testament',testamentNT:'New Testament'},
+  hindi:{context:'संदर्भ',simple:'सरल',deep:'विस्तार से',verse:'यह पद',before:'इसके ठीक पहले',after:'इसके ठीक बाद',place:'यह कहाँ आता है',kind:'पुस्तक का प्रकार',theme:'यह पुस्तक किस विषय में है',how:'इसे कैसे पढ़ें',chapterOf:'अध्याय {c}, कुल {t} में से',start:'आरंभ',middle:'मध्य',end:'अंत',flow:'प्रसंग का क्रम',map:'पुस्तक एक नज़र में',meaning:'अर्थ',close:'बंद करें',note:'यह संदर्भ पुस्तक, उसके प्रकार और आस-पास के पदों से बनाया गया है।',begins:'पुस्तक का आरंभ करता है',ends:'पुस्तक का अंत करता है',testamentOT:'पुराना नियम',testamentNT:'नया नियम'},
+  assamese:{context:'প্ৰসংগ',simple:'সৰল',deep:'বিতংভাৱে',verse:'এই পদ',before:'ইয়াৰ ঠিক আগত',after:'ইয়াৰ ঠিক পিছত',place:'ই ক\u2019ত আছে',kind:'কিতাপৰ ধৰণ',theme:'এই কিতাপ কিহৰ বিষয়ে',how:'কেনেকৈ পঢ়িব',chapterOf:'অধ্যায় {c}, মুঠ {t}ৰ',start:'আৰম্ভ',middle:'মাজ',end:'শেষ',flow:'অংশৰ ক্ৰম',map:'কিতাপ এক নজৰত',meaning:'অৰ্থ',close:'বন্ধ কৰক',note:'এই প্ৰসংগ কিতাপ, ইয়াৰ ধৰণ আৰু চাৰিওকাষৰ পদৰ পৰা সজা হৈছে।',begins:'কিতাপৰ আৰম্ভ কৰে',ends:'কিতাপৰ শেষ কৰে',testamentOT:'পুৰণি নিয়ম',testamentNT:'নতুন নিয়ম'}
+};
+
+const CTX_GENRES={
+  law:{english:{k:'Law / Torah',s:'God rescues a people and binds Himself to them by covenant.',d:'Read it as covenant history. Notice the promise given, the rescue that follows, and the instructions for living near a holy God.'},
+       hindi:{k:'व्यवस्था / तोराह',s:'परमेश्वर एक जाति को छुड़ाता है और वाचा द्वारा उन्हें अपना बनाता है।',d:'इसे वाचा के इतिहास की तरह पढ़ें। प्रतिज्ञा, छुटकारा, और पवित्र परमेश्वर के संग जीने की आज्ञाओं पर ध्यान दें।'},
+       assamese:{k:'বিধান / তোৰা',s:'ঈশ্বৰে এটা জাতিক উদ্ধাৰ কৰে আৰু নিয়মৰ দ্বাৰা নিজৰ কৰি লয়।',d:'নিয়মৰ ইতিহাস হিচাপে পঢ়ক। প্ৰতিজ্ঞা, উদ্ধাৰ আৰু পবিত্ৰ ঈশ্বৰৰ কাষত জীয়াই থকাৰ আজ্ঞাবোৰ লক্ষ্য কৰক।'}},
+  history:{english:{k:'History',s:'The story of God keeping His promises through a often unfaithful people.',d:'Ask what the writer is showing about God, not only what happened. Faithfulness and failure are both recorded on purpose.'},
+       hindi:{k:'इतिहास',s:'परमेश्वर अपनी प्रतिज्ञाएँ निभाता है, चाहे लोग अविश्वासी हों।',d:'पूछें कि लेखक परमेश्वर के विषय में क्या दिखा रहा है, केवल घटना क्या हुई यह नहीं। विश्वासयोग्यता और असफलता दोनों जानबूझकर लिखी गई हैं।'},
+       assamese:{k:'ইতিহাস',s:'মানুহ অবিশ্বাসী হ\u2019লেও ঈশ্বৰে নিজৰ প্ৰতিজ্ঞা ৰাখে।',d:'লিখকে ঈশ্বৰৰ বিষয়ে কি দেখুৱাইছে সেইটো সুধিব, কেৱল কি ঘটিল সেইটো নহয়।'}},
+  wisdom:{english:{k:'Wisdom / Poetry',s:'Songs and sayings that teach the heart how to live before God.',d:'Poetry speaks in pictures. Read the whole psalm or passage, and let the feeling as well as the words instruct you.'},
+       hindi:{k:'ज्ञान / काव्य',s:'गीत और कहावतें जो हृदय को परमेश्वर के सामने जीना सिखाती हैं।',d:'काव्य चित्रों में बोलता है। पूरा भजन या प्रसंग पढ़ें, और शब्दों के साथ भावना को भी समझें।'},
+       assamese:{k:'জ্ঞান / কাব্য',s:'গীত আৰু নীতিবচন, যিয়ে হৃদয়ক ঈশ্বৰৰ সন্মুখত জীয়াই থাকিবলৈ শিকায়।',d:'কাব্যই ছবিৰ ভাষাত কয়। গোটেই গীত বা অংশ পঢ়ক।'}},
+  major:{english:{k:'Major Prophet',s:'A long call to return to God, with warning and great hope together.',d:'Prophets speak to their own day first, and then further ahead. Ask who is being addressed, what sin is named, and what promise is held out.'},
+       hindi:{k:'बड़े भविष्यद्वक्ता',s:'परमेश्वर की ओर लौटने का लंबा बुलावा, चेतावनी और बड़ी आशा के साथ।',d:'भविष्यद्वक्ता पहले अपने समय से बोलते हैं, फिर आगे की बात। देखें किससे कहा जा रहा है, कौन-सा पाप बताया गया, और कौन-सी प्रतिज्ञा दी गई।'},
+       assamese:{k:'ডাঙৰ ভাববাদী',s:'ঈশ্বৰৰ ফালে উভতি আহিবলৈ দীঘলীয়া আহ্বান, সতৰ্কবাণী আৰু ডাঙৰ আশাৰ সৈতে।',d:'ভাববাদীসকলে প্ৰথমে নিজৰ সময়ক কয়, তাৰ পিছত ভৱিষ্যতলৈ। কাক কোৱা হৈছে আৰু কি প্ৰতিজ্ঞা দিয়া হৈছে চাওক।'}},
+  minor:{english:{k:'Minor Prophet',s:'A short, sharp message from God to a particular moment.',d:'Short books carry one main burden. Find that single concern and the rest of the book opens up.'},
+       hindi:{k:'छोटे भविष्यद्वक्ता',s:'किसी विशेष समय के लिए परमेश्वर का छोटा और तीखा संदेश।',d:'छोटी पुस्तकों में एक मुख्य बोझ होता है। उस एक बात को पकड़ें, तो पूरी पुस्तक खुल जाती है।'},
+       assamese:{k:'সৰু ভাববাদী',s:'এক বিশেষ সময়ৰ বাবে ঈশ্বৰৰ চুটি আৰু তীক্ষ্ণ বাৰ্তা।',d:'চুটি কিতাপত এটা মুখ্য ভাৰ থাকে। সেই এটা কথা ধৰিলে গোটেই কিতাপ স্পষ্ট হয়।'}},
+  gospel:{english:{k:'Gospel',s:'An account of who Jesus is, what He did, and why it matters.',d:'Each Gospel selects and arranges events to make a case about Jesus. Ask what this writer wants you to see about Him here.'},
+       hindi:{k:'सुसमाचार',s:'यीशु कौन हैं, उन्होंने क्या किया, और इसका महत्व क्या है।',d:'हर सुसमाचार घटनाओं को चुनकर यीशु के विषय में एक बात सिद्ध करता है। देखें कि यह लेखक यहाँ उनके विषय में क्या दिखाना चाहता है।'},
+       assamese:{k:'শুভবাৰ্তা',s:'যীচু কোন, তেওঁ কি কৰিলে, আৰু ইয়াৰ অৰ্থ কি।',d:'প্ৰতিখন শুভবাৰ্তাই ঘটনা বাছি যীচুৰ বিষয়ে এটা কথা দেখুৱায়। ইয়াত লিখকে তেওঁৰ বিষয়ে কি দেখুৱাব বিচাৰে সেইটো সুধিব।'}},
+  acts:{english:{k:'Church History',s:'How the good news moved from Jerusalem out into the world.',d:'Watch the Spirit pushing the church outward, and the pattern of preaching, opposition and growth repeating.'},
+       hindi:{k:'कलीसिया का इतिहास',s:'सुसमाचार यरूशलेम से निकलकर संसार तक कैसे पहुँचा।',d:'देखें कि आत्मा कलीसिया को बाहर की ओर बढ़ाता है, और प्रचार, विरोध और वृद्धि का क्रम दोहराया जाता है।'},
+       assamese:{k:'মণ্ডলীৰ ইতিহাস',s:'শুভবাৰ্তা যিৰূচালেমৰ পৰা জগতলৈ কেনেকৈ গ\u2019ল।',d:'আত্মাই মণ্ডলীক বাহিৰলৈ আগুৱাই নিয়া, আৰু প্ৰচাৰ, বিৰোধ আৰু বৃদ্ধিৰ ধাৰা লক্ষ্য কৰক।'}},
+  paul:{english:{k:'Letter from Paul',s:'A letter written to real believers about how to hold to Christ.',d:'Letters answer situations. Paul usually lays the truth first and the living out of it second, so notice which half you are in.'},
+       hindi:{k:'पौलुस की पत्री',s:'सच्चे विश्वासियों को लिखी पत्री, कि मसीह में कैसे बने रहें।',d:'पत्रियाँ परिस्थितियों का उत्तर देती हैं। पौलुस पहले सत्य रखता है, फिर उसका जीवन में पालन। देखें आप किस भाग में हैं।'},
+       assamese:{k:'পৌলৰ পত্ৰ',s:'প্ৰকৃত বিশ্বাসীলৈ লিখা পত্ৰ, খ্ৰীষ্টত কেনেকৈ থাকিব।',d:'পত্ৰবোৰে পৰিস্থিতিৰ উত্তৰ দিয়ে। পৌলে প্ৰথমে সত্য, তাৰ পিছত জীৱনত পালন কৰাৰ কথা কয়।'}},
+  general:{english:{k:'General Letter',s:'A letter to believers scattered widely, urging faithful endurance.',d:'These letters press for faith that shows in conduct, often written to people under pressure.'},
+       hindi:{k:'सामान्य पत्री',s:'दूर-दूर फैले विश्वासियों को पत्री, धीरज से स्थिर रहने का आग्रह।',d:'ये पत्रियाँ ऐसे विश्वास पर ज़ोर देती हैं जो चालचलन में दिखे, अक्सर कठिनाई में पड़े लोगों के लिए।'},
+       assamese:{k:'সাধাৰণ পত্ৰ',s:'সিঁচৰতি হৈ থকা বিশ্বাসীলৈ পত্ৰ, ধৈৰ্যৰে থিয় হৈ থাকিবলৈ।',d:'এই পত্ৰবোৰে আচৰণত দেখা পোৱা বিশ্বাসৰ ওপৰত গুৰুত্ব দিয়ে।'}},
+  apoc:{english:{k:'Prophecy / Revelation',s:'Visions given to steady the church until Christ returns.',d:'Symbols carry the meaning here. Do not force every image into a detail; follow the big picture that Christ reigns and wins.'},
+       hindi:{k:'भविष्यद्वाणी / प्रकाशितवाक्य',s:'दर्शन, जो मसीह के आने तक कलीसिया को स्थिर रखते हैं।',d:'यहाँ प्रतीक अर्थ बताते हैं। हर चित्र को ब्यौरे में न बाँधें; बड़ी बात देखें कि मसीह राज्य करता और जय पाता है।'},
+       assamese:{k:'ভাববাণী / প্ৰকাশিত বাক্য',s:'খ্ৰীষ্ট উভতি অহালৈকে মণ্ডলীক স্থিৰ ৰাখিবলৈ দিয়া দৰ্শন।',d:'ইয়াত প্ৰতীকে অৰ্থ বহন কৰে। প্ৰতিটো ছবিক বিতংলৈ নিনিব; খ্ৰীষ্টে ৰাজত্ব কৰে আৰু জয় পায় এই ডাঙৰ কথা চাওক।'}}
+};
+
+/* abbr -> genre + one-line theme per language */
+const CTX_BOOKS={
+ gen:{g:'law',en:'Beginnings, and God choosing a family through whom to bless the world',hi:'आदि, और परमेश्वर एक परिवार चुनता है जिससे जगत को आशीष मिले',as:'আৰম্ভ, আৰু ঈশ্বৰে জগতক আশীৰ্বাদ দিবলৈ এটা পৰিবাৰ বাছে'},
+ exo:{g:'law',en:'God rescues His people from slavery and comes to dwell among them',hi:'परमेश्वर अपने लोगों को दासत्व से छुड़ाता है और उनके बीच वास करता है',as:'ঈশ্বৰে নিজৰ লোকক দাসত্বৰ পৰা উদ্ধাৰ কৰি তেওঁলোকৰ মাজত বাস কৰে'},
+ lev:{g:'law',en:'How a sinful people may live near a holy God',hi:'पापी लोग पवित्र परमेश्वर के निकट कैसे रह सकते हैं',as:'পাপী লোকে পবিত্ৰ ঈশ্বৰৰ কাষত কেনেকৈ থাকিব পাৰে'},
+ num:{g:'law',en:'A journey of testing, unbelief, and God still keeping His word',hi:'परीक्षा और अविश्वास की यात्रा, फिर भी परमेश्वर अपना वचन निभाता है',as:'পৰীক্ষা আৰু অবিশ্বাসৰ যাত্ৰা, তথাপি ঈশ্বৰে নিজৰ বাক্য ৰাখে'},
+ deu:{g:'law',en:'The covenant taught again to a new generation before entering the land',hi:'देश में जाने से पहले नई पीढ़ी को वाचा फिर सिखाई जाती है',as:'দেশত সোমাবাৰ আগতে নতুন প্ৰজন্মক নিয়ম পুনৰ শিকোৱা হয়'},
+ jos:{g:'history',en:'God gives the promised land as He said He would',hi:'परमेश्वर प्रतिज्ञा किया हुआ देश देता है, जैसा उसने कहा था',as:'ঈশ্বৰে কোৱাৰ দৰেই প্ৰতিজ্ঞাত দেশ দিয়ে'},
+ jdg:{g:'history',en:'A cycle of falling away and God raising rescuers',hi:'बार-बार भटकना, और परमेश्वर छुड़ानेवाले खड़े करता है',as:'বাৰে বাৰে বিপথে যোৱা, আৰু ঈশ্বৰে উদ্ধাৰকৰ্তা উঠায়'},
+ rut:{g:'history',en:'Quiet faithfulness, and a redeemer in the family line of David',hi:'शांत विश्वासयोग्यता, और दाऊद की वंशावली में एक छुड़ानेवाला',as:'শান্ত বিশ্বাসযোগ্যতা, আৰু দায়ূদৰ বংশত এজন মুক্তিদাতা'},
+ '1sa':{g:'history',en:'Israel asks for a king, and God chooses a man after His own heart',hi:'इस्राएल राजा मांगता है, और परमेश्वर अपने मन के अनुसार जन चुनता है',as:'ইস্ৰায়েলে ৰজা খোজে, আৰু ঈশ্বৰে নিজৰ মনৰ দৰে এজনক বাছে'},
+ '2sa':{g:'history',en:'David reigns, sins, and receives a promise of an everlasting throne',hi:'दाऊद राज्य करता है, पाप करता है, और सदा के सिंहासन की प्रतिज्ञा पाता है',as:'দায়ূদে ৰাজত্ব কৰে, পাপ কৰে, আৰু চিৰস্থায়ী সিংহাসনৰ প্ৰতিজ্ঞা পায়'},
+ '1ki':{g:'history',en:'Glory under Solomon, then a kingdom divided by unfaithfulness',hi:'सुलैमान के समय वैभव, फिर अविश्वास से बँटा राज्य',as:'চলোমনৰ সময়ত মহিমা, তাৰ পিছত অবিশ্বাসত ভাগ হোৱা ৰাজ্য'},
+ '2ki':{g:'history',en:'Both kingdoms drift and fall, while prophets keep calling them back',hi:'दोनों राज्य भटककर गिरते हैं, भविष्यद्वक्ता लौटने को बुलाते रहते हैं',as:'দুয়োখন ৰাজ্য বিপথে গৈ পতিত হয়, ভাববাদীসকলে উভতি আহিবলৈ কৈ থাকে'},
+ '1ch':{g:'history',en:'Israel is story retold around worship and David is line',hi:'उपासना और दाऊद की वंशावली के इर्द-गिर्द इस्राएल की कहानी',as:'উপাসনা আৰু দায়ূদৰ বংশক কেন্দ্ৰ কৰি ইস্ৰায়েলৰ কাহিনী'},
+ '2ch':{g:'history',en:'The kings measured by their care for God is house and worship',hi:'राजा इस बात से नापे जाते हैं कि उन्होंने परमेश्वर के भवन और उपासना की चिंता की',as:'ৰজাসকলক ঈশ্বৰৰ গৃহ আৰু উপাসনাৰ প্ৰতি মনোযোগৰ দ্বাৰা বিচাৰ কৰা হয়'},
+ ezr:{g:'history',en:'Return from exile and the rebuilding of the temple',hi:'बंधुआई से लौटना और मंदिर का पुनर्निर्माण',as:'বন্দীত্বৰ পৰা উভতি অহা আৰু মন্দিৰ পুনৰ নিৰ্মাণ'},
+ neh:{g:'history',en:'Walls rebuilt and a people renewed around God is word',hi:'शहरपनाह बनती है और लोग परमेश्वर के वचन से नया किए जाते हैं',as:'গড় পুনৰ নিৰ্মাণ আৰু ঈশ্বৰৰ বাক্যত লোকসকলৰ নবীকৰণ'},
+ est:{g:'history',en:'God unseen but working to preserve His people',hi:'परमेश्वर दिखाई नहीं देता, पर अपने लोगों को बचाने में काम करता है',as:'ঈশ্বৰক দেখা নাযায়, তথাপি তেওঁ নিজৰ লোকক ৰক্ষা কৰিবলৈ কাম কৰে'},
+ job:{g:'wisdom',en:'Suffering without easy answers, and God who is still worthy of trust',hi:'दुख के सहज उत्तर नहीं, फिर भी परमेश्वर भरोसे के योग्य है',as:'দুখৰ সহজ উত্তৰ নাই, তথাপি ঈশ্বৰ ভাৰসাৰ যোগ্য'},
+ psa:{g:'wisdom',en:'Prayers and songs for every condition of the heart',hi:'हृदय की हर दशा के लिए प्रार्थनाएँ और गीत',as:'হৃদয়ৰ প্ৰতিটো অৱস্থাৰ বাবে প্ৰাৰ্থনা আৰু গীত'},
+ pro:{g:'wisdom',en:'Skill for daily living that begins with the fear of the Lord',hi:'रोज़ के जीवन का कौशल, जो यहोवा के भय से आरंभ होता है',as:'দৈনন্দিন জীৱনৰ কৌশল, যি যিহোৱাৰ ভয়ৰে আৰম্ভ হয়'},
+ ecc:{g:'wisdom',en:'Life under the sun is fleeting, so fear God and receive His gifts',hi:'संसार का जीवन क्षणभंगुर है, इसलिए परमेश्वर का भय मानो और उसके दान लो',as:'সূৰ্যৰ তলৰ জীৱন ক্ষণিক, সেয়ে ঈশ্বৰক ভয় কৰা আৰু তেওঁৰ দান লোৱা'},
+ sol:{g:'wisdom',en:'The goodness of faithful love, sung without shame',hi:'विश्वासयोग्य प्रेम की भलाई, निर्लज्ज होकर गाई गई',as:'বিশ্বাসযোগ্য প্ৰেমৰ মঙ্গল, লাজ নোহোৱাকৈ গীত'},
+ isa:{g:'major',en:'Judgment and comfort, and a Servant who bears the sin of many',hi:'दंड और शांति, और एक दास जो बहुतों का पाप उठाता है',as:'দণ্ড আৰু সান্ত্বনা, আৰু এজন দাস যি অনেকৰ পাপ বহন কৰে'},
+ jer:{g:'major',en:'A weeping prophet warns of exile and promises a new covenant',hi:'रोता हुआ भविष्यद्वक्ता बंधुआई की चेतावनी और नई वाचा की प्रतिज्ञा देता है',as:'কন্দা ভাববাদীয়ে বন্দীত্বৰ সতৰ্কবাণী আৰু নতুন নিয়মৰ প্ৰতিজ্ঞা দিয়ে'},
+ lam:{g:'major',en:'Grief over a fallen city, held up by mercies that are new each morning',hi:'गिरे हुए नगर पर विलाप, पर हर सुबह नई करुणा से थामा हुआ',as:'পতিত নগৰৰ বাবে বিলাপ, তথাপি প্ৰতি ৰাতিপুৱা নতুন দয়াই ধৰি ৰাখে'},
+ eze:{g:'major',en:'God is glory departs and returns, and dry bones are given life',hi:'परमेश्वर की महिमा जाती और लौटती है, और सूखी हड्डियाँ जीवित होती हैं',as:'ঈশ্বৰৰ মহিমা গুচি যায় আৰু উভতি আহে, আৰু শুকান হাড়ে জীৱন পায়'},
+ dan:{g:'major',en:'Faithfulness in a foreign empire, and God who rules all kingdoms',hi:'पराए राज्य में विश्वासयोग्यता, और परमेश्वर सब राज्यों पर राज्य करता है',as:'বিদেশী সাম্ৰাজ্যত বিশ্বাসযোগ্যতা, আৰু ঈশ্বৰে সকলো ৰাজ্যৰ ওপৰত ৰাজত্ব কৰে'},
+ hos:{g:'minor',en:'God is love for an unfaithful people, shown in a prophet is own marriage',hi:'अविश्वासी लोगों के लिए परमेश्वर का प्रेम, भविष्यद्वक्ता के विवाह से दिखाया गया',as:'অবিশ্বাসী লোকৰ প্ৰতি ঈশ্বৰৰ প্ৰেম, ভাববাদীৰ নিজৰ বিবাহত দেখুৱা হৈছে'},
+ joe:{g:'minor',en:'A day of the Lord, and a call to return with all the heart',hi:'यहोवा का दिन, और पूरे मन से लौटने का बुलावा',as:'যিহোৱাৰ দিন, আৰু গোটেই মনেৰে উভতি আহিবলৈ আহ্বান'},
+ amo:{g:'minor',en:'Justice demanded where worship and daily life do not match',hi:'जहाँ उपासना और जीवन मेल नहीं खाते, वहाँ न्याय की मांग',as:'উপাসনা আৰু জীৱন নিমিলিলে ন্যায়ৰ দাবী'},
+ oba:{g:'minor',en:'Pride against God is people will not stand',hi:'परमेश्वर के लोगों के विरुद्ध अभिमान टिक नहीं सकता',as:'ঈশ্বৰৰ লোকৰ বিৰুদ্ধে অহংকাৰ থিয় হৈ নাথাকে'},
+ jon:{g:'minor',en:'A reluctant prophet and a God merciful even to enemies',hi:'अनिच्छुक भविष्यद्वक्ता, और परमेश्वर शत्रुओं पर भी दया करता है',as:'অনিচ্ছুক ভাববাদী, আৰু ঈশ্বৰে শত্ৰুকো দয়া কৰে'},
+ mic:{g:'minor',en:'What God requires: to do justly, love mercy, walk humbly',hi:'परमेश्वर क्या चाहता है: न्याय करना, दया से प्रीति, नम्रता से चलना',as:'ঈশ্বৰে কি খোজে: ন্যায় কৰা, দয়া ভাল পোৱা, নম্ৰভাৱে চলা'},
+ nah:{g:'minor',en:'God is patience has limits, and the oppressor falls',hi:'परमेश्वर का धीरज असीम नहीं, अत्याचारी गिरता है',as:'ঈশ্বৰৰ ধৈৰ্যৰ সীমা আছে, অত্যাচাৰী পতিত হয়'},
+ hab:{g:'minor',en:'Honest questions to God, answered by living by faith',hi:'परमेश्वर से खुले प्रश्न, उत्तर यह कि विश्वास से जीओ',as:'ঈশ্বৰক খোলা প্ৰশ্ন, উত্তৰ হ\u2019ল বিশ্বাসেৰে জীয়াই থকা'},
+ zep:{g:'minor',en:'A coming day of judgment, and a remnant God rejoices over',hi:'आनेवाला दंड का दिन, और एक बचा हुआ दल जिस पर परमेश्वर हर्षित होता है',as:'অহা দণ্ডৰ দিন, আৰু এটা অৱশিষ্ট দল যাৰ ওপৰত ঈশ্বৰ আনন্দ কৰে'},
+ hag:{g:'minor',en:'Put God is house first and He will be with you',hi:'परमेश्वर के भवन को पहला स्थान दो, और वह तुम्हारे संग रहेगा',as:'ঈশ্বৰৰ গৃহক প্ৰথম স্থান দিয়া, তেওঁ তোমালোকৰ সৈতে থাকিব'},
+ zec:{g:'minor',en:'Visions of cleansing and a King who comes humble',hi:'शुद्धिकरण के दर्शन, और एक राजा जो नम्रता से आता है',as:'শুদ্ধ কৰাৰ দৰ্শন, আৰু নম্ৰভাৱে অহা এজন ৰজা'},
+ mal:{g:'minor',en:'Half-hearted worship confronted while a messenger is promised',hi:'आधे मन की उपासना पर टोक, और एक दूत की प्रतिज्ञा',as:'আধা মনৰ উপাসনাক প্ৰশ্ন, আৰু এজন বাৰ্তাবাহকৰ প্ৰতিজ্ঞা'},
+ mat:{g:'gospel',en:'Jesus as the promised King in whom Scripture is fulfilled',hi:'यीशु प्रतिज्ञा किया हुआ राजा, जिनमें पवित्रशास्त्र पूरा होता है',as:'যীচু প্ৰতিজ্ঞাত ৰজা, যাৰ মাজত শাস্ত্ৰ পূৰ্ণ হয়'},
+ mar:{g:'gospel',en:'Jesus the Servant who acts with authority and goes to the cross',hi:'यीशु वह दास, जो अधिकार से काम करता और क्रूस तक जाता है',as:'যীচু সেই দাস, যি ক্ষমতাৰে কাম কৰে আৰু ক্ৰুচলৈ যায়'},
+ luk:{g:'gospel',en:'A careful account of the Saviour who seeks the lost and lowly',hi:'उद्धारकर्ता का सुव्यवस्थित वर्णन, जो खोए और दीन को ढूँढ़ता है',as:'ত্ৰাণকৰ্তাৰ যতনেৰে লিখা বিৱৰণ, যি হেৰোৱা আৰু দীনক বিচাৰে'},
+ joh:{g:'gospel',en:'Signs and sayings written so that you may believe and live',hi:'चिन्ह और वचन, इसलिये लिखे कि तुम विश्वास करो और जीवन पाओ',as:'চিন আৰু বাক্য, এইদৰে লিখা হৈছে যেন তোমালোকে বিশ্বাস কৰি জীৱন পোৱা'},
+ act:{g:'acts',en:'The Spirit sends the church from Jerusalem to the nations',hi:'आत्मा कलीसिया को यरूशलेम से जाति-जाति तक भेजता है',as:'আত্মাই মণ্ডলীক যিৰূচালেমৰ পৰা জাতিবোৰলৈ পঠায়'},
+ rom:{g:'paul',en:'The gospel explained: all have sinned, God justifies by faith',hi:'सुसमाचार की व्याख्या: सब ने पाप किया, परमेश्वर विश्वास से धर्मी ठहराता है',as:'শুভবাৰ্তাৰ ব্যাখ্যা: সকলোৱে পাপ কৰিলে, ঈশ্বৰে বিশ্বাসৰ দ্বাৰা ধাৰ্মিক গণে'},
+ '1co':{g:'paul',en:'Correcting a divided church by the wisdom of the cross',hi:'बँटी हुई कलीसिया को क्रूस के ज्ञान से सुधारना',as:'ভাগ হোৱা মণ্ডলীক ক্ৰুচৰ জ্ঞানেৰে শুধৰোৱা'},
+ '2co':{g:'paul',en:'Strength shown through weakness in true ministry',hi:'सच्ची सेवा में निर्बलता के द्वारा सामर्थ्य',as:'সঁচা পৰিচৰ্যাত দুৰ্বলতাৰ মাজেদি শক্তি'},
+ gal:{g:'paul',en:'Freedom in Christ, not earned by keeping the law',hi:'मसीह में स्वतंत्रता, व्यवस्था के पालन से कमाई नहीं',as:'খ্ৰীষ্টত স্বাধীনতা, বিধান পালনৰ দ্বাৰা অৰ্জিত নহয়'},
+ eph:{g:'paul',en:'One new people in Christ, and how they walk together',hi:'मसीह में एक नई जाति, और वे कैसे मिलकर चलें',as:'খ্ৰীষ্টত এটা নতুন জাতি, আৰু তেওঁলোকে কেনেকৈ একেলগে চলে'},
+ phi:{g:'paul',en:'Joy that holds in prison, because Christ is enough',hi:'बंदीगृह में भी बना रहनेवाला आनंद, क्योंकि मसीह पर्याप्त है',as:'বন্দীশালতো থকা আনন্দ, কিয়নো খ্ৰীষ্টেই যথেষ্ট'},
+ col:{g:'paul',en:'Christ is supreme, so nothing may be added to Him',hi:'मसीह सर्वोच्च है, इसलिये उसमें कुछ जोड़ा न जाए',as:'খ্ৰীষ্ট সৰ্বোচ্চ, সেয়ে তেওঁত আৰু কিবা যোগ কৰিব নালাগে'},
+ '1th':{g:'paul',en:'Living ready for the Lord is return',hi:'प्रभु के आने के लिये तैयार रहकर जीना',as:'প্ৰভুৰ পুনৰ অহাৰ বাবে সাজু হৈ জীয়াই থকা'},
+ '2th':{g:'paul',en:'Standing firm and working faithfully while waiting',hi:'बाट जोहते हुए स्थिर रहना और विश्वासयोग्यता से काम करना',as:'অপেক্ষাত থিয় হৈ থকা আৰু বিশ্বাসযোগ্যভাৱে কাম কৰা'},
+ '1ti':{g:'paul',en:'How to order the household of God',hi:'परमेश्वर के घराने को कैसे व्यवस्थित करें',as:'ঈশ্বৰৰ ঘৰক কেনেকৈ সজাব'},
+ '2ti':{g:'paul',en:'Guard the gospel and hand it on, whatever the cost',hi:'सुसमाचार की रखवाली करो और आगे सौंपो, चाहे मूल्य कुछ भी हो',as:'শুভবাৰ্তা ৰক্ষা কৰা আৰু আগলৈ দিয়া, যি মূল্যেই নহওক'},
+ tit:{g:'paul',en:'Sound teaching that produces good works',hi:'खरी शिक्षा, जिससे भले काम उत्पन्न होते हैं',as:'সুস্থ শিক্ষা, যিয়ে ভাল কাম উৎপন্ন কৰে'},
+ phm:{g:'paul',en:'Forgiveness and welcome between brothers in Christ',hi:'मसीह में भाइयों के बीच क्षमा और स्वीकार',as:'খ্ৰীষ্টত ভাইসকলৰ মাজত ক্ষমা আৰু গ্ৰহণ'},
+ heb:{g:'general',en:'Christ is better than all that came before, so do not fall back',hi:'मसीह पहले की सब बातों से उत्तम है, इसलिये पीछे न हटो',as:'খ্ৰীষ্ট আগৰ সকলোৰে পৰা উত্তম, সেয়ে পিছলৈ নহওক'},
+ jas:{g:'general',en:'Faith that is real shows itself in how you live',hi:'सच्चा विश्वास जीवन के चालचलन में दिखता है',as:'সঁচা বিশ্বাস জীৱনৰ আচৰণত দেখা যায়'},
+ '1pe':{g:'general',en:'Hope and holiness for believers who are suffering',hi:'दुख उठानेवाले विश्वासियों के लिये आशा और पवित्रता',as:'দুখ পোৱা বিশ্বাসীৰ বাবে আশা আৰু পবিত্ৰতা'},
+ '2pe':{g:'general',en:'Growing in truth and refusing false teachers',hi:'सत्य में बढ़ना और झूठे उपदेशकों को न मानना',as:'সত্যত বৃদ্ধি পোৱা আৰু মিছা শিক্ষকক অস্বীকাৰ কৰা'},
+ '1jo':{g:'general',en:'Tests of real fellowship: truth, love and obedience',hi:'सच्ची संगति की पहचान: सत्य, प्रेम और आज्ञा मानना',as:'সঁচা সহভাগিতাৰ চিন: সত্য, প্ৰেম আৰু আজ্ঞা পালন'},
+ '2jo':{g:'general',en:'Walk in love and in truth, and guard the door',hi:'प्रेम और सत्य में चलो, और द्वार की रखवाली करो',as:'প্ৰেম আৰু সত্যত চলা, আৰু দুৱাৰ ৰক্ষা কৰা'},
+ '3jo':{g:'general',en:'Support those who work for the truth',hi:'जो सत्य के लिये परिश्रम करते हैं, उनकी सहायता करो',as:'যিসকলে সত্যৰ বাবে পৰিশ্ৰম কৰে, তেওঁলোকক সহায় কৰা'},
+ jud:{g:'general',en:'Contend for the faith once delivered',hi:'जो विश्वास एक बार सौंपा गया, उसके लिये लड़ो',as:'এবাৰ গতাই দিয়া বিশ্বাসৰ বাবে যুঁজ দিয়া'},
+ rev:{g:'apoc',en:'Christ reigns, judges and makes all things new',hi:'मसीह राज्य करता, न्याय करता, और सब कुछ नया बनाता है',as:'খ্ৰীষ্টে ৰাজত্ব কৰে, বিচাৰ কৰে, আৰু সকলো নতুন কৰে'}
 };
 
 function stripHtml(s){return String(s).replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim();}
@@ -1772,14 +1940,57 @@ async function mountVideo(){
             onStateChange:e=>{
                 const playing=e.data===1;
                 document.getElementById('vvPlayBtn').textContent=playing?'❚❚':'▶';
-                if(playing){try{e.target.setPlaybackQuality('highres');}catch(err){}startVvTimer();}
+                if(playing){try{e.target.setPlaybackQuality('highres');}catch(err){}startVvTimer();refreshQualityLabel();}
                 else stopVvTimer();
             }
         }
     });
 }
 
+/* Quality menu. YouTube has ignored forced quality since 2019 and streams
+   adaptively, so this sends a request and reports what the player actually
+   settled on rather than pretending it is a hard switch. */
+const QUALITY_NAMES={highres:'Highest',hd2160:'2160p 4K',hd1440:'1440p',hd1080:'1080p HD',hd720:'720p HD',large:'480p',medium:'360p',small:'240p',tiny:'144p',auto:'Auto'};
+
+function toggleQualityMenu(e){
+    if(e)e.stopPropagation();
+    const menu=document.getElementById('vvQMenu');
+    if(menu.classList.contains('show')){menu.classList.remove('show');return;}
+    let levels=[];
+    try{levels=(vvPlayer&&vvPlayer.getAvailableQualityLevels)?vvPlayer.getAvailableQualityLevels():[];}catch(err){}
+    let current='';
+    try{current=(vvPlayer&&vvPlayer.getPlaybackQuality)?vvPlayer.getPlaybackQuality():'';}catch(err){}
+    const opts=['auto'].concat(levels.filter(l=>l!=='auto'));
+    menu.innerHTML=opts.map(l=>
+        `<button class="${l===current?'on':''}" onclick="pickQuality('${l}',event)">${QUALITY_NAMES[l]||l}</button>`
+    ).join('')+`<div class="vv-qnote">YouTube may still adjust this to match your connection speed.</div>`;
+    menu.classList.add('show');
+}
+
+function pickQuality(q,e){
+    if(e)e.stopPropagation();
+    try{
+        if(vvPlayer&&vvPlayer.setPlaybackQuality){
+            vvPlayer.setPlaybackQuality(q==='auto'?'default':q);
+            if(vvPlayer.getPlaybackRate)vvPlayer.setPlaybackRate(vvPlayer.getPlaybackRate());
+        }
+    }catch(err){}
+    document.getElementById('vvQualityBtn').textContent=(QUALITY_NAMES[q]||q)+' ▾';
+    document.getElementById('vvQMenu').classList.remove('show');
+}
+
+function refreshQualityLabel(){
+    const btn=document.getElementById('vvQualityBtn');
+    if(!btn)return;
+    let q='';
+    try{q=(vvPlayer&&vvPlayer.getPlaybackQuality)?vvPlayer.getPlaybackQuality():'';}catch(err){}
+    btn.textContent=(QUALITY_NAMES[q]||'HD')+' ▾';
+}
+
 function showVvBar(useCustom){
+    const qb=document.getElementById('vvQualityBtn');
+    if(qb)qb.style.display=useCustom?'block':'none';
+    document.getElementById('vvQMenu').classList.remove('show');
     const bar=document.getElementById('vvBar'), tap=document.getElementById('vvTap');
     bar.style.display=useCustom?'flex':'none';
     // native/Drive players need their own controls reachable
@@ -2049,12 +2260,135 @@ async function loadVerses(book,chap,abbr){
     }
 }
 
-function displayVerses(verses){const container=document.getElementById('versesContainer');if(typeof verses==='object'&&!Array.isArray(verses))verses=Object.values(verses);const ref=`${curBook}-${curChap}`;container.innerHTML=verses.map((t,i)=>{const vKey=`${ref}-${i+1}`;const highlightClass=highlights[vKey]||'';return `<div class="verse ${highlightClass}" data-verse="${vKey}" ontouchstart="startLongPress('${vKey}')" ontouchend="endLongPress()" ontouchmove="endLongPress()"><div class="verse-actions" id="actions-${vKey}"></div><span class="verse-num">${i+1}</span><span class="verse-text">${t}</span></div>`;}).join('');}
+function displayVerses(verses){const container=document.getElementById('versesContainer');if(typeof verses==='object'&&!Array.isArray(verses))verses=Object.values(verses);curVerses=verses.slice();const ref=`${curBook}-${curChap}`;container.innerHTML=verses.map((t,i)=>{const vKey=`${ref}-${i+1}`;const highlightClass=highlights[vKey]||'';return `<div class="verse ${highlightClass}" data-verse="${vKey}" ontouchstart="startLongPress('${vKey}')" ontouchend="endLongPress()" ontouchmove="endLongPress()"><div class="verse-actions" id="actions-${vKey}"></div><span class="verse-num">${i+1}</span><span class="verse-text">${t}</span></div>`;}).join('');}
+
+/* ===================== Context engine ===================== */
+let ctxMode='simple', ctxVerseNo=0;
+const CTX_LANGKEY={english:'en',hindi:'hi',assamese:'as'};
+
+function openContext(vKey){
+    const n=parseInt(String(vKey).split('-').pop(),10);
+    if(!n)return;
+    ctxVerseNo=n;
+    const a=document.getElementById('actions-'+vKey);
+    if(a)a.classList.remove('show');
+    document.getElementById('ctxWrap').classList.add('show');
+    renderContext();
+}
+function closeContext(){document.getElementById('ctxWrap').classList.remove('show');}
+function setCtxMode(m){
+    ctxMode=m;
+    document.getElementById('ctxBtnSimple').classList.toggle('active',m==='simple');
+    document.getElementById('ctxBtnDeep').classList.toggle('active',m==='deep');
+    renderContext();
+}
+
+function renderContext(){
+    const L=CTX_LABELS[bibleVersion]||CTX_LABELS.english;
+    const lk=CTX_LANGKEY[bibleVersion]||'en';
+    const bk=curBookObj||{};
+    const meta=CTX_BOOKS[bk.abbr]||null;
+    const genre=meta?CTX_GENRES[meta.g]:null;
+    const gl=genre?(genre[bibleVersion]||genre.english):null;
+    const bookLabelName=bk.part?bookLabel(bk.part,bk.idx,bk.n):(curBook||'');
+    const total=bk.c||1;
+
+    document.getElementById('ctxTitle').textContent=L.context;
+    document.getElementById('ctxRef').textContent=bookLabelName+' '+curChap+':'+ctxVerseNo;
+    document.getElementById('ctxBtnSimple').textContent=L.simple;
+    document.getElementById('ctxBtnDeep').textContent=L.deep;
+
+    const vText=curVerses[ctxVerseNo-1]||'';
+    const prev=ctxVerseNo>1?curVerses[ctxVerseNo-2]:'';
+    const next=ctxVerseNo<curVerses.length?curVerses[ctxVerseNo]:'';
+    const third=curChap<=total/3?L.start:(curChap<=(2*total)/3?L.middle:L.end);
+    const place=L.chapterOf.replace('{c}',curChap).replace('{t}',total)+' · '+third;
+
+    let h='';
+    h+=`<div class="ctx-verse">${escapeHtml(vText)}</div>`;
+
+    // what this book is about — always, in the reading language
+    if(meta){
+        h+=`<div class="ctx-sec"><div class="ctx-lbl">${L.theme}</div><div class="ctx-txt">${escapeHtml(meta[lk]||meta.en)}</div></div>`;
+    }
+    if(gl){
+        h+=`<div class="ctx-sec"><div class="ctx-lbl">${L.kind}</div><div class="ctx-txt"><b>${escapeHtml(gl.k)}</b> — ${escapeHtml(gl.s)}</div></div>`;
+    }
+    h+=`<div class="ctx-sec"><div class="ctx-lbl">${L.place}</div><div class="ctx-txt">${escapeHtml(place)}</div></div>`;
+
+    // immediate flow — the most reliable context there is
+    if(prev||next){
+        h+=`<div class="ctx-sec"><div class="ctx-lbl">${L.flow}</div><div class="ctx-near">`;
+        if(prev)h+=`<div style="margin-bottom:7px;"><b>${L.before}:</b> ${escapeHtml(trimTo(prev,150))}</div>`;
+        if(next)h+=`<div><b>${L.after}:</b> ${escapeHtml(trimTo(next,150))}</div>`;
+        h+=`</div></div>`;
+    }
+
+    if(ctxMode==='deep'){
+        if(gl){
+            h+=`<div class="ctx-sec"><div class="ctx-lbl">${L.how}</div><div class="ctx-txt">${escapeHtml(gl.d)}</div></div>`;
+        }
+        // visual 1: where this chapter sits in the whole book
+        h+=`<div class="ctx-sec"><div class="ctx-lbl">${L.map}</div>${chapterMapSvg(curChap,total,L)}</div>`;
+        // visual 2: the flow of the passage as a diagram
+        h+=`<div class="ctx-sec"><div class="ctx-lbl">${L.flow}</div>${flowSvg(ctxVerseNo,!!prev,!!next,L)}</div>`;
+    }
+
+    h+=`<div class="ctx-note">${L.note}</div>`;
+    document.getElementById('ctxBody').innerHTML=h;
+}
+
+function trimTo(s,n){s=String(s);return s.length>n?s.slice(0,n).trim()+'…':s;}
+
+/* Diagram: every chapter of the book as a block, current one lit up */
+function chapterMapSvg(cur,total,L){
+    const cols=Math.min(total,20), rows=Math.ceil(total/cols);
+    const bw=15, bh=13, gap=3, padX=10, padY=26;
+    const w=padX*2+cols*bw+(cols-1)*gap;
+    const h=padY+rows*bh+(rows-1)*gap+22;
+    let blocks='';
+    for(let i=1;i<=total;i++){
+        const r=Math.floor((i-1)/cols), c=(i-1)%cols;
+        const x=padX+c*(bw+gap), y=padY+r*(bh+gap);
+        const on=i===cur;
+        blocks+=`<rect x="${x}" y="${y}" width="${bw}" height="${bh}" rx="3" fill="${on?'#34d399':'rgba(255,255,255,.16)'}"/>`;
+        if(on)blocks+=`<text x="${x+bw/2}" y="${y+bh+15}" fill="#34d399" font-size="10" font-weight="800" text-anchor="middle">${cur}</text>`;
+    }
+    return `<svg class="ctx-svg" viewBox="0 0 ${w} ${h}" role="img">
+        <text x="${padX}" y="15" fill="rgba(255,255,255,.6)" font-size="10" font-weight="700">${escapeHtml(L.start)}</text>
+        <text x="${w/2}" y="15" fill="rgba(255,255,255,.6)" font-size="10" font-weight="700" text-anchor="middle">${escapeHtml(L.middle)}</text>
+        <text x="${w-padX}" y="15" fill="rgba(255,255,255,.6)" font-size="10" font-weight="700" text-anchor="end">${escapeHtml(L.end)}</text>
+        ${blocks}
+    </svg>`;
+}
+
+/* Diagram: before → this verse → after */
+function flowSvg(n,hasPrev,hasNext,L){
+    const w=300, boxH=30, gap=16;
+    const items=[];
+    if(hasPrev)items.push({t:'v'+(n-1),lbl:L.before,on:false});
+    items.push({t:'v'+n,lbl:L.verse,on:true});
+    if(hasNext)items.push({t:'v'+(n+1),lbl:L.after,on:false});
+    const h=items.length*boxH+(items.length-1)*gap+14;
+    let g='';
+    items.forEach((it,i)=>{
+        const y=7+i*(boxH+gap);
+        g+=`<rect x="8" y="${y}" width="${w-16}" height="${boxH}" rx="8" fill="${it.on?'rgba(52,211,153,.22)':'rgba(255,255,255,.07)'}" stroke="${it.on?'#34d399':'rgba(255,255,255,.18)'}"/>
+            <text x="20" y="${y+19}" fill="${it.on?'#34d399':'rgba(255,255,255,.75)'}" font-size="11" font-weight="800">${it.t}</text>
+            <text x="52" y="${y+19}" fill="rgba(255,255,255,.7)" font-size="10.5">${escapeHtml(it.lbl)}</text>`;
+        if(i<items.length-1){
+            const ay=y+boxH+gap/2;
+            g+=`<path d="M ${w/2} ${y+boxH+2} L ${w/2} ${ay+4}" stroke="rgba(255,255,255,.35)" stroke-width="1.5"/>
+                <path d="M ${w/2-4} ${ay+1} L ${w/2} ${ay+6} L ${w/2+4} ${ay+1}" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.5"/>`;
+        }
+    });
+    return `<svg class="ctx-svg" viewBox="0 0 ${w} ${h}" role="img">${g}</svg>`;
+}
 
 function startLongPress(vKey){longPressVerse=vKey;longPressTimer=setTimeout(()=>showActions(vKey),500);}
 function endLongPress(){clearTimeout(longPressTimer);}
 
-function showActions(vKey){document.querySelectorAll('.verse-actions').forEach(a=>a.classList.remove('show'));const actions=document.getElementById('actions-'+vKey);actions.innerHTML=`<button class="action-btn yellow" onclick="highlightVerse('${vKey}','highlighted-yellow')">●</button><button class="action-btn green" onclick="highlightVerse('${vKey}','highlighted-green')">●</button><button class="action-btn blue" onclick="highlightVerse('${vKey}','highlighted-blue')">●</button><button class="action-btn pink" onclick="highlightVerse('${vKey}','highlighted-pink')">●</button><button class="action-btn orange" onclick="highlightVerse('${vKey}','highlighted-orange')">●</button><button class="action-btn bookmark" onclick="addBookmark('${vKey}')">🔖</button><button class="action-btn favorite" onclick="addFavorite('${vKey}')">❤️</button>`;actions.classList.add('show');setTimeout(()=>actions.classList.remove('show'),5000);}
+function showActions(vKey){document.querySelectorAll('.verse-actions').forEach(a=>a.classList.remove('show'));const actions=document.getElementById('actions-'+vKey);actions.innerHTML=`<button class="action-btn yellow" onclick="highlightVerse('${vKey}','highlighted-yellow')">●</button><button class="action-btn green" onclick="highlightVerse('${vKey}','highlighted-green')">●</button><button class="action-btn blue" onclick="highlightVerse('${vKey}','highlighted-blue')">●</button><button class="action-btn pink" onclick="highlightVerse('${vKey}','highlighted-pink')">●</button><button class="action-btn orange" onclick="highlightVerse('${vKey}','highlighted-orange')">●</button><button class="action-btn bookmark" onclick="addBookmark('${vKey}')">🔖</button><button class="action-btn favorite" onclick="addFavorite('${vKey}')">❤️</button><button class="action-btn context" onclick="openContext('${vKey}')" aria-label="Context">💡</button>`;actions.classList.add('show');setTimeout(()=>actions.classList.remove('show'),8000);}
 
 function highlightVerse(vKey,color){highlights[vKey]=color;localStorage.setItem('highlights',JSON.stringify(highlights));document.querySelector(`[data-verse="${vKey}"]`).className=`verse ${color}`;document.getElementById('actions-'+vKey).classList.remove('show');}
 
