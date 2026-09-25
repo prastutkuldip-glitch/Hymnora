@@ -1484,6 +1484,20 @@ function closeAlbum(){openAlbum=null;renderGallery();scrollChurchToTabs();}
 /* Local files use the native player (works offline, no YouTube needed);
    YouTube entries reuse the inline embed card. */
 function galleryVideoCard(i,v){
+    const dId=driveId(v.drive||v.url);
+    if(dId){
+        const tid='cDrv'+i+'Thumb';
+        return `<div class="video-card">
+            <button class="video-thumb" id="${tid}" onclick="playDrive('${tid}','${dId}')" aria-label="Play ${escapeHtml(v.title||'video')}">
+                <img class="video-thumb-img" src="https://drive.google.com/thumbnail?id=${dId}&sz=w1000" alt="" onerror="this.style.display='none'">
+                <span class="play">▶</span>
+            </button>
+            <div class="video-meta">
+                <div class="video-title">${escapeHtml(v.title||'')}</div>
+                ${v.desc?`<div class="res-desc" style="margin-top:3px;">${escapeHtml(v.desc)}</div>`:''}
+            </div>
+        </div>`;
+    }
     if(v.file){
         return `<div class="video-card">
             <video controls playsinline preload="metadata" ${v.poster?`poster="${encodeURI(v.poster)}"`:''}>
@@ -1564,6 +1578,15 @@ function bindLightboxSwipe(){
     });
 }
 
+/* Google Drive file id from any share link.
+   Lets big convention videos stay on Drive at full size and still play here. */
+function driveId(u){
+    if(!u)return '';
+    const s=String(u).trim();
+    const m=s.match(/\/file\/d\/([A-Za-z0-9_-]{20,})/)||s.match(/[?&]id=([A-Za-z0-9_-]{20,})/);
+    return m?m[1]:'';
+}
+
 /* Accepts any YouTube link form (or a bare id) and returns the 11-char video id */
 function ytId(u){
     if(!u)return '';
@@ -1595,6 +1618,18 @@ function videoCardHtml(pfx,i,item){
             ${item.desc?`<div class="res-desc" style="margin-top:3px;">${escapeHtml(item.desc)}</div>`:''}
         </div>
     </div>`;
+}
+
+/* Google Drive plays inline too — no redirect out of the app */
+function playDrive(thumbId,id){
+    const thumb=document.getElementById(thumbId);
+    if(!thumb)return;
+    const frame=document.createElement('iframe');
+    frame.src='https://drive.google.com/file/d/'+id+'/preview';
+    frame.setAttribute('allow','autoplay; encrypted-media; picture-in-picture');
+    frame.setAttribute('allowfullscreen','');
+    frame.setAttribute('title','HYMNORA player');
+    thumb.replaceWith(frame);
 }
 
 /* Plays in place — swaps the thumbnail for an inline embed, never redirects.
