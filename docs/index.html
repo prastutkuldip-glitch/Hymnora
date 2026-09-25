@@ -265,12 +265,14 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
 .album-head-name { font-size:18px; font-weight:800; color:#fff; letter-spacing:.2px; text-shadow:0 2px 8px rgba(0,0,0,.45); }
 .album-head-sub { font-size:12px; font-weight:600; color:rgba(255,255,255,.88); margin-top:3px; text-shadow:0 1px 6px rgba(0,0,0,.4); }
 
-/* Full-frame photo feed — whole photo, no square cropping */
-.photo-feed { display:flex; flex-direction:column; gap:16px; padding-right:46px; }
+/* Full-frame photo feed — whole photo, no square cropping.
+   Bleeds past the screen's 16px padding so the content is as large as possible.
+   The nav can be tucked away with its arrow when it gets in the way. */
+.photo-feed { display:flex; flex-direction:column; gap:14px; margin:0 -16px; }
 /* min-height reserves space before the photo loads, so the scroll target is
    reachable instead of being clamped up to the logo. Once the photo is in, the
    .loaded class drops it to 0 so wide photos do not get navy letterbox bars. */
-.photo-frame { position:relative; display:block; width:100%; min-height:210px; padding:0; border:1px solid var(--hair); border-radius:var(--r-lg); overflow:hidden; cursor:pointer; background:linear-gradient(150deg,#2b3a67,#14182b); box-shadow:var(--e2); text-align:left; transition:transform .28s var(--ease), box-shadow .28s var(--ease); animation:photoReveal .6s var(--ease) both; line-height:0; }
+.photo-frame { position:relative; display:block; width:100%; min-height:240px; padding:0; border:none; border-radius:0; overflow:hidden; cursor:pointer; background:linear-gradient(150deg,#2b3a67,#14182b); box-shadow:0 8px 26px rgba(16,24,40,.28); text-align:left; transition:transform .28s var(--ease); animation:photoReveal .6s var(--ease) both; line-height:0; }
 .photo-frame.loaded { min-height:0; }
 .photo-frame:active { transform:scale(.985); box-shadow:var(--e1); }
 .photo-frame img { width:100%; height:auto; display:block; }
@@ -285,10 +287,10 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
 .video-card video { width:100%; aspect-ratio:16/9; display:block; background:#000; }
 
 /* Full-screen photo viewer */
-.lightbox { position:fixed; inset:0; z-index:2000; background:rgba(8,10,18,.95); backdrop-filter:blur(14px) saturate(1.2); -webkit-backdrop-filter:blur(14px) saturate(1.2); display:none; align-items:center; justify-content:center; flex-direction:column; padding:22px; }
+.lightbox { position:fixed; inset:0; z-index:2000; background:rgba(8,10,18,.96); backdrop-filter:blur(14px) saturate(1.2); -webkit-backdrop-filter:blur(14px) saturate(1.2); display:none; align-items:center; justify-content:center; flex-direction:column; padding:12px; }
 .lightbox.show { display:flex; animation:lbFade .34s var(--ease) both; }
 @keyframes lbFade { from{opacity:0;} to{opacity:1;} }
-.lightbox img { max-width:100%; max-height:74vh; border-radius:14px; box-shadow:0 24px 60px rgba(0,0,0,.7); }
+.lightbox img { max-width:100%; max-height:82vh; border-radius:10px; box-shadow:0 24px 60px rgba(0,0,0,.7); }
 .lightbox img.zoom-in { animation:lbZoom .42s var(--ease) both; }
 .lightbox img.slide-left { animation:lbSlideL .34s var(--ease) both; }
 .lightbox img.slide-right { animation:lbSlideR .34s var(--ease) both; }
@@ -303,6 +305,33 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
 .lb-arrow:active { transform:translateY(-50%) scale(.88); }
 .lb-prev { left:12px; }
 .lb-next { right:12px; }
+
+/* ===== Video viewer ===== */
+.vviewer { position:fixed; inset:0; z-index:2100; background:#05070d; display:none; align-items:center; justify-content:center; flex-direction:column; padding:18px; }
+.vviewer.show { display:flex; animation:lbFade .32s var(--ease) both; }
+.vv-stage { position:relative; width:100%; max-width:640px; aspect-ratio:16/9; background:#000; border-radius:14px; overflow:hidden; box-shadow:0 24px 60px rgba(0,0,0,.7); }
+.vv-host, .vv-host iframe { position:absolute; inset:0; width:100%; height:100%; border:0; display:block; }
+/* transparent layer over the player: swallows taps so YouTube overlays and the
+   watch-on-YouTube affordance never surface; tap = play/pause */
+.vv-tap { position:absolute; inset:0; background:transparent; cursor:pointer; }
+.vv-bar { position:absolute; left:0; right:0; bottom:0; display:flex; align-items:center; gap:9px; padding:9px 11px; background:linear-gradient(to top, rgba(0,0,0,.92), rgba(0,0,0,.45) 70%, transparent); opacity:0; transition:opacity .28s var(--ease); }
+.vv-stage:hover .vv-bar, .vv-bar.show { opacity:1; }
+.vv-btn { width:32px; height:32px; flex-shrink:0; border-radius:50%; border:1px solid rgba(255,255,255,.34); background:rgba(255,255,255,.14); color:#fff; font-size:14px; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+.vv-btn:active { transform:scale(.9); }
+.vv-time { font-size:11px; font-weight:700; color:#fff; font-variant-numeric:tabular-nums; flex-shrink:0; }
+.vv-seek { flex:1; min-width:0; height:4px; -webkit-appearance:none; appearance:none; background:rgba(255,255,255,.3); border-radius:2px; cursor:pointer; }
+.vv-seek::-webkit-slider-thumb { -webkit-appearance:none; width:13px; height:13px; border-radius:50%; background:#fff; box-shadow:0 1px 4px rgba(0,0,0,.5); }
+.vv-seek::-moz-range-thumb { width:13px; height:13px; border:0; border-radius:50%; background:#fff; }
+.vv-close { position:absolute; top:16px; right:16px; width:38px; height:38px; border-radius:50%; background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.4); color:#fff; font-size:18px; font-weight:700; cursor:pointer; z-index:3; display:flex; align-items:center; justify-content:center; }
+.vv-count { position:absolute; top:20px; left:18px; padding:5px 12px; border-radius:var(--r-pill); background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.3); color:#fff; font-size:12px; font-weight:800; }
+.vv-arrow { position:absolute; top:50%; transform:translateY(-50%); width:42px; height:42px; border-radius:50%; background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.34); color:#fff; font-size:24px; font-weight:800; line-height:1; cursor:pointer; z-index:3; display:flex; align-items:center; justify-content:center; }
+.vv-arrow:active { transform:translateY(-50%) scale(.88); }
+.vv-prev { left:10px; }
+.vv-next { right:10px; }
+.vv-title { color:#fff; font-size:14px; font-weight:700; margin-top:16px; text-align:center; max-width:92%; }
+.vv-hint { color:rgba(255,255,255,.45); font-size:10px; font-weight:600; letter-spacing:.4px; margin-top:7px; text-transform:uppercase; text-align:center; }
+/* in real fullscreen the stage should fill the screen */
+.vv-stage:fullscreen, .vv-stage:-webkit-full-screen { max-width:none; width:100%; height:100%; border-radius:0; aspect-ratio:auto; }
 
 .loading { text-align: center; padding: 50px 20px; }
 .spinner { width: 48px; height: 48px; border: 4px solid rgba(255, 255, 255, 0.2); border-top-color: white; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px; box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2); }
@@ -676,6 +705,27 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
             <button class="lb-arrow lb-next" id="lbNext" onclick="lightboxStep(1,event)" aria-label="Next photo">›</button>
             <div class="lightbox-cap" id="lightboxCap"></div>
             <div class="lightbox-hint">Swipe to browse · tap outside to close</div>
+        </div>
+
+        <!-- Video viewer: clean player, swipe between videos, landscape fullscreen -->
+        <div class="vviewer" id="vviewer">
+            <button class="vv-close" onclick="closeVideoViewer()" aria-label="Close">✕</button>
+            <div class="vv-count" id="vvCount"></div>
+            <button class="vv-arrow vv-prev" id="vvPrev" onclick="videoStep(-1,event)" aria-label="Previous video">‹</button>
+            <div class="vv-stage" id="vvStage">
+                <div class="vv-host" id="vvHost"></div>
+                <div class="vv-tap" id="vvTap" onclick="vvTogglePlay(event)"></div>
+                <div class="vv-bar" id="vvBar" onclick="event.stopPropagation()">
+                    <button class="vv-btn" id="vvPlayBtn" onclick="vvTogglePlay(event)" aria-label="Play or pause">▶</button>
+                    <span class="vv-time" id="vvCur">0:00</span>
+                    <input class="vv-seek" id="vvSeek" type="range" min="0" max="1000" value="0" aria-label="Seek">
+                    <span class="vv-time" id="vvDur">0:00</span>
+                    <button class="vv-btn" id="vvFsBtn" onclick="viewerFullscreen(event)" aria-label="Fullscreen">⛶</button>
+                </div>
+            </div>
+            <button class="vv-arrow vv-next" id="vvNext" onclick="videoStep(1,event)" aria-label="Next video">›</button>
+            <div class="vv-title" id="vvTitle"></div>
+            <div class="vv-hint">Swipe to change video · ⛶ for landscape full screen</div>
         </div>
 
         <!-- Premium Floating Nav (collapsible via the arrow above it) -->
@@ -1489,30 +1539,24 @@ function closeAlbum(){openAlbum=null;renderGallery();scrollChurchToTabs();}
 
 /* Local files use the native player (works offline, no YouTube needed);
    YouTube entries reuse the inline embed card. */
+/* Gallery videos all open in the swipeable viewer */
 function galleryVideoCard(i,v){
     const dId=driveId(v.drive||v.url);
-    if(dId){
-        const tid='cDrv'+i+'Thumb';
-        return `<div class="video-card">
-            <button class="video-thumb" id="${tid}" onclick="playDrive('${tid}','${dId}')" aria-label="Play ${escapeHtml(v.title||'video')}">
-                <img class="video-thumb-img" src="https://drive.google.com/thumbnail?id=${dId}&sz=w1000" alt="" onerror="this.style.display='none'">
-                <span class="play">▶</span>
-            </button>
-            <div class="video-meta">
-                <div class="video-title">${escapeHtml(v.title||'')}</div>
-                ${v.desc?`<div class="res-desc" style="margin-top:3px;">${escapeHtml(v.desc)}</div>`:''}
-            </div>
-        </div>`;
-    }
-    if(v.file){
-        return `<div class="video-card">
-            <video controls playsinline preload="metadata" ${v.poster?`poster="${encodeURI(v.poster)}"`:''}>
-                <source src="${encodeURI(v.file)}">
-            </video>
-            <div class="video-meta"><div class="video-title">${escapeHtml(v.title||'')}</div></div>
-        </div>`;
-    }
-    return videoCardHtml('cGal',i,v);
+    const yId=ytId(v.yt);
+    const thumb=yId?`https://i.ytimg.com/vi/${yId}/maxresdefault.jpg`
+              :dId?`https://drive.google.com/thumbnail?id=${dId}&sz=w1000`
+              :(v.poster?encodeURI(v.poster):'');
+    const fb=yId?`onerror="ytThumbFallback(this,'${yId}')"`:`onerror="this.style.display='none'"`;
+    return `<div class="video-card">
+        <button class="video-thumb" onclick="openVideoViewer(${i})" aria-label="Play ${escapeHtml(v.title||'video')}">
+            ${thumb?`<img class="video-thumb-img" src="${thumb}" alt="" loading="lazy" decoding="async" ${fb}>`:''}
+            <span class="play">▶</span>
+        </button>
+        <div class="video-meta">
+            <div class="video-title">${escapeHtml(v.title||'')}</div>
+            ${v.desc?`<div class="res-desc" style="margin-top:3px;">${escapeHtml(v.desc)}</div>`:''}
+        </div>
+    </div>`;
 }
 
 let lightboxIndex=0;
@@ -1624,6 +1668,198 @@ function videoCardHtml(pfx,i,item){
             ${item.desc?`<div class="res-desc" style="margin-top:3px;">${escapeHtml(item.desc)}</div>`:''}
         </div>
     </div>`;
+}
+
+/* ===================== Video viewer =====================
+   Uses the YouTube IFrame API with controls=0 and our own control bar, so no
+   YouTube chrome or logo is visible while watching. YouTube's branding cannot
+   be removed entirely by contract; this keeps it out of sight during playback.
+   Quality: YouTube decides adaptively and ignores forced quality requests since
+   2019, so we ask for the highest and let it stream the best the line allows. */
+let vvList=[], vvIndex=0, vvPlayer=null, vvTimer=null, vvApi=null;
+
+function loadYtApi(){
+    if(window.YT&&window.YT.Player)return Promise.resolve(true);
+    if(vvApi)return vvApi;
+    vvApi=new Promise(resolve=>{
+        const done=()=>resolve(!!(window.YT&&window.YT.Player));
+        window.onYouTubeIframeAPIReady=done;
+        const s=document.createElement('script');
+        s.src='https://www.youtube.com/iframe_api';
+        s.onerror=()=>resolve(false);
+        document.head.appendChild(s);
+        setTimeout(done,6000); // never hang if the network is unavailable
+    });
+    return vvApi;
+}
+
+function openVideoViewer(i){
+    vvList=galleryVideos();
+    if(!vvList.length)return;
+    vvIndex=i;
+    document.getElementById('vviewer').classList.add('show');
+    bindVideoSwipe();
+    mountVideo();
+}
+
+function closeVideoViewer(){
+    stopVvTimer();
+    if(vvPlayer&&vvPlayer.destroy){try{vvPlayer.destroy();}catch(e){}}
+    vvPlayer=null;
+    document.getElementById('vvHost').innerHTML='';
+    document.getElementById('vviewer').classList.remove('show');
+    if(document.fullscreenElement&&document.exitFullscreen)document.exitFullscreen().catch(()=>{});
+}
+
+function videoStep(d,e){
+    if(e)e.stopPropagation();
+    const n=vvIndex+d;
+    if(n<0||n>=vvList.length)return;
+    vvIndex=n;
+    mountVideo();
+}
+
+async function mountVideo(){
+    const v=vvList[vvIndex]||{};
+    const host=document.getElementById('vvHost');
+    stopVvTimer();
+    if(vvPlayer&&vvPlayer.destroy){try{vvPlayer.destroy();}catch(e){}}
+    vvPlayer=null;
+    host.innerHTML='';
+    document.getElementById('vvTitle').textContent=v.title||'';
+    document.getElementById('vvCount').textContent=(vvIndex+1)+' / '+vvList.length;
+    document.getElementById('vvPrev').style.visibility=vvIndex>0?'visible':'hidden';
+    document.getElementById('vvNext').style.visibility=vvIndex<vvList.length-1?'visible':'hidden';
+    setVvProgress(0,0);
+
+    const dId=driveId(v.drive||v.url);
+    const yId=ytId(v.yt);
+
+    if(dId){
+        // Drive keeps its own controls; swipe and fullscreen still work
+        host.innerHTML='<iframe src="https://drive.google.com/file/d/'+dId+'/preview" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="HYMNORA player"></iframe>';
+        showVvBar(false);
+        return;
+    }
+    if(v.file){
+        host.innerHTML='<video src="'+encodeURI(v.file)+'" controls playsinline preload="metadata" style="width:100%;height:100%;background:#000"></video>';
+        showVvBar(false);
+        return;
+    }
+    if(!yId){host.innerHTML='';return;}
+
+    showVvBar(true);
+    const ok=await loadYtApi();
+    if(!ok){
+        // graceful fallback: plain embed, still inline and still no redirect
+        host.innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/'+yId+'?autoplay=1&playsinline=1&rel=0&iv_load_policy=3" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="HYMNORA player"></iframe>';
+        showVvBar(false);
+        return;
+    }
+    const mount=document.createElement('div');
+    host.appendChild(mount);
+    vvPlayer=new YT.Player(mount,{
+        videoId:yId,
+        host:'https://www.youtube-nocookie.com',
+        playerVars:{controls:0,rel:0,iv_load_policy:3,playsinline:1,disablekb:1,fs:0,modestbranding:1,vq:'hd1080'},
+        events:{
+            onReady:e=>{
+                try{e.target.setPlaybackQuality('highres');}catch(err){}
+                e.target.playVideo();
+                setVvProgress(0,e.target.getDuration?e.target.getDuration():0);
+                startVvTimer();
+            },
+            onStateChange:e=>{
+                const playing=e.data===1;
+                document.getElementById('vvPlayBtn').textContent=playing?'❚❚':'▶';
+                if(playing){try{e.target.setPlaybackQuality('highres');}catch(err){}startVvTimer();}
+                else stopVvTimer();
+            }
+        }
+    });
+}
+
+function showVvBar(useCustom){
+    const bar=document.getElementById('vvBar'), tap=document.getElementById('vvTap');
+    bar.style.display=useCustom?'flex':'none';
+    // native/Drive players need their own controls reachable
+    tap.style.display=useCustom?'block':'none';
+}
+
+function vvTogglePlay(e){
+    if(e)e.stopPropagation();
+    document.getElementById('vvBar').classList.add('show');
+    if(!vvPlayer||!vvPlayer.getPlayerState)return;
+    if(vvPlayer.getPlayerState()===1)vvPlayer.pauseVideo();
+    else vvPlayer.playVideo();
+}
+
+function fmtTime(s){
+    s=Math.max(0,Math.floor(s||0));
+    const m=Math.floor(s/60), sec=s%60;
+    const h=Math.floor(m/60);
+    return h>0?h+':'+String(m%60).padStart(2,'0')+':'+String(sec).padStart(2,'0')
+              :m+':'+String(sec).padStart(2,'0');
+}
+function setVvProgress(cur,dur){
+    document.getElementById('vvCur').textContent=fmtTime(cur);
+    document.getElementById('vvDur').textContent=fmtTime(dur);
+    const seek=document.getElementById('vvSeek');
+    if(document.activeElement!==seek)seek.value=dur>0?Math.round((cur/dur)*1000):0;
+}
+function startVvTimer(){
+    stopVvTimer();
+    vvTimer=setInterval(()=>{
+        if(!vvPlayer||!vvPlayer.getCurrentTime)return;
+        setVvProgress(vvPlayer.getCurrentTime(),vvPlayer.getDuration());
+    },500);
+}
+function stopVvTimer(){if(vvTimer){clearInterval(vvTimer);vvTimer=null;}}
+
+/* Landscape fullscreen */
+async function viewerFullscreen(e){
+    if(e)e.stopPropagation();
+    const el=document.getElementById('vvStage');
+    try{
+        if(!document.fullscreenElement){
+            if(el.requestFullscreen)await el.requestFullscreen();
+            else if(el.webkitRequestFullscreen)el.webkitRequestFullscreen();
+            if(screen.orientation&&screen.orientation.lock){
+                try{await screen.orientation.lock('landscape');}catch(err){}
+            }
+        }else{
+            if(screen.orientation&&screen.orientation.unlock){try{screen.orientation.unlock();}catch(err){}}
+            if(document.exitFullscreen)await document.exitFullscreen();
+        }
+    }catch(err){}
+}
+
+/* Swipe between videos */
+let vvSwipeBound=false;
+function bindVideoSwipe(){
+    if(vvSwipeBound)return;
+    const box=document.getElementById('vviewer');
+    if(!box)return;
+    vvSwipeBound=true;
+    let x0=null,y0=null;
+    box.addEventListener('touchstart',ev=>{const t=ev.changedTouches[0];x0=t.clientX;y0=t.clientY;},{passive:true});
+    box.addEventListener('touchend',ev=>{
+        if(x0===null)return;
+        const t=ev.changedTouches[0], dx=t.clientX-x0, dy=t.clientY-y0;
+        x0=null;
+        if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy))videoStep(dx<0?1:-1);
+    },{passive:true});
+    document.getElementById('vvSeek').addEventListener('input',function(){
+        if(vvPlayer&&vvPlayer.seekTo&&vvPlayer.getDuration){
+            vvPlayer.seekTo((this.value/1000)*vvPlayer.getDuration(),true);
+        }
+    });
+    document.addEventListener('keydown',ev=>{
+        if(!box.classList.contains('show'))return;
+        if(ev.key==='ArrowRight')videoStep(1);
+        else if(ev.key==='ArrowLeft')videoStep(-1);
+        else if(ev.key==='Escape')closeVideoViewer();
+    });
 }
 
 /* Google Drive plays inline too — no redirect out of the app */
