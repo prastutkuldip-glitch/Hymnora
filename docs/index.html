@@ -829,6 +829,12 @@ const HYMNS=[
 
 {title:"Rock of Ages",meta:"Augustus M. Toplady · 1763",text:"Rock of Ages, cleft for me,\nLet me hide myself in Thee;\nLet the water and the blood,\nFrom Thy wounded side which flowed,\nBe of sin the double cure,\nSave from wrath and make me pure.\n\nNot the labors of my hands\nCan fulfill Thy law’s demands;\nCould my zeal no respite know,\nCould my tears forever flow,\nAll for sin could not atone;\nThou must save, and Thou alone.\n\nNothing in my hand I bring,\nSimply to Thy cross I cling;\nNaked, come to Thee for dress;\nHelpless, look to Thee for grace;\nFoul, I to the fountain fly;\nWash me, Savior, or I die.\n\nWhile I draw this fleeting breath,\nWhen my eyes shall close in death,\nWhen I soar to worlds unknown,\nSee Thee on Thy judgment throne,\nRock of Ages, cleft for me,\nLet me hide myself in Thee."},
 
+{title:"I Have Decided to Follow Jesus",meta:"Traditional · Assam origin",text:"I have decided to follow Jesus,\nI have decided to follow Jesus,\nI have decided to follow Jesus,\nNo turning back, no turning back.\n\nThough I may wonder, I still will follow,\nThough I may wonder, I still will follow,\nThough I may wonder, I still will follow,\nNo turning back, no turning back.\n\nThe world behind me, the cross before me,\nThe world behind me, the cross before me,\nThe world behind me, the cross before me,\nNo turning back, no turning back.\n\nThough none go with me, still I will follow,\nThough none go with me, still I will follow,\nThough none go with me, still I will follow,\nNo turning back, no turning back.\n\nWill you decide now to follow Jesus?\nWill you decide now to follow Jesus?\nWill you decide now to follow Jesus?\nNo turning back, no turning back."},
+
+{title:"Are You Washed in the Blood?",meta:"Elisha A. Hoffman · 1878",text:"Have you been to Jesus for the cleansing power?\nAre you washed in the blood of the Lamb?\nAre you fully trusting in His grace this hour?\nAre you washed in the blood of the Lamb?\n\nRefrain:\nAre you washed in the blood,\nIn the soul-cleansing blood of the Lamb?\nAre your garments spotless? Are they white as snow?\nAre you washed in the blood of the Lamb?\n\nAre you walking daily by the Saviour\u2019s side?\nAre you washed in the blood of the Lamb?\nDo you rest each moment in the Crucified?\nAre you washed in the blood of the Lamb?\n\nWhen the Bridegroom cometh will your robes be white?\nAre you washed in the blood of the Lamb?\nWill your soul be ready for the mansions bright,\nAnd be washed in the blood of the Lamb?\n\nLay aside the garments that are stained with sin,\nAnd be washed in the blood of the Lamb;\nThere\u2019s a fountain flowing for the soul unclean,\nOh, be washed in the blood of the Lamb!"},
+
+{title:"Jesus, Keep Me Near the Cross",meta:"Fanny J. Crosby · 1869",text:"Jesus, keep me near the cross;\nThere a precious fountain,\nFree to all, a healing stream,\nFlows from Calvary\u2019s mountain.\n\nRefrain:\nIn the cross, in the cross,\nBe my glory ever;\nTill my raptured soul shall find\nRest beyond the river.\n\nNear the cross, a trembling soul,\nLove and mercy found me;\nThere the bright and morning star\nSheds its beams around me.\n\nNear the cross! O Lamb of God,\nBring its scenes before me;\nHelp me walk from day to day\nWith its shadow o\u2019er me.\n\nNear the cross I\u2019ll watch and wait,\nHoping, trusting ever,\nTill I reach the golden strand\nJust beyond the river."},
+
 {title:"What a Friend We Have in Jesus",meta:"Joseph M. Scriven · 1855",text:"What a friend we have in Jesus,\nAll our sins and griefs to bear!\nWhat a privilege to carry\nEverything to God in prayer!\nOh, what peace we often forfeit,\nOh, what needless pain we bear,\nAll because we do not carry\nEverything to God in prayer!\n\nHave we trials and temptations?\nIs there trouble anywhere?\nWe should never be discouraged;\nTake it to the Lord in prayer.\nCan we find a friend so faithful\nWho will all our sorrows share?\nJesus knows our every weakness;\nTake it to the Lord in prayer.\n\nAre we weak and heavy laden,\nCumbered with a load of care?\nPrecious Savior, still our refuge —\nTake it to the Lord in prayer.\nDo thy friends despise, forsake thee?\nTake it to the Lord in prayer;\nIn His arms He’ll take and shield thee,\nThou wilt find a solace there."}
 ];
 
@@ -1025,9 +1031,9 @@ const BOOK_NAMES={
    and the surrounding verses of the chapter that is already loaded.
    Written out in whichever language the verse is being read in.            */
 const CTX_LABELS={
-  english:{context:'Context',simple:'Simple',deep:'Deeply',verse:'This verse',before:'Comes just before',after:'Comes just after',place:'Where this sits',kind:'Kind of book',theme:'What this book is about',how:'How to read it',chapterOf:'Chapter {c} of {t}',start:'Opening',middle:'Middle',end:'Closing',flow:'Flow of the passage',map:'The book at a glance',meaning:'Meaning',close:'Close',note:'Study context built from the book, its genre and the surrounding verses.',begins:'begins the book',ends:'ends the book',testamentOT:'Old Testament',testamentNT:'New Testament'},
-  hindi:{context:'संदर्भ',simple:'सरल',deep:'विस्तार से',verse:'यह पद',before:'इसके ठीक पहले',after:'इसके ठीक बाद',place:'यह कहाँ आता है',kind:'पुस्तक का प्रकार',theme:'यह पुस्तक किस विषय में है',how:'इसे कैसे पढ़ें',chapterOf:'अध्याय {c}, कुल {t} में से',start:'आरंभ',middle:'मध्य',end:'अंत',flow:'प्रसंग का क्रम',map:'पुस्तक एक नज़र में',meaning:'अर्थ',close:'बंद करें',note:'यह संदर्भ पुस्तक, उसके प्रकार और आस-पास के पदों से बनाया गया है।',begins:'पुस्तक का आरंभ करता है',ends:'पुस्तक का अंत करता है',testamentOT:'पुराना नियम',testamentNT:'नया नियम'},
-  assamese:{context:'প্ৰসংগ',simple:'সৰল',deep:'বিতংভাৱে',verse:'এই পদ',before:'ইয়াৰ ঠিক আগত',after:'ইয়াৰ ঠিক পিছত',place:'ই ক\u2019ত আছে',kind:'কিতাপৰ ধৰণ',theme:'এই কিতাপ কিহৰ বিষয়ে',how:'কেনেকৈ পঢ়িব',chapterOf:'অধ্যায় {c}, মুঠ {t}ৰ',start:'আৰম্ভ',middle:'মাজ',end:'শেষ',flow:'অংশৰ ক্ৰম',map:'কিতাপ এক নজৰত',meaning:'অৰ্থ',close:'বন্ধ কৰক',note:'এই প্ৰসংগ কিতাপ, ইয়াৰ ধৰণ আৰু চাৰিওকাষৰ পদৰ পৰা সজা হৈছে।',begins:'কিতাপৰ আৰম্ভ কৰে',ends:'কিতাপৰ শেষ কৰে',testamentOT:'পুৰণি নিয়ম',testamentNT:'নতুন নিয়ম'}
+  english:{context:'Context',simple:'Simple',deep:'Deeply',verse:'This verse',before:'Comes just before',after:'Comes just after',place:'Where this sits',kind:'Kind of book',theme:'What this book is about',how:'How to read it',chapterOf:'Chapter {c} of {t}',start:'Opening',middle:'Middle',end:'Closing',flow:'Flow of the passage',map:'The book at a glance',meaning:'What this verse means',chapterAbout:'What is happening in this chapter',picture:'Picture of the scene',noneYet:'A verse note has not been written for this one yet. The surrounding verses above give its immediate context.',close:'Close',note:'Verse notes follow standard Protestant understanding. Illustrations are drawn in the app.',begins:'begins the book',ends:'ends the book',testamentOT:'Old Testament',testamentNT:'New Testament'},
+  hindi:{context:'संदर्भ',simple:'सरल',deep:'विस्तार से',verse:'यह पद',before:'इसके ठीक पहले',after:'इसके ठीक बाद',place:'यह कहाँ आता है',kind:'पुस्तक का प्रकार',theme:'यह पुस्तक किस विषय में है',how:'इसे कैसे पढ़ें',chapterOf:'अध्याय {c}, कुल {t} में से',start:'आरंभ',middle:'मध्य',end:'अंत',flow:'प्रसंग का क्रम',map:'पुस्तक एक नज़र में',meaning:'इस पद का अर्थ',chapterAbout:'इस अध्याय में क्या हो रहा है',picture:'दृश्य का चित्र',noneYet:'इस पद के लिए टिप्पणी अभी नहीं लिखी गई। ऊपर दिए आस-पास के पद इसका तत्कालिक संदर्भ देते हैं।',close:'बंद करें',note:'पदों की टिप्पणियाँ प्रचलित प्रोटेस्टेंट समझ के अनुसार हैं। चित्र ऐप में ही बनाए गए हैं।',begins:'पुस्तक का आरंभ करता है',ends:'पुस्तक का अंत करता है',testamentOT:'पुराना नियम',testamentNT:'नया नियम'},
+  assamese:{context:'প্ৰসংগ',simple:'সৰল',deep:'বিতংভাৱে',verse:'এই পদ',before:'ইয়াৰ ঠিক আগত',after:'ইয়াৰ ঠিক পিছত',place:'ই ক\u2019ত আছে',kind:'কিতাপৰ ধৰণ',theme:'এই কিতাপ কিহৰ বিষয়ে',how:'কেনেকৈ পঢ়িব',chapterOf:'অধ্যায় {c}, মুঠ {t}ৰ',start:'আৰম্ভ',middle:'মাজ',end:'শেষ',flow:'অংশৰ ক্ৰম',map:'কিতাপ এক নজৰত',meaning:'এই পদৰ অৰ্থ',chapterAbout:'এই অধ্যায়ত কি হৈ আছে',picture:'দৃশ্যৰ ছবি',noneYet:'এই পদৰ বাবে টোকা এতিয়াও লিখা হোৱা নাই। ওপৰৰ চাৰিওকাষৰ পদে ইয়াৰ তৎক্ষণিক প্ৰসংগ দিয়ে।',close:'বন্ধ কৰক',note:'পদৰ টোকা প্ৰচলিত প্ৰ’টেষ্টেণ্ট বুজাবুজিৰ অনুসাৰে। ছবিবোৰ এপতে সজা হৈছে।',begins:'কিতাপৰ আৰম্ভ কৰে',ends:'কিতাপৰ শেষ কৰে',testamentOT:'পুৰণি নিয়ম',testamentNT:'নতুন নিয়ম'}
 };
 
 const CTX_GENRES={
@@ -1131,6 +1137,70 @@ const CTX_BOOKS={
  '3jo':{g:'general',en:'Support those who work for the truth',hi:'जो सत्य के लिये परिश्रम करते हैं, उनकी सहायता करो',as:'যিসকলে সত্যৰ বাবে পৰিশ্ৰম কৰে, তেওঁলোকক সহায় কৰা'},
  jud:{g:'general',en:'Contend for the faith once delivered',hi:'जो विश्वास एक बार सौंपा गया, उसके लिये लड़ो',as:'এবাৰ গতাই দিয়া বিশ্বাসৰ বাবে যুঁজ দিয়া'},
  rev:{g:'apoc',en:'Christ reigns, judges and makes all things new',hi:'मसीह राज्य करता, न्याय करता, और सब कुछ नया बनाता है',as:'খ্ৰীষ্টে ৰাজত্ব কৰে, বিচাৰ কৰে, আৰু সকলো নতুন কৰে'}
+};
+
+/* Per-chapter summary: what is actually happening here.
+   Key: "abbr chapter". Shown instead of a generic book theme.            */
+const CTX_CHAPTERS={
+ 'gen 1':{en:'The history of creation. God speaks and the world comes into being, ordered day by day, and He calls it good. Plain narrative, not symbolism.',hi:'सृष्टि का इतिहास। परमेश्वर बोलता है और संसार अस्तित्व में आता है, दिन-प्रतिदिन क्रम में, और वह उसे अच्छा कहता है। यह सीधा वर्णन है, प्रतीक नहीं।',as:'সৃষ্টিৰ ইতিহাস। ঈশ্বৰে ক\u2019য় আৰু জগত অস্তিত্বলৈ আহে, দিনে দিনে সজাই, আৰু তেওঁ ইয়াক উত্তম বোলে। এই সৰল বিৱৰণ, প্ৰতীক নহয়।'},
+ 'gen 2':{en:'Creation told again, close up, focused on the man and woman, the garden, work and marriage.',hi:'सृष्टि का वर्णन फिर, निकट से — पुरुष और स्त्री, बाटिका, काम और विवाह पर ध्यान।',as:'সৃষ্টিৰ বিৱৰণ পুনৰ, কাষৰ পৰা — পুৰুষ আৰু নাৰী, বাৰী, কাম আৰু বিবাহৰ ওপৰত।'},
+ 'gen 3':{en:'The first sin and its results: shame, broken relationships, a curse, and the first promise of a deliverer.',hi:'पहला पाप और उसके परिणाम: लज्जा, टूटे संबंध, शाप, और छुड़ानेवाले की पहली प्रतिज्ञा।',as:'প্ৰথম পাপ আৰু ইয়াৰ ফল: লাজ, ভঙা সম্পৰ্ক, শাও, আৰু উদ্ধাৰকৰ্তাৰ প্ৰথম প্ৰতিজ্ঞা।'},
+ 'exo 20':{en:'God gives the Ten Commandments at Sinai — the covenant terms for the people He just rescued.',hi:'परमेश्वर सीनै पर दस आज्ञाएँ देता है — जिन लोगों को उसने छुड़ाया, उनके लिए वाचा की शर्तें।',as:'ঈশ্বৰে চীনয় পৰ্বতত দহ আজ্ঞা দিয়ে — যিসকলক তেওঁ উদ্ধাৰ কৰিলে, তেওঁলোকৰ বাবে নিয়মৰ চৰ্ত।'},
+ 'psa 23':{en:'David pictures the Lord as his shepherd: provision, guidance, courage in the dark valley, and a home at the end.',hi:'दाऊद यहोवा को अपने चरवाहे के रूप में चित्रित करता है: प्रबंध, अगुवाई, अंधेरी घाटी में साहस, और अंत में घर।',as:'দায়ূদে যিহোৱাক নিজৰ মেৰৰখীয়া ৰূপে দেখুৱায়: যোগান, পথ দেখুৱা, আন্ধাৰ উপত্যকাত সাহস, আৰু শেষত ঘৰ।'},
+ 'psa 91':{en:'A song of shelter: the one who trusts God is kept, whatever the danger around.',hi:'शरण का गीत: जो परमेश्वर पर भरोसा रखता है वह सुरक्षित रहता है, चाहे चारों ओर कैसा भी खतरा हो।',as:'আশ্ৰয়ৰ গীত: যি ঈশ্বৰত ভাৰসা কৰে, চাৰিওফালে যিমানেই বিপদ নহওক, তেওঁ ৰক্ষিত হয়।'},
+ 'isa 53':{en:'The suffering Servant: wounded, rejected and killed in the place of others — read by the church as Christ.',hi:'दुख उठानेवाला दास: घायल, तुच्छ जाना और दूसरों के स्थान पर मारा गया — कलीसिया इसे मसीह के रूप में पढ़ती है।',as:'দুখভোগী দাস: আঘাতপ্ৰাপ্ত, অগ্ৰাহ্য আৰু আনৰ ঠাইত নিহত — মণ্ডলীয়ে ইয়াক খ্ৰীষ্ট বুলি পঢ়ে।'},
+ 'mat 5':{en:'The Sermon on the Mount begins. Jesus describes the life of the kingdom and deliberately overturns shallow, surface obedience.',hi:'पहाड़ी उपदेश आरंभ होता है। यीशु राज्य के जीवन का वर्णन करते हैं और ऊपरी, दिखावटी आज्ञापालन को जानबूझकर उलट देते हैं।',as:'পৰ্বতৰ উপদেশ আৰম্ভ হয়। যীচুৱে ৰাজ্যৰ জীৱন বৰ্ণনা কৰে আৰু ওপৰৰ, দেখুৱাবৰ বাবে কৰা আজ্ঞা পালনক ইচ্ছাকৃতভাৱে উলটায়।'},
+ 'mat 6':{en:'Jesus teaches on giving, prayer, fasting and money — all done for God rather than for an audience.',hi:'यीशु दान, प्रार्थना, उपवास और धन पर सिखाते हैं — सब परमेश्वर के लिए, लोगों को दिखाने के लिए नहीं।',as:'যীচুৱে দান, প্ৰাৰ্থনা, উপবাস আৰু ধনৰ বিষয়ে শিকায় — সকলো ঈশ্বৰৰ বাবে, মানুহক দেখুৱাবৰ বাবে নহয়।'},
+ 'joh 3':{en:'Nicodemus comes at night. Jesus speaks of being born again, and then of God giving His Son so that whoever believes may live.',hi:'नीकुदेमुस रात को आता है। यीशु नये जन्म की बात करते हैं, फिर यह कि परमेश्वर ने अपना पुत्र दिया कि जो विश्वास करे वह जीए।',as:'নীকদীম ৰাতি আহে। যীচুৱে নতুন জন্মৰ কথা কয়, তাৰ পিছত ঈশ্বৰে নিজৰ পুত্ৰ দিলে যেন যি বিশ্বাস কৰে তেওঁ জীয়ে।'},
+ 'joh 14':{en:'Jesus comforts His disciples before the cross: a place prepared, the way to the Father, and the Spirit promised.',hi:'क्रूस से पहले यीशु शिष्यों को शांति देते हैं: तैयार किया हुआ स्थान, पिता तक का मार्ग, और आत्मा की प्रतिज्ञा।',as:'ক্ৰুচৰ আগতে যীচুৱে শিষ্যসকলক সান্ত্বনা দিয়ে: সজা ঠাই, পিতৃলৈ পথ, আৰু আত্মাৰ প্ৰতিজ্ঞা।'},
+ 'joh 15':{en:'The vine and the branches: fruit comes only from staying joined to Christ, and love marks His people.',hi:'दाखलता और डालियाँ: फल केवल मसीह में बने रहने से आता है, और प्रेम उसके लोगों की पहचान है।',as:'দ্ৰাক্ষালতা আৰু ডাল: ফল কেৱল খ্ৰীষ্টত লাগি থাকিলেই আহে, আৰু প্ৰেম তেওঁৰ লোকৰ চিন।'},
+ 'rom 8':{en:'No condemnation for those in Christ. Life in the Spirit, present suffering, and a love nothing can cut off.',hi:'मसीह में होनेवालों पर दंड की आज्ञा नहीं। आत्मा में जीवन, वर्तमान दुख, और एक प्रेम जिसे कोई अलग नहीं कर सकता।',as:'খ্ৰীষ্টত থকাসকলৰ বাবে দণ্ডাজ্ঞা নাই। আত্মাত জীৱন, বৰ্তমানৰ দুখ, আৰু এনে প্ৰেম যাক কোনেও আঁতৰাব নোৱাৰে।'},
+ '1co 13':{en:'Love is set above every gift, and described by what it actually does.',hi:'प्रेम को हर वरदान से ऊपर रखा गया है, और उसका वर्णन उसके कामों से किया गया है।',as:'প্ৰেমক প্ৰতিটো বৰৰ ওপৰত ৰখা হৈছে, আৰু ইয়াৰ বৰ্ণনা ইয়াৰ কামৰ দ্বাৰা কৰা হৈছে।'},
+ 'eph 6':{en:'The armour of God: the believer stands in a real spiritual conflict with God is own provision.',hi:'परमेश्वर के हथियार: विश्वासी वास्तविक आत्मिक युद्ध में परमेश्वर के दिए साधनों से खड़ा रहता है।',as:'ঈশ্বৰৰ সাজ: বিশ্বাসী প্ৰকৃত আত্মিক যুদ্ধত ঈশ্বৰে দিয়া সাজেৰে থিয় হয়।'},
+ 'phi 4':{en:'Rejoice, pray instead of worrying, think on what is good, and be content through Christ is strength.',hi:'आनंद करो, चिंता के बदले प्रार्थना करो, भली बातों पर ध्यान करो, और मसीह की सामर्थ्य से संतुष्ट रहो।',as:'আনন্দ কৰা, চিন্তাৰ সলনি প্ৰাৰ্থনা কৰা, ভাল কথা ভাবা, আৰু খ্ৰীষ্টৰ শক্তিত সন্তুষ্ট থাকা।'},
+ 'heb 11':{en:'A roll call of faith: ordinary people who trusted God is promise before they saw it.',hi:'विश्वास की सूची: साधारण लोग जिन्होंने प्रतिज्ञा देखने से पहले परमेश्वर पर भरोसा किया।',as:'বিশ্বাসৰ তালিকা: সাধাৰণ মানুহ যিসকলে প্ৰতিজ্ঞা দেখাৰ আগতেই ঈশ্বৰত ভাৰসা কৰিলে।'},
+ 'rev 21':{en:'A new heaven and new earth, God dwelling with His people, and every tear wiped away.',hi:'नया आकाश और नई पृथ्वी, परमेश्वर अपने लोगों के संग वास करता है, और हर आँसू पोंछ दिया जाता है।',as:'নতুন আকাশ আৰু নতুন পৃথিৱী, ঈশ্বৰে নিজৰ লোকৰ সৈতে বাস কৰে, আৰু প্ৰতিটো চকুলো মচি দিয়া হয়।'}
+};
+
+/* Per-verse meaning, written from standard Protestant understanding.
+   art = which illustration to draw in Deeply mode.                        */
+const CTX_VERSES={
+ 'gen 1:1':{art:'creation',en:'The opening statement of the Bible: God existed before everything and made the universe from nothing. It is history, simply told, not a riddle to decode.',hi:'बाइबिल का आरंभिक कथन: परमेश्वर सब से पहले था और उसने शून्य से सृष्टि बनाई। यह इतिहास है, सरलता से कहा गया, कोई पहेली नहीं।',as:'বাইবেলৰ আৰম্ভণিৰ কথা: ঈশ্বৰ সকলোৰে আগতে আছিল আৰু তেওঁ শূন্যৰ পৰা বিশ্ব সৃষ্টি কৰিলে। এইটো ইতিহাস, সৰলভাৱে কোৱা, কোনো সাঁথৰ নহয়।'},
+ 'gen 1:27':{art:'creation',en:'People are made in God is image. That is where human dignity comes from, and it applies to every person equally.',hi:'मनुष्य परमेश्वर के स्वरूप में बनाया गया। मनुष्य का आदर यहीं से आता है, और यह हर व्यक्ति पर समान रूप से लागू है।',as:'মানুহ ঈশ্বৰৰ প্ৰতিমূৰ্তিত সৃষ্ট। মানুহৰ সন্মান ইয়াৰ পৰাই আহে, আৰু ই প্ৰতিজন মানুহৰ ক্ষেত্ৰত সমানে প্ৰযোজ্য।'},
+ 'gen 3:15':{art:'cross',en:'Spoken to the serpent: a descendant of the woman will crush him, though He will be wounded doing it. The first hint of a rescuer.',hi:'सर्प से कहा गया: स्त्री का वंश उसका सिर कुचलेगा, यद्यपि ऐसा करते हुए वह घायल होगा। छुड़ानेवाले का पहला संकेत।',as:'সাপক কোৱা হৈছে: নাৰীৰ বংশে তাৰ মূৰ গুড়ি কৰিব, যদিও তেওঁ আঘাত পাব। উদ্ধাৰকৰ্তাৰ প্ৰথম সংকেত।'},
+ 'exo 20:3':{en:'The first commandment. God claims first place absolutely — not one god among several, but the only one.',hi:'पहली आज्ञा। परमेश्वर पूर्ण रूप से प्रथम स्थान का दावा करता है — कई देवताओं में एक नहीं, केवल वही एक।',as:'প্ৰথম আজ্ঞা। ঈশ্বৰে সম্পূৰ্ণৰূপে প্ৰথম স্থান দাবী কৰে — অনেক দেৱতাৰ মাজৰ এজন নহয়, একমাত্ৰ তেওঁ।'},
+ 'psa 23:1':{art:'shepherd',en:'A shepherd image. David is saying that because the Lord Himself looks after him, he lacks nothing he truly needs.',hi:'चरवाहे का चित्र। दाऊद कहता है कि क्योंकि यहोवा स्वयं उसकी देखभाल करता है, उसे किसी सच्ची आवश्यकता की घटी नहीं।',as:'মেৰৰখীয়াৰ ছবি। দায়ূদে কয় যে যিহোৱা নিজে তেওঁক চোৱাচিতা কৰে, সেয়ে তেওঁৰ প্ৰকৃত প্ৰয়োজনৰ অভাৱ নাই।'},
+ 'psa 23:4':{art:'shepherd',en:'The valley is real, not avoided. Courage comes from God being present in it, not from the danger being removed.',hi:'घाटी वास्तविक है, टाली नहीं गई। साहस इस से आता है कि परमेश्वर उसमें संग है, न कि खतरा हट गया।',as:'উপত্যকা প্ৰকৃত, ইয়াক এৰি যোৱা নাই। সাহস আহে ঈশ্বৰ তাত উপস্থিত থকাৰ পৰা, বিপদ আঁতৰি যোৱাৰ পৰা নহয়।'},
+ 'psa 119:105':{art:'lamp',en:'Scripture pictured as a lamp: it shows the next step on the path rather than the whole road at once.',hi:'पवित्रशास्त्र दीपक के समान: यह पूरा मार्ग एक साथ नहीं, अगला कदम दिखाता है।',as:'শাস্ত্ৰক চাকিৰ দৰে দেখুৱা হৈছে: ই গোটেই বাট একেবাৰে নহয়, পিছৰ খোজটো দেখুৱায়।'},
+ 'pro 3:5':{en:'Trust is placed in God rather than in your own reading of the situation — not switching off the mind, but not making it the final judge.',hi:'भरोसा अपनी समझ पर नहीं, परमेश्वर पर रखा जाता है — बुद्धि बंद करना नहीं, पर उसे अंतिम न्यायी न बनाना।',as:'ভাৰসা নিজৰ বুদ্ধিত নহয়, ঈশ্বৰত ৰখা হয় — মন বন্ধ কৰা নহয়, কিন্তু তাক শেষ বিচাৰক নকৰা।'},
+ 'isa 41:10':{en:'Spoken to a fearful people: the reason not to fear is not their strength but God being with them and holding them.',hi:'डरे हुए लोगों से कहा गया: न डरने का कारण उनका बल नहीं, पर परमेश्वर का संग रहना और थामना है।',as:'ভয়াতুৰ লোকক কোৱা হৈছে: ভয় নকৰাৰ কাৰণ তেওঁলোকৰ শক্তি নহয়, ঈশ্বৰ লগত থকা আৰু ধৰি ৰখা।'},
+ 'isa 53:5':{art:'cross',en:'The Servant is wounded in the place of others, and their healing comes through His suffering. The church reads this as Christ at the cross.',hi:'दास दूसरों के स्थान पर घायल होता है, और उनका चंगा होना उसके दुख से आता है। कलीसिया इसे क्रूस पर मसीह के रूप में पढ़ती है।',as:'দাস আনৰ ঠাইত আঘাত পায়, আৰু তেওঁলোকৰ সুস্থতা তেওঁৰ দুখৰ মাজেদি আহে। মণ্ডলীয়ে ইয়াক ক্ৰুচত খ্ৰীষ্ট বুলি পঢ়ে।'},
+ 'jer 29:11':{en:'Written to people already in exile. God is plan is real but long-term — it did not cancel the seventy years, it gave them hope inside it.',hi:'यह उन लोगों को लिखा गया जो पहले से बंधुआई में थे। परमेश्वर की योजना सच्ची पर दीर्घकालिक है — सत्तर वर्ष रद्द नहीं हुए, उनमें आशा दी गई।',as:'এইটো ইতিমধ্যে বন্দীত্বত থকা লোকক লিখা হৈছিল। ঈশ্বৰৰ পৰিকল্পনা সঁচা কিন্তু দীঘলীয়া — সত্তৰ বছৰ বাতিল হোৱা নাই, তাৰ মাজতে আশা দিয়া হ\u2019ল।'},
+ 'mic 6:8':{en:'A summary of what God wants: fair dealing, mercy that is loved rather than tolerated, and humility before Him.',hi:'परमेश्वर क्या चाहता है, इसका सार: न्याय करना, दया से प्रीति रखना, और उसके सामने नम्रता से चलना।',as:'ঈশ্বৰে কি খোজে তাৰ সাৰ: ন্যায় কৰা, দয়াক ভাল পোৱা, আৰু তেওঁৰ সন্মুখত নম্ৰ হোৱা।'},
+ 'mat 5:14':{art:'lamp',en:'Believers are light in a dark place. Light is meant to be seen, so faith is not a private matter.',hi:'विश्वासी अंधकार में ज्योति हैं। ज्योति दिखने के लिए है, इसलिए विश्वास निजी बात नहीं।',as:'বিশ্বাসীসকল আন্ধাৰত দীপ্তি। দীপ্তি দেখা পোৱাৰ বাবেই, সেয়ে বিশ্বাস ব্যক্তিগত বিষয় নহয়।'},
+ 'mat 5:39':{art:'cheek',en:'A metaphor, not a rule about slapping. Jesus is teaching that evil must not be answered with evil. The struck cheek here is an insult to honour, and refusing to hit back breaks the cycle of revenge instead of feeding it. It does not forbid protecting the helpless or seeking justice.',hi:'यह रूपक है, थप्पड़ का नियम नहीं। यीशु सिखा रहे हैं कि बुराई का बदला बुराई से न दिया जाए। यहाँ गाल पर मारना मान का अपमान है, और पलटकर न मारना बदले का चक्र तोड़ता है। यह निर्बल की रक्षा या न्याय माँगने से नहीं रोकता।',as:'এইটো ৰূপক, চৰ মৰাৰ নিয়ম নহয়। যীচুৱে শিকাইছে যে বেয়াৰ প্ৰতিশোধ বেয়াৰে দিব নালাগে। ইয়াত গালত মৰা মানৰ অপমান, আৰু ঘূৰাই নমৰাই প্ৰতিশোধৰ চক্ৰ ভাঙে। ই দুৰ্বলক ৰক্ষা কৰা বা ন্যায় বিচৰাত বাধা নিদিয়ে।'},
+ 'mat 6:33':{en:'Priority, not a formula for wealth. Put God is rule first and the daily necessities are trusted to His care.',hi:'यह प्राथमिकता है, धन पाने का सूत्र नहीं। परमेश्वर के राज्य को पहला स्थान दो, और रोज़ की आवश्यकताएँ उसकी चिंता में छोड़ दो।',as:'এইটো অগ্ৰাধিকাৰ, ধন পোৱাৰ সূত্ৰ নহয়। ঈশ্বৰৰ ৰাজ্যক প্ৰথম স্থান দিয়া, আৰু দৈনন্দিন প্ৰয়োজন তেওঁৰ হাতত এৰি দিয়া।'},
+ 'mat 11:28':{en:'An invitation to the worn out. The rest offered is relief from carrying religion as a burden, found by coming to Christ Himself.',hi:'थके हुओं के लिए बुलावा। जो विश्राम दिया जाता है वह धर्म को बोझ की तरह ढोने से छुटकारा है, जो मसीह के पास आने से मिलता है।',as:'ভাগৰি পৰাসকলৰ বাবে আহ্বান। যি বিশ্ৰাম দিয়া হৈছে সেয়া ধৰ্মক ভাৰ হিচাপে বৈ ফুৰাৰ পৰা মুক্তি, যি খ্ৰীষ্টৰ কাষলৈ আহিলে পোৱা যায়।'},
+ 'joh 1:1':{en:'Jesus is called the Word, present with God from the beginning and Himself God. The claim is His full deity, not that He was later created.',hi:'यीशु को वचन कहा गया है, जो आदि से परमेश्वर के संग था और स्वयं परमेश्वर है। यहाँ उसकी पूर्ण ईश्वरता का दावा है, यह नहीं कि वह बाद में रचा गया।',as:'যীচুক বাক্য বোলা হৈছে, যি আদিৰ পৰা ঈশ্বৰৰ সৈতে আছিল আৰু নিজেই ঈশ্বৰ। ইয়াত তেওঁৰ সম্পূৰ্ণ ঈশ্বৰত্বৰ দাবী, পিছত সৃষ্ট হোৱাৰ কথা নহয়।'},
+ 'joh 3:16':{art:'cross',en:'The gospel in one sentence: God is love is the reason, giving His Son is the cost, believing is the response, and everlasting life is the result.',hi:'एक वाक्य में सुसमाचार: परमेश्वर का प्रेम कारण है, पुत्र देना मूल्य है, विश्वास करना उत्तर है, और अनन्त जीवन परिणाम है।',as:'এটা বাক্যত শুভবাৰ্তা: ঈশ্বৰৰ প্ৰেম কাৰণ, পুত্ৰ দিয়া মূল্য, বিশ্বাস কৰা উত্তৰ, আৰু অনন্ত জীৱন ফল।'},
+ 'joh 14:6':{en:'Jesus claims to be the only way to the Father — not one path among many. Exclusive in route, open in invitation.',hi:'यीशु स्वयं को पिता तक पहुँचने का एकमात्र मार्ग कहते हैं — अनेक मार्गों में एक नहीं। मार्ग एक है, पर बुलावा सब के लिए खुला है।',as:'যীচুৱে নিজকে পিতৃৰ ওচৰলৈ যোৱাৰ একমাত্ৰ পথ বোলে — অনেক পথৰ মাজৰ এটা নহয়। পথ এটাই, কিন্তু আহ্বান সকলোৰে বাবে খোলা।'},
+ 'joh 15:5':{art:'vine',en:'A vine picture. Fruit is not produced by effort apart from Christ; it grows from staying connected to Him.',hi:'दाखलता का चित्र। फल मसीह से अलग परिश्रम से नहीं आता; वह उसमें बने रहने से उगता है।',as:'দ্ৰাক্ষালতাৰ ছবি। ফল খ্ৰীষ্টৰ পৰা পৃথক হৈ পৰিশ্ৰমেৰে নাহে; ই তেওঁত লাগি থাকিলেই বাঢ়ে।'},
+ 'rom 3:23':{en:'The verdict on everyone without exception: all have sinned. It levels the ground before God, removing any room for comparison.',hi:'बिना अपवाद सब पर निर्णय: सब ने पाप किया। यह परमेश्वर के सामने सब को बराबर कर देता है, तुलना की कोई जगह नहीं छोड़ता।',as:'কোনো ব্যতিক্ৰম নোহোৱাকৈ সকলোৰে ওপৰত ৰায়: সকলোৱে পাপ কৰিলে। ই ঈশ্বৰৰ সন্মুখত সকলোকে সমান কৰে, তুলনাৰ ঠাই নাৰাখে।'},
+ 'rom 6:23':{art:'cross',en:'Two halves held together: sin earns death as a wage, while eternal life is a gift that cannot be earned.',hi:'दो भाग साथ रखे गए: पाप की मजदूरी मृत्यु है, पर अनन्त जीवन ऐसा दान है जो कमाया नहीं जा सकता।',as:'দুটা ভাগ একেলগে: পাপৰ বেচ মৃত্যু, কিন্তু অনন্ত জীৱন এনে দান যাক অৰ্জন কৰিব নোৱাৰি।'},
+ 'rom 8:28':{en:'Not a promise that everything is good, but that God works all of it towards good for those who are His. The good is being shaped like Christ, seen in the next verse.',hi:'यह प्रतिज्ञा नहीं कि सब कुछ अच्छा है, पर यह कि परमेश्वर सब बातों को अपने लोगों की भलाई के लिए काम में लाता है। वह भलाई मसीह के स्वरूप में ढलना है, जो अगले पद में दिखता है।',as:'এইটো প্ৰতিজ্ঞা নহয় যে সকলো ভাল, কিন্তু ঈশ্বৰে সকলোকে নিজৰ লোকৰ মঙ্গলৰ বাবে কামত লগায়। সেই মঙ্গল হৈছে খ্ৰীষ্টৰ ৰূপত গঢ় লোৱা, যি পিছৰ পদত দেখা যায়।'},
+ 'rom 12:2':{en:'Change comes from a renewed mind rather than outward conformity. What you think reshapes how you live.',hi:'परिवर्तन बाहरी अनुरूपता से नहीं, नये मन से आता है। जो तुम सोचते हो वही तुम्हारा जीवन गढ़ता है।',as:'পৰিৱৰ্তন বাহিৰৰ অনুকৰণৰ পৰা নহয়, নতুন মনৰ পৰা আহে। তুমি যি ভাবা সেয়ে তোমাৰ জীৱন গঢ়ে।'},
+ '1co 13:4':{en:'Love is defined by behaviour, not feeling. Each phrase is something love does or refuses to do.',hi:'प्रेम की पहचान भावना से नहीं, व्यवहार से होती है। हर वाक्यांश वह है जो प्रेम करता है या करने से इनकार करता है।',as:'প্ৰেমৰ পৰিচয় অনুভৱৰ পৰা নহয়, আচৰণৰ পৰা। প্ৰতিটো বাক্যাংশ প্ৰেমে কি কৰে বা কি নকৰে সেইটো।'},
+ '2co 5:17':{en:'Being in Christ makes a person new — a real change of status and direction, not merely an improved version of the old life.',hi:'मसीह में होना मनुष्य को नया बना देता है — स्थिति और दिशा का वास्तविक परिवर्तन, पुराने जीवन का सुधरा रूप मात्र नहीं।',as:'খ্ৰীষ্টত থকাই মানুহক নতুন কৰে — অৱস্থা আৰু দিশৰ প্ৰকৃত পৰিৱৰ্তন, পুৰণি জীৱনৰ উন্নত ৰূপ মাত্ৰ নহয়।'},
+ 'eph 2:8':{en:'Salvation is received, not achieved. Grace is the source, faith is the hand that takes it, and even that is God is gift.',hi:'उद्धार पाया जाता है, कमाया नहीं। अनुग्रह स्रोत है, विश्वास लेनेवाला हाथ है, और वह भी परमेश्वर का दान है।',as:'পৰিত্ৰাণ পোৱা যায়, অৰ্জন কৰা নহয়। অনুগ্ৰহ উৎস, বিশ্বাস লোৱা হাত, আৰু সেইটোও ঈশ্বৰৰ দান।'},
+ 'eph 6:11':{art:'armor',en:'The conflict is spiritual, so the equipment is God is, not ours. Each piece is a truth to be actively put on.',hi:'युद्ध आत्मिक है, इसलिए हथियार हमारे नहीं, परमेश्वर के हैं। हर भाग एक सत्य है जिसे सक्रियता से धारण करना है।',as:'যুদ্ধ আত্মিক, সেয়ে সাজ আমাৰ নহয়, ঈশ্বৰৰ। প্ৰতিটো অংশ এটা সত্য, যাক সক্ৰিয়ভাৱে পিন্ধিব লাগে।'},
+ 'phi 4:6':{en:'Anxiety is answered by taking the matter to God in prayer, with thanks included, rather than by pretending the worry is small.',hi:'चिंता का उत्तर यह है कि बात को धन्यवाद के साथ प्रार्थना में परमेश्वर के सामने रखो, यह दिखावा न करो कि चिंता छोटी है।',as:'চিন্তাৰ উত্তৰ হ\u2019ল কথাটো ধন্যবাদৰ সৈতে প্ৰাৰ্থনাত ঈশ্বৰৰ আগত ৰখা, চিন্তা সৰু বুলি ভাও নধৰা।'},
+ 'phi 4:13':{en:'Said about contentment in plenty and in want, not about achieving anything you wish. The strength is for enduring either.',hi:'यह बहुतायत और घटी दोनों में संतोष के विषय में कहा गया, मनचाहा कुछ भी कर लेने के विषय में नहीं। सामर्थ्य दोनों को सहने के लिए है।',as:'এইটো অধিক আৰু অভাৱ দুয়োটাতে সন্তুষ্টিৰ বিষয়ে কোৱা, ইচ্ছা কৰা সকলো কৰি পেলোৱাৰ বিষয়ে নহয়। শক্তি দুয়োটা সহন কৰিবলৈ।'},
+ 'heb 11:1':{en:'Faith defined: confidence about what God has promised but has not yet been seen. It rests on His character, not on feelings.',hi:'विश्वास की परिभाषा: जो परमेश्वर ने प्रतिज्ञा की पर अब तक दिखा नहीं, उस पर निश्चय। यह उसके स्वभाव पर टिका है, भावनाओं पर नहीं।',as:'বিশ্বাসৰ ব্যাখ্যা: ঈশ্বৰে প্ৰতিজ্ঞা কৰা কিন্তু এতিয়াও দেখা নোপোৱা বিষয়ত নিশ্চয়তা। ই তেওঁৰ স্বভাৱত ভৰ দিয়ে, অনুভৱত নহয়।'},
+ 'heb 13:8':{en:'Christ does not change with circumstances or eras, which is why the previous verses can point to Him as the steady ground.',hi:'मसीह परिस्थितियों या युगों से नहीं बदलता, इसीलिए पिछले पद उसे स्थिर आधार के रूप में दिखाते हैं।',as:'খ্ৰীষ্ট পৰিস্থিতি বা যুগৰ সৈতে নসলনি, সেয়েহে আগৰ পদবোৰে তেওঁক স্থিৰ ভেটি হিচাপে দেখুৱায়।'},
+ 'jas 4:7':{en:'Two halves in order: submit to God first, then resistance to evil has ground to stand on.',hi:'दो भाग क्रम में: पहले परमेश्वर के अधीन हो जाओ, तब बुराई का सामना करने के लिए आधार मिलता है।',as:'দুটা ভাগ ক্ৰমত: প্ৰথমে ঈশ্বৰৰ বশ হোৱা, তেতিয়াহে বেয়াক ঠেকি দিয়াৰ ভেটি পোৱা যায়।'},
+ '1pe 5:7':{en:'Worry is handed over, and the reason given is that God actually cares — the transfer rests on His concern, not on technique.',hi:'चिंता सौंप दी जाती है, और कारण यह दिया गया कि परमेश्वर वास्तव में चिंता करता है — यह सौंपना उसकी परवाह पर टिका है, किसी विधि पर नहीं।',as:'চিন্তা গতাই দিয়া হয়, আৰু কাৰণ এই যে ঈশ্বৰে সঁচাকৈ চিন্তা কৰে — এই গতাই দিয়া তেওঁৰ মৰমত ভৰ দিয়ে, কোনো পদ্ধতিত নহয়।'},
+ '1jo 1:9':{en:'Confession is met with forgiveness and cleansing, and it is grounded in God being faithful and just rather than in how sorry we feel.',hi:'अंगीकार का उत्तर क्षमा और शुद्धिकरण है, और इसका आधार परमेश्वर की सच्चाई और न्याय है, हमारे पछतावे की मात्रा नहीं।',as:'স্বীকাৰৰ উত্তৰ ক্ষমা আৰু শুচি কৰা, আৰু ইয়াৰ ভেটি ঈশ্বৰৰ বিশ্বাসযোগ্যতা আৰু ন্যায়, আমাৰ দুখৰ পৰিমাণ নহয়।'},
+ 'rev 21:4':{art:'crown',en:'The end of the story: death, grief and pain are not merely eased but removed, because the old order has passed.',hi:'कहानी का अंत: मृत्यु, शोक और पीड़ा केवल कम नहीं होते, हटा दिए जाते हैं, क्योंकि पुरानी व्यवस्था बीत गई।',as:'কাহিনীৰ শেষ: মৃত্যু, শোক আৰু বেদনা কেৱল কম নহয়, আঁতৰাই দিয়া হয়, কিয়নো পুৰণি ব্যৱস্থা গুচি গ\u2019ল।'}
 };
 
 function stripHtml(s){return String(s).replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim();}
@@ -2304,39 +2374,135 @@ function renderContext(){
     const third=curChap<=total/3?L.start:(curChap<=(2*total)/3?L.middle:L.end);
     const place=L.chapterOf.replace('{c}',curChap).replace('{t}',total)+' · '+third;
 
+    // this verse first, then this chapter, then the book — most specific wins
+    const vKeyed=CTX_VERSES[bk.abbr+' '+curChap+':'+ctxVerseNo]||null;
+    const cKeyed=CTX_CHAPTERS[bk.abbr+' '+curChap]||null;
+
     let h='';
     h+=`<div class="ctx-verse">${escapeHtml(vText)}</div>`;
 
-    // what this book is about — always, in the reading language
-    if(meta){
-        h+=`<div class="ctx-sec"><div class="ctx-lbl">${L.theme}</div><div class="ctx-txt">${escapeHtml(meta[lk]||meta.en)}</div></div>`;
+    // 1. What this verse actually means
+    if(vKeyed){
+        h+=`<div class="ctx-sec"><div class="ctx-lbl">${L.meaning}</div><div class="ctx-txt">${escapeHtml(vKeyed[lk]||vKeyed.en)}</div></div>`;
     }
-    if(gl){
-        h+=`<div class="ctx-sec"><div class="ctx-lbl">${L.kind}</div><div class="ctx-txt"><b>${escapeHtml(gl.k)}</b> — ${escapeHtml(gl.s)}</div></div>`;
+    // 2. What is going on in this chapter
+    if(cKeyed){
+        h+=`<div class="ctx-sec"><div class="ctx-lbl">${L.chapterAbout}</div><div class="ctx-txt">${escapeHtml(cKeyed[lk]||cKeyed.en)}</div></div>`;
     }
-    h+=`<div class="ctx-sec"><div class="ctx-lbl">${L.place}</div><div class="ctx-txt">${escapeHtml(place)}</div></div>`;
-
-    // immediate flow — the most reliable context there is
+    // 3. Immediate flow — reliable for every verse
     if(prev||next){
         h+=`<div class="ctx-sec"><div class="ctx-lbl">${L.flow}</div><div class="ctx-near">`;
         if(prev)h+=`<div style="margin-bottom:7px;"><b>${L.before}:</b> ${escapeHtml(trimTo(prev,150))}</div>`;
         if(next)h+=`<div><b>${L.after}:</b> ${escapeHtml(trimTo(next,150))}</div>`;
         h+=`</div></div>`;
     }
+    // if there is no verse or chapter note yet, say so plainly instead of
+    // passing the book theme off as this verse's meaning
+    if(!vKeyed&&!cKeyed){
+        h+=`<div class="ctx-sec"><div class="ctx-lbl">${L.meaning}</div><div class="ctx-txt">${escapeHtml(L.noneYet)}</div></div>`;
+    }
 
     if(ctxMode==='deep'){
+        // illustration for the scene, when this verse has one
+        const art=vKeyed&&vKeyed.art?vKeyed.art:null;
+        if(art&&CTX_ART[art]){
+            h+=`<div class="ctx-sec"><div class="ctx-lbl">${L.picture}</div>${CTX_ART[art]()}<div class="ctx-note" style="margin-top:6px;">${escapeHtml(CTX_ART_CAP[art]&&(CTX_ART_CAP[art][lk]||CTX_ART_CAP[art].en)||'')}</div></div>`;
+        }
+        if(meta){
+            h+=`<div class="ctx-sec"><div class="ctx-lbl">${L.theme}</div><div class="ctx-txt">${escapeHtml(meta[lk]||meta.en)}</div></div>`;
+        }
         if(gl){
+            h+=`<div class="ctx-sec"><div class="ctx-lbl">${L.kind}</div><div class="ctx-txt"><b>${escapeHtml(gl.k)}</b> — ${escapeHtml(gl.s)}</div></div>`;
             h+=`<div class="ctx-sec"><div class="ctx-lbl">${L.how}</div><div class="ctx-txt">${escapeHtml(gl.d)}</div></div>`;
         }
-        // visual 1: where this chapter sits in the whole book
+        h+=`<div class="ctx-sec"><div class="ctx-lbl">${L.place}</div><div class="ctx-txt">${escapeHtml(place)}</div></div>`;
         h+=`<div class="ctx-sec"><div class="ctx-lbl">${L.map}</div>${chapterMapSvg(curChap,total,L)}</div>`;
-        // visual 2: the flow of the passage as a diagram
         h+=`<div class="ctx-sec"><div class="ctx-lbl">${L.flow}</div>${flowSvg(ctxVerseNo,!!prev,!!next,L)}</div>`;
     }
 
     h+=`<div class="ctx-note">${L.note}</div>`;
     document.getElementById('ctxBody').innerHTML=h;
 }
+
+/* ===== Illustrations drawn in code (no image files, works offline) ===== */
+const CTX_ART={
+ creation:()=>`<svg class="ctx-svg" viewBox="0 0 300 150" role="img">
+  <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b2a4a"/><stop offset="1" stop-color="#3f5c8a"/></linearGradient></defs>
+  <rect width="300" height="150" fill="url(#sky)"/>
+  <circle cx="240" cy="38" r="17" fill="#ffd66b"/><circle cx="240" cy="38" r="26" fill="#ffd66b" opacity=".2"/>
+  <circle cx="60" cy="30" r="2" fill="#fff"/><circle cx="95" cy="22" r="1.6" fill="#fff"/><circle cx="130" cy="40" r="1.8" fill="#fff"/><circle cx="40" cy="55" r="1.4" fill="#fff"/>
+  <path d="M0 100 Q75 82 150 100 T300 100 V150 H0 Z" fill="#2f7d67"/>
+  <path d="M0 122 Q60 112 120 122 T300 118 V150 H0 Z" fill="#1f5c86" opacity=".85"/>
+  <path d="M150 100 v-16 M144 88 q6 -8 12 0" stroke="#9fe3c6" stroke-width="2.5" fill="none"/>
+ </svg>`,
+ cross:()=>`<svg class="ctx-svg" viewBox="0 0 300 150" role="img">
+  <rect width="300" height="150" fill="#141b2b"/>
+  <circle cx="150" cy="66" r="52" fill="#ffd66b" opacity=".13"/>
+  <circle cx="150" cy="66" r="34" fill="#ffd66b" opacity=".16"/>
+  <rect x="144" y="26" width="12" height="92" rx="2" fill="#8a5a33"/>
+  <rect x="116" y="52" width="68" height="11" rx="2" fill="#8a5a33"/>
+  <path d="M0 118 Q80 104 150 118 T300 112 V150 H0 Z" fill="#26324a"/>
+ </svg>`,
+ shepherd:()=>`<svg class="ctx-svg" viewBox="0 0 300 150" role="img">
+  <rect width="300" height="150" fill="#16233a"/>
+  <path d="M0 96 Q80 74 160 96 T300 88 V150 H0 Z" fill="#2f7d67"/>
+  <path d="M0 116 Q70 128 150 116 T300 122 V150 H0 Z" fill="#276b58"/>
+  <path d="M232 104 V50 a14 14 0 1 1 -28 0" stroke="#d8b982" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <g fill="#f2f4f8"><ellipse cx="86" cy="104" rx="17" ry="12"/><circle cx="70" cy="99" r="7"/><rect x="80" y="113" width="3" height="8" rx="1.5" fill="#cbd2de"/><rect x="94" y="113" width="3" height="8" rx="1.5" fill="#cbd2de"/></g>
+  <g fill="#f2f4f8"><ellipse cx="140" cy="112" rx="12" ry="8.5"/><circle cx="129" cy="108" r="5"/></g>
+  <path d="M40 118 q14 -10 28 0" stroke="#9fe3c6" stroke-width="2" fill="none" opacity=".6"/>
+ </svg>`,
+ vine:()=>`<svg class="ctx-svg" viewBox="0 0 300 150" role="img">
+  <rect width="300" height="150" fill="#16233a"/>
+  <path d="M14 128 C70 120 96 96 150 92 S238 78 288 60" stroke="#7a5a33" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <path d="M120 96 q-14 -22 6 -34 M196 82 q16 -20 -4 -32" stroke="#4fae86" stroke-width="3" fill="none"/>
+  <g fill="#9fe3c6"><path d="M126 62 q20 -12 26 6 q-18 12 -26 -6 Z"/><path d="M192 50 q22 -10 26 8 q-20 10 -26 -8 Z"/></g>
+  <g fill="#8b5cf6"><circle cx="160" cy="104" r="6"/><circle cx="172" cy="110" r="6"/><circle cx="166" cy="116" r="6"/><circle cx="154" cy="114" r="6"/><circle cx="166" cy="98" r="5"/></g>
+ </svg>`,
+ armor:()=>`<svg class="ctx-svg" viewBox="0 0 300 150" role="img">
+  <rect width="300" height="150" fill="#141b2b"/>
+  <path d="M150 24 L196 42 V84 C196 112 174 126 150 134 C126 126 104 112 104 84 V42 Z" fill="#2c3b5a" stroke="#7f9ccb" stroke-width="2.5"/>
+  <path d="M150 52 v54 M128 74 h44" stroke="#ffd66b" stroke-width="4" stroke-linecap="round"/>
+  <path d="M232 40 q20 10 20 30 q0 22 -20 30" stroke="#9fe3c6" stroke-width="3" fill="none"/>
+  <path d="M56 46 v60 M46 56 h20" stroke="#d8b982" stroke-width="3.5" stroke-linecap="round"/>
+ </svg>`,
+ lamp:()=>`<svg class="ctx-svg" viewBox="0 0 300 150" role="img">
+  <rect width="300" height="150" fill="#101725"/>
+  <path d="M0 140 L110 96 L190 96 L300 140 Z" fill="#20304c"/>
+  <path d="M110 96 L190 96 L300 140 L0 140 Z" fill="none"/>
+  <ellipse cx="150" cy="60" rx="46" ry="30" fill="#ffd66b" opacity=".16"/>
+  <path d="M132 74 q18 -12 36 0 q-4 10 -18 10 q-14 0 -18 -10 Z" fill="#d8b982"/>
+  <path d="M150 56 q6 -10 0 -18 q-6 8 0 18 Z" fill="#ffd66b"/>
+  <path d="M150 74 v12" stroke="#8a6a3a" stroke-width="3"/>
+ </svg>`,
+ crown:()=>`<svg class="ctx-svg" viewBox="0 0 300 150" role="img">
+  <rect width="300" height="150" fill="#141b2b"/>
+  <ellipse cx="150" cy="72" rx="64" ry="40" fill="#ffd66b" opacity=".1"/>
+  <g fill="#7f9ccb" opacity=".9"><rect x="86" y="86" width="22" height="34" rx="2"/><rect x="116" y="74" width="26" height="46" rx="2"/><rect x="150" y="84" width="22" height="36" rx="2"/><rect x="180" y="68" width="28" height="52" rx="2"/></g>
+  <path d="M110 52 l10 -18 l10 18 l12 -14 l10 14 l12 -18 l10 18 Z" fill="#ffd66b"/>
+  <path d="M0 120 H300 V150 H0 Z" fill="#20304c"/>
+ </svg>`,
+ cheek:()=>`<svg class="ctx-svg" viewBox="0 0 300 150" role="img">
+  <rect width="300" height="150" fill="#141b2b"/>
+  <circle cx="78" cy="58" r="17" fill="#7f9ccb"/><rect x="62" y="80" width="32" height="40" rx="10" fill="#7f9ccb"/>
+  <circle cx="222" cy="58" r="17" fill="#9fe3c6"/><rect x="206" y="80" width="32" height="40" rx="10" fill="#9fe3c6"/>
+  <path d="M104 62 L176 62" stroke="#f87171" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M168 55 L178 62 L168 69" fill="none" stroke="#f87171" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M176 100 L112 100" stroke="#6b7280" stroke-width="3" stroke-dasharray="6 6" stroke-linecap="round"/>
+  <circle cx="144" cy="100" r="13" fill="#141b2b" stroke="#6b7280" stroke-width="2.5"/>
+  <path d="M137 93 L151 107 M151 93 L137 107" stroke="#f87171" stroke-width="2.5" stroke-linecap="round"/>
+ </svg>`
+};
+const CTX_ART_CAP={
+ creation:{en:'God speaks; light, sky, sea and land are put in order.',hi:'परमेश्वर बोलता है; ज्योति, आकाश, समुद्र और भूमि क्रम में रखे जाते हैं।',as:'ঈশ্বৰে ক\u2019য়; দীপ্তি, আকাশ, সাগৰ আৰু মাটি ক্ৰমত সজা হয়।'},
+ cross:{en:'The cross, where the punishment was carried in our place.',hi:'क्रूस, जहाँ दंड हमारे स्थान पर उठाया गया।',as:'ক্ৰুচ, য\u2019ত দণ্ড আমাৰ ঠাইত বহন কৰা হ\u2019ল।'},
+ shepherd:{en:'The shepherd with his flock: fed, led and guarded.',hi:'चरवाहा अपने झुंड के साथ: खिलाया, अगुवाई किया और रक्षा किया।',as:'মেৰৰখীয়া নিজৰ জাকৰ সৈতে: খুউৱা, আগবঢ়োৱা আৰু ৰক্ষা কৰা।'},
+ vine:{en:'Branch joined to the vine — cut it off and the fruit stops.',hi:'डाली दाखलता से जुड़ी — अलग करो तो फल रुक जाता है।',as:'ডাল দ্ৰাক্ষালতাত লাগি আছে — আঁতৰালে ফল বন্ধ হয়।'},
+ armor:{en:'Shield, helmet and sword — equipment given for a real fight.',hi:'ढाल, टोप और तलवार — वास्तविक युद्ध के लिए दिए गए साधन।',as:'ঢাল, শিৰোৰক্ষা আৰু তৰোৱাল — প্ৰকৃত যুদ্ধৰ বাবে দিয়া সাজ।'},
+ lamp:{en:'A lamp lighting the next step of the path, not the whole road.',hi:'दीपक मार्ग का अगला कदम दिखाता है, पूरा मार्ग नहीं।',as:'চাকিয়ে বাটৰ পিছৰ খোজ দেখুৱায়, গোটেই বাট নহয়।'},
+ crown:{en:'The city made new, where God dwells with His people.',hi:'नया किया गया नगर, जहाँ परमेश्वर अपने लोगों के संग वास करता है।',as:'নতুন কৰা নগৰ, য\u2019ত ঈশ্বৰে নিজৰ লোকৰ সৈতে বাস কৰে।'},
+ cheek:{en:'The insult comes in, but the blow is not returned — the cycle of revenge is broken.',hi:'अपमान आता है, पर मार लौटाई नहीं जाती — बदले का चक्र टूट जाता है।',as:'অপমান আহে, কিন্তু আঘাত ঘূৰাই দিয়া নহয় — প্ৰতিশোধৰ চক্ৰ ভাঙে।'}
+};
 
 function trimTo(s,n){s=String(s);return s.length>n?s.slice(0,n).trim()+'…':s;}
 
