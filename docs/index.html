@@ -307,6 +307,41 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
 .lb-next { right:12px; }
 
 /* ============================================================
+   PRO — star badges + upgrade sheet
+   ============================================================ */
+.star { display:inline-flex; align-items:center; gap:3px; margin-left:6px; padding:2px 7px 2px 5px; border-radius:var(--r-pill); font-size:9px; font-weight:900; letter-spacing:.4px;
+        background:linear-gradient(150deg,#ffd66b,#f59e0b); color:#3a2a08; box-shadow:0 2px 8px rgba(245,158,11,.45); vertical-align:middle; white-space:nowrap; }
+.star-sm { position:absolute; top:8px; left:8px; z-index:2; margin:0; }
+.ctab .star, .toggle-btn .star, .ctx-modes button .star { margin-left:4px; padding:1px 5px 1px 4px; font-size:8px; }
+.pro-lock { position:relative; }
+.pro-lock::after { content:'⭐'; position:absolute; top:6px; right:8px; font-size:12px; filter:drop-shadow(0 1px 3px rgba(0,0,0,.5)); }
+
+.pro-wrap { position:fixed; inset:0; z-index:3100; display:none; align-items:center; justify-content:center; padding:20px; background:rgba(6,8,14,.82); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); }
+.pro-wrap.show { display:flex; animation:lbFade .3s var(--ease) both; }
+.pro-card { width:100%; max-width:358px; max-height:92vh; overflow-y:auto; border-radius:26px; padding:26px 22px 22px; text-align:center; position:relative;
+            background:radial-gradient(130% 85% at 50% 0%, #4a3a16 0%, #2a2110 45%, #15120b 100%);
+            border:1px solid rgba(255,214,107,.34); box-shadow:0 22px 64px rgba(0,0,0,.7), 0 0 44px rgba(245,158,11,.18);
+            animation:ctxUp .4s var(--ease) both; }
+.pro-close { position:absolute; top:14px; right:14px; width:30px; height:30px; border-radius:50%; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.26); color:#fff; font-size:14px; cursor:pointer; }
+.pro-crown { font-size:40px; line-height:1; margin-bottom:8px; filter:drop-shadow(0 4px 12px rgba(245,158,11,.5)); }
+.pro-title { font-size:23px; font-weight:900; letter-spacing:.4px; color:#ffe9b0; text-shadow:0 2px 12px rgba(0,0,0,.5); }
+.pro-tag { font-size:12.5px; color:rgba(255,255,255,.72); margin-top:5px; line-height:1.5; }
+.pro-price { display:flex; align-items:baseline; justify-content:center; gap:7px; margin:16px 0 4px; }
+.pro-amt { font-size:42px; font-weight:900; color:#fff; letter-spacing:-1px; text-shadow:0 3px 16px rgba(0,0,0,.5); }
+.pro-once { font-size:11.5px; font-weight:700; color:#ffd66b; letter-spacing:.6px; text-transform:uppercase; }
+.pro-list { text-align:left; margin:16px 0 18px; display:flex; flex-direction:column; gap:9px; }
+.pro-item { display:flex; align-items:flex-start; gap:9px; font-size:13px; line-height:1.45; color:rgba(255,255,255,.92); }
+.pro-tick { flex-shrink:0; width:18px; height:18px; border-radius:50%; background:linear-gradient(150deg,#ffd66b,#f59e0b); color:#3a2a08; font-size:11px; font-weight:900; display:flex; align-items:center; justify-content:center; margin-top:1px; }
+.pro-pay { width:100%; padding:16px; border:none; border-radius:16px; font-size:15.5px; font-weight:800; font-family:var(--font-ui); cursor:pointer;
+           background:linear-gradient(150deg,#ffd66b,#f59e0b); color:#3a2a08; box-shadow:0 10px 28px rgba(245,158,11,.45); }
+.pro-pay:active { transform:scale(.97); }
+.pro-or { display:flex; align-items:center; gap:10px; margin:15px 0 11px; color:rgba(255,255,255,.4); font-size:10px; font-weight:800; letter-spacing:1.4px; }
+.pro-or::before, .pro-or::after { content:''; flex:1; height:1px; background:rgba(255,255,255,.16); }
+.pro-later { width:100%; margin-top:11px; padding:13px; border-radius:14px; background:transparent; border:1px solid rgba(255,255,255,.2); color:rgba(255,255,255,.75); font-size:13.5px; font-weight:700; font-family:var(--font-ui); cursor:pointer; }
+.pro-note { font-size:10.5px; line-height:1.55; color:rgba(255,255,255,.42); margin-top:14px; }
+.pro-badge-on { display:inline-flex; align-items:center; gap:6px; padding:6px 14px; border-radius:var(--r-pill); background:linear-gradient(150deg,#ffd66b,#f59e0b); color:#3a2a08; font-size:11.5px; font-weight:900; letter-spacing:.5px; }
+
+/* ============================================================
    LOGIN GATE + MEMBER CHECK
    ============================================================ */
 .gate { position:fixed; inset:0; z-index:3000; display:none; flex-direction:column; align-items:center; justify-content:center; padding:28px 22px; overflow-y:auto;
@@ -579,7 +614,7 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
             <button class="glass-btn" onclick="backToChapters()">← Back</button>
             <div class="toggle-btns">
                 <button class="toggle-btn active" onclick="setViewMode('verse')">📖 Verse</button>
-                <button class="toggle-btn" onclick="setViewMode('paragraph')">📄 Paragraph</button>
+                <button class="toggle-btn" onclick="setViewMode('paragraph')">📄 Paragraph<span class="star">⭐</span></button>
             </div>
             <div class="section-title" id="verseTitle">Verses</div>
             <div id="versesContainer"></div>
@@ -732,21 +767,21 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
                 </div>
                 
                 <!-- Theme 5 -->
-                <div class="theme-card" onclick="changeTheme('theme4')" data-theme="theme4">
+                <div class="theme-card" onclick="changeTheme('theme4')" data-theme="theme4"><span class="star star-sm">⭐ PRO</span>
                     <img src="theme4.png" alt="Theme 4" style="width: 100%; height: 140px; object-fit: cover; border-radius: 12px; margin-bottom: 8px;">
                     <div style="text-align: center; color: white; font-size: 13px; font-weight: 600;">Theme 4</div>
                     <div class="theme-indicator" style="display: none;">✓</div>
                 </div>
                 
                 <!-- Theme 6 -->
-                <div class="theme-card" onclick="changeTheme('theme5')" data-theme="theme5">
+                <div class="theme-card" onclick="changeTheme('theme5')" data-theme="theme5"><span class="star star-sm">⭐ PRO</span>
                     <img src="theme5.png" alt="Theme 5" style="width: 100%; height: 140px; object-fit: cover; border-radius: 12px; margin-bottom: 8px;">
                     <div style="text-align: center; color: white; font-size: 13px; font-weight: 600;">Theme 5</div>
                     <div class="theme-indicator" style="display: none;">✓</div>
                 </div>
                 
                 <!-- Theme 7 -->
-                <div class="theme-card" onclick="changeTheme('theme6')" data-theme="theme6">
+                <div class="theme-card" onclick="changeTheme('theme6')" data-theme="theme6"><span class="star star-sm">⭐ PRO</span>
                     <img src="theme6.png" alt="Theme 6" style="width: 100%; height: 140px; object-fit: cover; border-radius: 12px; margin-bottom: 8px;">
                     <div style="text-align: center; color: white; font-size: 13px; font-weight: 600;">Theme 6</div>
                     <div class="theme-indicator" style="display: none;">✓</div>
@@ -779,10 +814,45 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
                 <div class="ctab active" data-ctab="books" onclick="showChurchTab('books')"><span class="ctab-ic">📚</span><span>Books</span></div>
                 <div class="ctab" data-ctab="teachings" onclick="showChurchTab('teachings')"><span class="ctab-ic">🕊️</span><span>Teachings</span></div>
                 <div class="ctab" data-ctab="hymns" onclick="showChurchTab('hymns')"><span class="ctab-ic">🎶</span><span>Songs</span></div>
-                <div class="ctab" data-ctab="gallery" onclick="showChurchTab('gallery')"><span class="ctab-ic">🖼️</span><span>Gallery</span></div>
+                <div class="ctab" data-ctab="gallery" onclick="showChurchTab('gallery')"><span class="ctab-ic">🖼️</span><span>Gallery<span class="star">⭐</span></span></div>
             </div>
 
             <div id="churchContent"></div>
+        </div>
+
+        <!-- Pro upgrade sheet -->
+        <div class="pro-wrap" id="proWrap" onclick="closePro()">
+            <div class="pro-card" onclick="event.stopPropagation()">
+                <button class="pro-close" onclick="closePro()" aria-label="Close">✕</button>
+                <div class="pro-crown">👑</div>
+                <div class="pro-title">HYMNORA Pro</div>
+                <div class="pro-tag" id="proTag">Unlock everything in the app, one time</div>
+
+                <div class="pro-price">
+                    <span class="pro-amt" id="proAmt">₹50</span>
+                    <span class="pro-once">one time</span>
+                </div>
+
+                <div class="pro-list">
+                    <div class="pro-item"><span class="pro-tick">✓</span><span>Deeply verse context with illustrations and diagrams</span></div>
+                    <div class="pro-item"><span class="pro-tick">✓</span><span>Church Gallery — all convention photos and videos</span></div>
+                    <div class="pro-item"><span class="pro-tick">✓</span><span>All premium themes</span></div>
+                    <div class="pro-item"><span class="pro-tick">✓</span><span>Paragraph reading mode</span></div>
+                    <div class="pro-item"><span class="pro-tick">✓</span><span>Supports the fellowship, forever access</span></div>
+                </div>
+
+                <button class="pro-pay" onclick="payPro()" id="proPayBtn">Pay ₹50 with UPI</button>
+
+                <div class="pro-or">OR HAVE A CODE</div>
+                <div class="code-row">
+                    <input class="code-in" id="proCodeInput" placeholder="ENTER PRO CODE" autocomplete="off" spellcheck="false" onkeydown="if(event.key==='Enter')redeemProCode()">
+                    <button class="code-go" onclick="redeemProCode()">Unlock</button>
+                </div>
+                <div class="code-msg" id="proCodeMsg"></div>
+
+                <button class="pro-later" onclick="closePro()">Maybe later</button>
+                <div class="pro-note" id="proNote">Fellowship members already have everything unlocked with their code.</div>
+            </div>
         </div>
 
         <!-- STEP 1 — Sign in -->
@@ -848,7 +918,7 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
                 </div>
                 <div class="ctx-modes">
                     <button id="ctxBtnSimple" class="active" onclick="setCtxMode('simple')">Simple</button>
-                    <button id="ctxBtnDeep" onclick="setCtxMode('deep')">Deeply</button>
+                    <button id="ctxBtnDeep" onclick="setCtxMode('deep')">Deeply<span class="star">⭐ PRO</span></button>
                 </div>
                 <div class="ctx-body" id="ctxBody"></div>
             </div>
@@ -1512,7 +1582,7 @@ function paintAccountLine(){
     const el=document.getElementById('accountLine');
     if(!el)return;
     const who=authUser?(authUser.provider==='guest'?'Guest':(authUser.name||authUser.provider)):'Not signed in';
-    const badge=isMember()?' · Fellowship member':'';
+    const badge=isMember()?' · Fellowship member':(proUnlocked?' · Pro':'');
     el.textContent=who+badge;
 }
 
@@ -1597,7 +1667,9 @@ function applyTheme(){
     }
 }
 
+const PRO_THEMES=['theme4','theme5','theme6'];
 function changeTheme(theme){
+    if(PRO_THEMES.indexOf(theme)>=0&&!requirePro('This theme is part of Pro'))return;
     currentTheme=theme;
     localStorage.setItem('currentTheme',theme);
     applyTheme();
@@ -1717,6 +1789,101 @@ function codeHash(s){
     s=String(s).toUpperCase().replace(/[^A-Z0-9]/g,'');
     for(let i=0;i<s.length;i++)h=((h*33)^s.charCodeAt(i))>>>0;
     return h.toString(36);
+}
+
+/* ==================== PRO ====================
+   No backend here, so payment cannot be verified inside the app. The honest
+   flow is: the buyer pays by UPI, then you hand them a Pro code. Fill in your
+   UPI id below and the Pay button opens their UPI app with the amount filled.
+   If you later add a hosted payment page (Razorpay etc), put its URL in
+   PRO_PAYMENT_LINK and that will be used instead.                          */
+const PRO_PRICE=50;
+const PRO_UPI_ID='';          // e.g. 'yourname@oksbi'
+const PRO_UPI_NAME='HYMNORA';
+const PRO_PAYMENT_LINK='';    // optional hosted payment page
+const PRO_CODE_HASHES=['1r275j7','sjkpkw','19j1id6'];
+
+let proUnlocked=false;
+try{proUnlocked=localStorage.getItem('proUnlocked')==='1';}catch(e){}
+
+/* Fellowship members get everything, as promised with their code */
+function isPro(){return proUnlocked||isMember();}
+
+function openPro(reason){
+    const tag=document.getElementById('proTag');
+    if(tag)tag.textContent=reason||'Unlock everything in the app, one time';
+    document.getElementById('proAmt').textContent='₹'+PRO_PRICE;
+    const btn=document.getElementById('proPayBtn');
+    if(btn)btn.textContent=PRO_PAYMENT_LINK?('Pay ₹'+PRO_PRICE):('Pay ₹'+PRO_PRICE+' with UPI');
+    document.getElementById('proWrap').classList.add('show');
+}
+function closePro(){
+    document.getElementById('proWrap').classList.remove('show');
+    const m=document.getElementById('proCodeMsg');
+    if(m){m.textContent='';m.className='code-msg';}
+}
+
+/* Gate helper: returns true if allowed, otherwise opens the sheet */
+function requirePro(reason){
+    if(isPro())return true;
+    openPro(reason);
+    return false;
+}
+
+function payPro(){
+    if(PRO_PAYMENT_LINK){window.open(PRO_PAYMENT_LINK,'_blank');return;}
+    if(!PRO_UPI_ID){
+        document.getElementById('proNote').textContent='Payment is not set up yet. Ask the fellowship for a Pro code, or add your UPI id in the app settings.';
+        return;
+    }
+    const url='upi://pay?pa='+encodeURIComponent(PRO_UPI_ID)
+             +'&pn='+encodeURIComponent(PRO_UPI_NAME)
+             +'&am='+encodeURIComponent(PRO_PRICE)
+             +'&cu=INR&tn='+encodeURIComponent('HYMNORA Pro');
+    window.location.href=url;
+    setTimeout(()=>{
+        document.getElementById('proNote').textContent='If no UPI app opened, pay '+PRO_UPI_ID+' manually, then enter the Pro code you receive.';
+    },1500);
+}
+
+function redeemProCode(){
+    const input=document.getElementById('proCodeInput');
+    const msg=document.getElementById('proCodeMsg');
+    const val=(input.value||'').trim();
+    if(!val){msg.className='code-msg bad';msg.textContent='Please enter your code.';return;}
+    if(PRO_CODE_HASHES.indexOf(codeHash(val))>=0){
+        proUnlocked=true;
+        try{localStorage.setItem('proUnlocked','1');}catch(e){}
+        msg.className='code-msg ok';
+        msg.textContent='Pro unlocked. Thank you!';
+        applyProBadges();
+        setTimeout(closePro,800);
+    }else{
+        msg.className='code-msg bad';
+        msg.textContent='That code is not recognised.';
+        input.value='';
+    }
+}
+
+/* Hide the star badges once Pro is active */
+function applyProBadges(){
+    const on=isPro();
+    document.querySelectorAll('.star').forEach(s=>{s.style.display=on?'none':'inline-flex';});
+    document.querySelectorAll('.pro-lock').forEach(el=>el.classList.toggle('pro-lock-off',on));
+    paintAccountLine();
+}
+
+/* Homepage nudge: once a day, and never for Pro or members */
+function maybeShowProPopup(){
+    if(isPro())return;
+    let last=0;
+    try{last=parseInt(localStorage.getItem('proPromptAt')||'0',10);}catch(e){}
+    if(Date.now()-last<86400000)return;
+    setTimeout(()=>{
+        if(isPro())return;
+        try{localStorage.setItem('proPromptAt',String(Date.now()));}catch(e){}
+        openPro('Support the fellowship and unlock everything');
+    },2500);
 }
 
 let authUser=null, memberStatus=null;
@@ -1847,6 +2014,8 @@ function skipMember(){
     try{localStorage.setItem('memberStatus','guest');}catch(e){}
     hideGates();
     showTab('home');
+    applyProBadges();
+    maybeShowProPopup();
 }
 
 function signOut(){
@@ -1858,7 +2027,7 @@ function signOut(){
     routeGates();
 }
 
-function init(){buildBookIndex();renderBooks();updateVersionButtons();renderHymns();renderFavorites();loadBibleData();loadProfile();applyTheme();updateNavProfilePic();restoreNavState();routeGates();}
+function init(){buildBookIndex();renderBooks();updateVersionButtons();renderHymns();renderFavorites();loadBibleData();loadProfile();applyTheme();updateNavProfilePic();restoreNavState();applyProBadges();if(routeGates())maybeShowProPopup();}
 
 function renderBooks(){
     if(!ALL_BOOKS.length)buildBookIndex();
@@ -1954,6 +2123,7 @@ function showChurchTab(kind){
         box.innerHTML=html;
     }
     else if(kind==='gallery'){
+        if(!requirePro('The Church Gallery is a Pro feature')){showChurchTab('books');return;}
         renderGallery();
     }
 }
@@ -2623,6 +2793,7 @@ function openContext(vKey){
 }
 function closeContext(){document.getElementById('ctxWrap').classList.remove('show');}
 function setCtxMode(m){
+    if(m==='deep'&&!requirePro('Deeply context with illustrations is a Pro feature'))return;
     ctxMode=m;
     document.getElementById('ctxBtnSimple').classList.toggle('active',m==='simple');
     document.getElementById('ctxBtnDeep').classList.toggle('active',m==='deep');
@@ -2838,7 +3009,7 @@ function addBookmark(vKey){if(!bookmarks.includes(vKey)){bookmarks.push(vKey);lo
 
 function addFavorite(vKey){const verse=document.querySelector(`[data-verse="${vKey}"]`);const text=verse.querySelector('.verse-text').textContent;if(!favorites.find(f=>f.key===vKey)){favorites.push({key:vKey,text:text});localStorage.setItem('favorites',JSON.stringify(favorites));alert('❤️ Added to favorites!');}document.getElementById('actions-'+vKey).classList.remove('show');}
 
-function setViewMode(mode){viewMode=mode;document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));event.target.classList.add('active');}
+function setViewMode(mode){if(mode==='paragraph'&&!requirePro('Paragraph reading is a Pro feature'))return;viewMode=mode;document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));event.target.classList.add('active');}
 
 function renderFavorites(){const favContainer=document.getElementById('favoritesContainer');const bookContainer=document.getElementById('bookmarksContainer');if(favorites.length===0){favContainer.innerHTML='<div class="glass-card"><div class="book-info">No favorites yet</div></div>';}else{favContainer.innerHTML=favorites.map(f=>`<div class="glass-card"><div class="book-name">${f.key}</div><div class="book-info">${f.text.substring(0,80)}...</div></div>`).join('');}if(bookmarks.length===0){bookContainer.innerHTML='<div class="glass-card"><div class="book-info">No bookmarks yet</div></div>';}else{bookContainer.innerHTML=bookmarks.map(b=>`<div class="glass-card"><div class="book-name">📖 ${b}</div></div>`).join('');}}
 
