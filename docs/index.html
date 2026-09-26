@@ -306,6 +306,54 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
 .lb-prev { left:12px; }
 .lb-next { right:12px; }
 
+/* ============================================================
+   LOGIN GATE + MEMBER CHECK
+   ============================================================ */
+.gate { position:fixed; inset:0; z-index:3000; display:none; flex-direction:column; align-items:center; justify-content:center; padding:28px 22px; overflow-y:auto;
+        background:radial-gradient(130% 90% at 50% -10%, #34406b 0%, #1b2440 45%, #0d1120 100%); }
+.gate.show { display:flex; animation:gateIn .45s var(--ease) both; }
+@keyframes gateIn { from{opacity:0;} to{opacity:1;} }
+.gate-inner { width:100%; max-width:360px; text-align:center; animation:gateRise .55s var(--ease) both; }
+@keyframes gateRise { from{opacity:0; transform:translateY(22px);} to{opacity:1; transform:none;} }
+
+.gate-logo { width:108px; height:108px; margin:0 auto 18px; border-radius:50%; padding:3px; background:linear-gradient(150deg, rgba(255,255,255,.6), rgba(255,255,255,.14));
+             box-shadow:0 12px 34px rgba(0,0,0,.5), 0 0 34px rgba(167,139,250,.35); }
+.gate-logo img { width:100%; height:100%; border-radius:50%; object-fit:cover; display:block; background:#14182b; }
+.gate-app { font-size:28px; font-weight:900; letter-spacing:2.5px; color:#fff; text-shadow:0 3px 14px rgba(0,0,0,.5); }
+.gate-sub { font-size:13px; font-weight:500; color:rgba(255,255,255,.72); margin-top:6px; letter-spacing:.3px; }
+.gate-q { font-size:20px; font-weight:800; line-height:1.4; color:#fff; margin:6px 0 4px; text-shadow:0 2px 10px rgba(0,0,0,.5); }
+.gate-church { font-size:11px; font-weight:800; letter-spacing:2px; text-transform:uppercase; color:#ffe9b0; margin-bottom:14px; }
+.gate-hr { height:1px; background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent); margin:22px 0 18px; }
+
+.gate-btns { display:flex; flex-direction:column; gap:11px; margin-top:26px; }
+.gbtn { display:flex; align-items:center; justify-content:center; gap:11px; width:100%; padding:15px 16px; border-radius:16px; font-size:14.5px; font-weight:700;
+        font-family:var(--font-ui); cursor:pointer; border:1px solid rgba(255,255,255,.2); transition:transform .2s var(--ease), box-shadow .2s var(--ease); }
+.gbtn:active { transform:scale(.97); }
+.gbtn-ic { width:22px; height:22px; flex-shrink:0; }
+.gbtn.google { background:#fff; color:#1f2430; border-color:#fff; box-shadow:0 8px 24px rgba(0,0,0,.3); }
+.gbtn.facebook { background:#1877f2; color:#fff; border-color:#1877f2; box-shadow:0 8px 24px rgba(24,119,242,.4); }
+.gbtn.guest { background:rgba(255,255,255,.1); color:#fff; backdrop-filter:blur(14px); }
+.gbtn.yes { background:linear-gradient(150deg,var(--accent),var(--accent-deep)); color:#fff; border-color:rgba(255,255,255,.35); box-shadow:0 8px 24px var(--accent-glow); }
+.gbtn.no { background:rgba(255,255,255,.08); color:rgba(255,255,255,.9); }
+
+.code-box { margin-top:4px; text-align:left; }
+.code-lbl { font-size:10.5px; font-weight:800; letter-spacing:1.3px; text-transform:uppercase; color:rgba(255,255,255,.6); margin-bottom:8px; }
+.code-row { display:flex; gap:9px; }
+.code-in { flex:1; min-width:0; padding:14px 15px; border-radius:14px; background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.24); color:#fff;
+           font-size:15px; font-weight:800; letter-spacing:2px; text-transform:uppercase; font-family:var(--font-ui); }
+.code-in::placeholder { color:rgba(255,255,255,.4); letter-spacing:1px; font-weight:600; }
+.code-in:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(52,211,153,.2); }
+.code-go { flex-shrink:0; padding:0 20px; border-radius:14px; border:none; background:linear-gradient(150deg,var(--accent),var(--accent-deep)); color:#fff;
+           font-size:14px; font-weight:800; cursor:pointer; font-family:var(--font-ui); }
+.code-go:active { transform:scale(.95); }
+.code-msg { font-size:12px; font-weight:600; margin-top:10px; min-height:16px; }
+.code-msg.ok { color:var(--accent); }
+.code-msg.bad { color:#fca5a5; }
+.gate-note { font-size:11px; line-height:1.55; color:rgba(255,255,255,.45); margin-top:18px; }
+.gate-who { display:inline-flex; align-items:center; gap:8px; padding:6px 13px 6px 6px; border-radius:var(--r-pill); background:rgba(255,255,255,.1);
+            border:1px solid rgba(255,255,255,.2); font-size:12px; font-weight:700; color:#fff; margin-bottom:18px; }
+.gate-who img { width:24px; height:24px; border-radius:50%; object-fit:cover; }
+
 /* ===== Verse context sheet ===== */
 .ctx-wrap { position:fixed; inset:0; z-index:2050; background:rgba(6,8,14,.6); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); display:none; align-items:flex-end; justify-content:center; }
 .ctx-wrap.show { display:flex; animation:lbFade .28s var(--ease) both; }
@@ -574,6 +622,15 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
                     <div class="book-info">Themes & Preferences</div>
                 </div>
             </button>
+
+            <!-- Account -->
+            <button class="glass-card" style="width: 100%; border: none; text-align: left; padding: 20px; display: flex; align-items: center; gap: 16px;" onclick="signOut()">
+                <div class="bubble-icon" style="width: 56px; height: 56px; font-size: 28px; margin: 0; flex-shrink: 0;">🚪</div>
+                <div style="flex: 1;">
+                    <div class="book-name" style="font-size: 17px; margin-bottom: 6px;">Sign Out</div>
+                    <div class="book-info" id="accountLine">Signed in</div>
+                </div>
+            </button>
         </div>
 
         <!-- Edit Profile -->
@@ -726,6 +783,56 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
             </div>
 
             <div id="churchContent"></div>
+        </div>
+
+        <!-- STEP 1 — Sign in -->
+        <div class="gate" id="authGate">
+            <div class="gate-inner">
+                <div class="gate-logo"><img src="logo.png" alt="" onerror="this.style.display='none'"></div>
+                <div class="gate-app">HYMNORA</div>
+                <div class="gate-sub">Complete Bible · Hymns · Fellowship</div>
+                <div class="gate-hr"></div>
+                <div class="gate-btns">
+                    <button class="gbtn google" onclick="signIn('google')">
+                        <svg class="gbtn-ic" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.6l6.7-6.7C35.6 2.6 30.2.5 24 .5 14.6.5 6.5 5.8 2.6 13.6l7.8 6.1C12.3 13.5 17.6 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-2.8-.4-4.1H24v8.2h12.7c-.3 2.1-1.6 5.2-4.7 7.3l7.6 5.9c4.5-4.2 6.9-10.3 6.9-17.3z"/><path fill="#FBBC05" d="M10.4 28.3A14.5 14.5 0 0 1 9.6 24c0-1.5.3-3 .7-4.3l-7.8-6.1A24 24 0 0 0 .5 24c0 3.9.9 7.5 2.1 10.4l7.8-6.1z"/><path fill="#34A853" d="M24 47.5c6.5 0 11.9-2.1 15.6-5.8l-7.6-5.9c-2 1.4-4.7 2.4-8 2.4-6.4 0-11.7-4-13.6-9.9l-7.8 6.1C6.5 42.2 14.6 47.5 24 47.5z"/></svg>
+                        Continue with Google
+                    </button>
+                    <button class="gbtn facebook" onclick="signIn('facebook')">
+                        <svg class="gbtn-ic" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.7-3.9 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.7l-.4 2.9h-2.3v7A10 10 0 0 0 22 12z"/></svg>
+                        Continue with Facebook
+                    </button>
+                    <button class="gbtn guest" onclick="signIn('guest')">👤 Continue as Guest</button>
+                </div>
+                <div class="gate-note" id="authNote"></div>
+            </div>
+        </div>
+
+        <!-- STEP 2 — Church member check + access code -->
+        <div class="gate" id="memberGate">
+            <div class="gate-inner">
+                <div class="gate-who" id="gateWho" style="display:none;">
+                    <img id="gateWhoPic" src="" alt="" onerror="this.style.display='none'">
+                    <span id="gateWhoName"></span>
+                </div>
+                <div class="gate-logo"><img src="church-logo.png" alt="" onerror="this.style.display='none'"></div>
+                <div class="gate-q">Are you a member of</div>
+                <div class="gate-church">All One In Christ Church Fellowship</div>
+                <div class="gate-hr"></div>
+
+                <div class="code-box">
+                    <div class="code-lbl">Yes — enter your fellowship code</div>
+                    <div class="code-row">
+                        <input class="code-in" id="codeInput" placeholder="ENTER CODE" autocomplete="off" spellcheck="false" onkeydown="if(event.key==='Enter')redeemCode()">
+                        <button class="code-go" onclick="redeemCode()">Unlock</button>
+                    </div>
+                    <div class="code-msg" id="codeMsg"></div>
+                </div>
+
+                <div class="gate-btns" style="margin-top:14px;">
+                    <button class="gbtn no" onclick="skipMember()">No — continue to the app</button>
+                </div>
+                <div class="gate-note">Members get the full app unlocked. Without a code you still get the Bible, hymns and your profile.</div>
+            </div>
         </div>
 
         <!-- Verse context sheet -->
@@ -1401,7 +1508,16 @@ const KJV_JSON_URL='https://cdn.jsdelivr.net/gh/thiagobodruk/bible@master/json/e
 async function loadBibleData(){if(bibleData)return bibleData;try{const r=await fetch(KJV_JSON_URL);if(r.ok){bibleData=await r.json();return bibleData;}}catch(e){}return null;}
 
 // Profile Functions
+function paintAccountLine(){
+    const el=document.getElementById('accountLine');
+    if(!el)return;
+    const who=authUser?(authUser.provider==='guest'?'Guest':(authUser.name||authUser.provider)):'Not signed in';
+    const badge=isMember()?' · Fellowship member':'';
+    el.textContent=who+badge;
+}
+
 function loadProfile(){
+    paintAccountLine();
     document.getElementById('profileName').textContent=profileData.name;
     document.getElementById('profileBio').textContent=profileData.bio;
     if(profileData.image){
@@ -1582,7 +1698,167 @@ function updateLanguageIndicator(){
     });
 }
 
-function init(){buildBookIndex();renderBooks();updateVersionButtons();renderHymns();renderFavorites();loadBibleData();loadProfile();applyTheme();updateNavProfilePic();restoreNavState();}
+/* ==================== SIGN IN + MEMBER GATE ====================
+   Real Google / Facebook sign-in needs credentials that only the app owner can
+   create (a Google Client ID and a Facebook App ID). Paste them below and the
+   buttons switch to real sign-in automatically. Until then they sign in
+   locally on the device so the flow is fully usable.
+
+   The fellowship code is a soft gate, not security: anything shipped in a
+   static page can be read by someone determined enough. It is meant for
+   sharing with believers, not for keeping attackers out.                  */
+const GOOGLE_CLIENT_ID='';    // e.g. '1234-abc.apps.googleusercontent.com'
+const FACEBOOK_APP_ID='';     // e.g. '1234567890'
+
+/* Codes are stored as hashes so the literal code is not sitting in the source */
+const MEMBER_CODE_HASHES=['123ouv','1bfr4jc'];
+function codeHash(s){
+    let h=5381;
+    s=String(s).toUpperCase().replace(/[^A-Z0-9]/g,'');
+    for(let i=0;i<s.length;i++)h=((h*33)^s.charCodeAt(i))>>>0;
+    return h.toString(36);
+}
+
+let authUser=null, memberStatus=null;
+try{authUser=JSON.parse(localStorage.getItem('authUser')||'null');}catch(e){}
+try{memberStatus=localStorage.getItem('memberStatus');}catch(e){}
+
+function isMember(){return memberStatus==='member';}
+
+function showGate(which){
+    document.getElementById('authGate').classList.toggle('show',which==='auth');
+    document.getElementById('memberGate').classList.toggle('show',which==='member');
+    if(which==='member')paintGateWho();
+}
+function hideGates(){
+    document.getElementById('authGate').classList.remove('show');
+    document.getElementById('memberGate').classList.remove('show');
+}
+
+function routeGates(){
+    if(!authUser){showGate('auth');return false;}
+    if(!memberStatus){showGate('member');return false;}
+    hideGates();
+    return true;
+}
+
+function paintGateWho(){
+    const box=document.getElementById('gateWho');
+    if(!box||!authUser)return;
+    if(authUser.name&&authUser.provider!=='guest'){
+        document.getElementById('gateWhoName').textContent=authUser.name;
+        const pic=document.getElementById('gateWhoPic');
+        if(authUser.picture){pic.src=authUser.picture;pic.style.display='block';}
+        else pic.style.display='none';
+        box.style.display='inline-flex';
+    }else box.style.display='none';
+}
+
+function finishSignIn(user){
+    authUser=user;
+    try{localStorage.setItem('authUser',JSON.stringify(user));}catch(e){}
+    // seed the profile from the account, without overwriting an edited profile
+    if(user.provider!=='guest'&&(!profileData.name||profileData.name==='Guest User')){
+        profileData.name=user.name||profileData.name;
+        if(user.picture&&!profileData.image)profileData.image=user.picture;
+        try{localStorage.setItem('profileData',JSON.stringify(profileData));}catch(e){}
+        loadProfile();updateNavProfilePic();
+    }
+    showGate('member');
+}
+
+function signIn(provider){
+    if(provider==='guest'){finishSignIn({provider:'guest',name:'Guest'});return;}
+    if(provider==='google'&&GOOGLE_CLIENT_ID){googleSignIn();return;}
+    if(provider==='facebook'&&FACEBOOK_APP_ID){facebookSignIn();return;}
+    // no credentials configured yet — sign in on the device
+    const label=provider==='google'?'Google':'Facebook';
+    const name=prompt('Sign in with '+label+'\n\nEnter your name:','');
+    if(name===null)return;
+    finishSignIn({provider:provider,name:(name||'').trim()||label+' user'});
+    const note=document.getElementById('authNote');
+    if(note)note.textContent='';
+}
+
+/* Real Google sign-in, active once GOOGLE_CLIENT_ID is filled in */
+function googleSignIn(){
+    const start=()=>{
+        try{
+            google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,callback:res=>{
+                const p=parseJwt(res.credential)||{};
+                finishSignIn({provider:'google',name:p.name||'Google user',email:p.email||'',picture:p.picture||''});
+            }});
+            google.accounts.id.prompt();
+        }catch(e){}
+    };
+    if(window.google&&window.google.accounts){start();return;}
+    const s=document.createElement('script');
+    s.src='https://accounts.google.com/gsi/client';
+    s.onload=start;
+    s.onerror=()=>{document.getElementById('authNote').textContent='Google sign-in could not load. Check your connection.';};
+    document.head.appendChild(s);
+}
+function parseJwt(t){
+    try{
+        const b=t.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
+        return JSON.parse(decodeURIComponent(atob(b).split('').map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join('')));
+    }catch(e){return null;}
+}
+
+/* Real Facebook sign-in, active once FACEBOOK_APP_ID is filled in */
+function facebookSignIn(){
+    const go=()=>{
+        FB.init({appId:FACEBOOK_APP_ID,cookie:true,xfbml:false,version:'v19.0'});
+        FB.login(r=>{
+            if(!r.authResponse){return;}
+            FB.api('/me',{fields:'name,picture'},u=>{
+                finishSignIn({provider:'facebook',name:u.name||'Facebook user',picture:(u.picture&&u.picture.data&&u.picture.data.url)||''});
+            });
+        },{scope:'public_profile'});
+    };
+    if(window.FB){go();return;}
+    const s=document.createElement('script');
+    s.src='https://connect.facebook.net/en_US/sdk.js';
+    s.onload=go;
+    s.onerror=()=>{document.getElementById('authNote').textContent='Facebook sign-in could not load. Check your connection.';};
+    document.head.appendChild(s);
+}
+
+function redeemCode(){
+    const input=document.getElementById('codeInput');
+    const msg=document.getElementById('codeMsg');
+    const val=(input.value||'').trim();
+    if(!val){msg.className='code-msg bad';msg.textContent='Please enter your code.';return;}
+    if(MEMBER_CODE_HASHES.indexOf(codeHash(val))>=0){
+        memberStatus='member';
+        try{localStorage.setItem('memberStatus','member');}catch(e){}
+        msg.className='code-msg ok';
+        msg.textContent='Code accepted. Welcome, fellowship member!';
+        setTimeout(()=>{hideGates();showTab('home');},700);
+    }else{
+        msg.className='code-msg bad';
+        msg.textContent='That code is not recognised. Please check with the fellowship.';
+        input.value='';
+    }
+}
+
+function skipMember(){
+    memberStatus='guest';
+    try{localStorage.setItem('memberStatus','guest');}catch(e){}
+    hideGates();
+    showTab('home');
+}
+
+function signOut(){
+    if(!confirm('Sign out of HYMNORA?'))return;
+    authUser=null;memberStatus=null;
+    try{localStorage.removeItem('authUser');localStorage.removeItem('memberStatus');}catch(e){}
+    const m=document.getElementById('codeMsg');if(m){m.textContent='';m.className='code-msg';}
+    const c=document.getElementById('codeInput');if(c)c.value='';
+    routeGates();
+}
+
+function init(){buildBookIndex();renderBooks();updateVersionButtons();renderHymns();renderFavorites();loadBibleData();loadProfile();applyTheme();updateNavProfilePic();restoreNavState();routeGates();}
 
 function renderBooks(){
     if(!ALL_BOOKS.length)buildBookIndex();
