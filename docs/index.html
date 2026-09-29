@@ -257,6 +257,26 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
 .video-title { font-size:14px; font-weight:700; color:#fff; text-shadow:0 2px 6px rgba(0,0,0,.2); }
 .church-empty { text-align:center; padding:26px 18px; color:rgba(255,255,255,.85); font-size:13px; line-height:1.6; }
 
+/* Gallery uploads */
+.up-bar { display:flex; gap:9px; margin-bottom:14px; }
+.up-btn { flex:1; display:flex; align-items:center; justify-content:center; gap:7px; padding:13px 10px; border-radius:14px; cursor:pointer; font-family:var(--font-ui);
+          font-size:13px; font-weight:800; color:#fff; background:linear-gradient(150deg,var(--accent),var(--accent-deep));
+          border:1px solid rgba(255,255,255,.34); box-shadow:0 6px 18px var(--accent-glow); }
+.up-btn.alt { background:linear-gradient(150deg,var(--violet),var(--violet-deep)); box-shadow:0 6px 18px rgba(124,58,237,.4); }
+.up-btn:active { transform:scale(.96); }
+.up-btn:disabled { opacity:.55; }
+.up-info { display:flex; align-items:center; justify-content:space-between; gap:8px; font-size:10.5px; font-weight:700; letter-spacing:.3px;
+           color:rgba(255,255,255,.55); margin:-4px 0 14px; }
+.up-prog { height:5px; border-radius:3px; background:rgba(255,255,255,.14); overflow:hidden; margin:0 0 12px; display:none; }
+.up-prog.show { display:block; }
+.up-prog i { display:block; height:100%; width:0; background:linear-gradient(90deg,var(--accent),var(--accent-deep)); transition:width .25s linear; }
+.up-msg { font-size:12px; font-weight:600; margin:0 0 12px; min-height:15px; }
+.up-msg.ok { color:var(--accent); } .up-msg.bad { color:#fca5a5; }
+.up-del { position:absolute; top:9px; right:9px; z-index:3; width:28px; height:28px; border-radius:50%; border:1px solid rgba(255,255,255,.34);
+          background:rgba(0,0,0,.55); backdrop-filter:blur(6px); color:#fff; font-size:13px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+.up-tag { position:absolute; bottom:9px; left:9px; z-index:3; padding:3px 8px; border-radius:var(--r-pill); background:rgba(0,0,0,.6);
+          border:1px solid rgba(255,255,255,.26); color:#fff; font-size:9.5px; font-weight:800; letter-spacing:.4px; }
+
 /* Gallery */
 .gal-switch { display:flex; gap:8px; margin-bottom:14px; padding:4px; background:rgba(255,255,255,.08); border:1px solid var(--hair); border-radius:14px; }
 .gal-switch button { flex:1; padding:10px 6px; border:none; background:transparent; border-radius:10px; color:rgba(255,255,255,.8); font-weight:700; font-size:12.5px; font-family:var(--font-ui); cursor:pointer; transition:all .28s var(--ease); }
@@ -783,6 +803,9 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
                 <div class="church-subtitle">Bridal · Apostolic · Prophetic</div>
                 <div class="church-tagline">&ldquo;For ye are all one in Christ Jesus&rdquo; — Galatians 3:28</div>
             </div>
+
+            <input type="file" id="photoInput" accept="image/*" multiple style="display:none" onchange="handleUploads(event,'photo')">
+            <input type="file" id="videoInput" accept="video/*" multiple style="display:none" onchange="handleUploads(event,'video')">
 
             <div class="church-tabs" id="churchTabs">
                 <div class="ctab active" data-ctab="books" onclick="showChurchTab('books')"><span class="ctab-ic">📚</span><span>Books</span></div>
@@ -1918,6 +1941,10 @@ function toggleHymn(i){document.getElementById('hymn'+i).classList.toggle('show'
 function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
 function renderChurch(){
+    // pull in whatever has been uploaded before drawing
+    (FIREBASE_CONFIG?firebaseLoad().catch(()=>loadUploads()):loadUploads())
+        .then(()=>showChurchTab(churchTab))
+        .catch(()=>showChurchTab(churchTab));
     showChurchTab(churchTab);
 }
 
@@ -1971,6 +1998,165 @@ function showChurchTab(kind){
 function churchEmpty(msg){return `<div class="church-empty">${msg}</div>`;}
 function churchNoLink(){alert('📄 This resource will be available soon.');}
 
+/* ==================== GALLERY UPLOADS ====================
+   Two storage modes:
+
+   1. This device (default, needs no setup). Files go into IndexedDB, which
+      holds far more than localStorage — the quota is a share of free disk, so
+      photos and videos are fine. These are private to the person's own device.
+
+   2. Shared with everyone. That genuinely needs storage outside the app, since
+      a static site has nowhere to put a file other people can read. Fill in
+      FIREBASE_CONFIG below and uploads go to Firebase Storage with their
+      details in Firestore, so the whole fellowship sees the same gallery.
+
+   Note on "unlimited": no service is truly unlimited, and neither is a phone.
+   Photos are light and fine in bulk. Long videos are not — a 600 MB service
+   recording should go on YouTube as Unlisted and be added as a link, which the
+   gallery already supports.                                                */
+const FIREBASE_CONFIG=null;   // paste your Firebase config object here to share uploads
+const GAL_DB='hymnora-gallery', GAL_STORE='uploads';
+let galUploads=[], galObjectUrls=[];
+
+function idb(){
+    return new Promise((res,rej)=>{
+        const r=indexedDB.open(GAL_DB,1);
+        r.onupgradeneeded=()=>{
+            const db=r.result;
+            if(!db.objectStoreNames.contains(GAL_STORE))
+                db.createObjectStore(GAL_STORE,{keyPath:'id'});
+        };
+        r.onsuccess=()=>res(r.result);
+        r.onerror=()=>rej(r.error);
+    });
+}
+function idbRun(mode,fn){
+    return idb().then(db=>new Promise((res,rej)=>{
+        const tx=db.transaction(GAL_STORE,mode);
+        const out=fn(tx.objectStore(GAL_STORE));
+        tx.oncomplete=()=>res(out&&out.result!==undefined?out.result:out);
+        tx.onerror=()=>rej(tx.error);
+    }));
+}
+const idbPut=item=>idbRun('readwrite',st=>st.put(item));
+const idbAll=()=>idbRun('readonly',st=>st.getAll());
+const idbDel=id=>idbRun('readwrite',st=>st.delete(id));
+
+async function loadUploads(){
+    try{
+        const rows=await idbAll();
+        galUploads=(rows||[]).sort((a,b)=>b.addedAt-a.addedAt);
+    }catch(e){galUploads=[];}
+    return galUploads;
+}
+
+function revokeGalUrls(){
+    galObjectUrls.forEach(u=>{try{URL.revokeObjectURL(u);}catch(e){}});
+    galObjectUrls=[];
+}
+function blobUrl(b){const u=URL.createObjectURL(b);galObjectUrls.push(u);return u;}
+
+function pickUploads(kind){
+    const input=document.getElementById(kind==='photo'?'photoInput':'videoInput');
+    if(input)input.click();
+}
+
+async function handleUploads(ev,kind){
+    const files=Array.from(ev.target.files||[]);
+    ev.target.value='';
+    if(!files.length)return;
+    const prog=document.getElementById('upProg'), bar=prog?prog.querySelector('i'):null;
+    const msg=document.getElementById('upMsg');
+    if(prog)prog.classList.add('show');
+    let done=0, failed=0;
+    for(const f of files){
+        try{
+            if(FIREBASE_CONFIG){
+                await firebaseUpload(f,kind);
+            }else{
+                await idbPut({id:'u'+Date.now()+Math.random().toString(36).slice(2,7),
+                              type:kind,name:f.name,size:f.size,mime:f.type,
+                              blob:f,caption:'',addedAt:Date.now()});
+            }
+        }catch(e){failed++;}
+        done++;
+        if(bar)bar.style.width=Math.round((done/files.length)*100)+'%';
+    }
+    await loadUploads();
+    // render first — the message and progress live inside the gallery container,
+    // so setting them before the re-render would wipe them out
+    renderGallery();
+    const ok=files.length-failed;
+    const note=document.getElementById('upMsg');
+    if(note){
+        note.className='up-msg '+(failed?'bad':'ok');
+        note.textContent=failed
+            ? (ok+' added, '+failed+' could not be saved — the device may be out of space.')
+            : (ok+(ok===1?' file added.':' files added.')+(FIREBASE_CONFIG?' Shared with everyone.':' Saved on this device.'));
+        setTimeout(()=>{if(note.isConnected){note.textContent='';note.className='up-msg';}},5000);
+    }
+    const p=document.getElementById('upProg');
+    if(p){const b=p.querySelector('i');if(b)b.style.width='100%';setTimeout(()=>{p.classList.remove('show');if(b)b.style.width='0';},600);}
+}
+
+async function deleteUpload(id){
+    if(!confirm('Remove this from the gallery?'))return;
+    try{await idbDel(id);}catch(e){}
+    await loadUploads();
+    renderGallery();
+}
+
+async function paintStorageInfo(){
+    const el=document.getElementById('upInfo');
+    if(!el)return;
+    const photos=galUploads.filter(u=>u.type==='photo').length;
+    const vids=galUploads.filter(u=>u.type==='video').length;
+    const bytes=galUploads.reduce((n,u)=>n+(u.size||0),0);
+    let quota='';
+    try{
+        if(navigator.storage&&navigator.storage.estimate){
+            const e=await navigator.storage.estimate();
+            if(e.quota)quota=' of '+fmtSize(e.quota)+' available';
+        }
+    }catch(e){}
+    el.innerHTML='<span>'+photos+' photos · '+vids+' videos uploaded</span><span>'+fmtSize(bytes)+quota+'</span>';
+}
+function fmtSize(b){
+    if(!b)return '0 MB';
+    const mb=b/1048576;
+    return mb>=1024?(mb/1024).toFixed(1)+' GB':Math.max(1,Math.round(mb))+' MB';
+}
+
+/* Shared uploads via Firebase, active once FIREBASE_CONFIG is filled in */
+let fbReady=null;
+async function firebaseInit(){
+    if(fbReady)return fbReady;
+    fbReady=(async()=>{
+        const app=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js');
+        const st=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js');
+        const fs=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+        const a=app.initializeApp(FIREBASE_CONFIG);
+        return {st,fs,storage:st.getStorage(a),db:fs.getFirestore(a)};
+    })();
+    return fbReady;
+}
+async function firebaseUpload(file,kind){
+    const {st,fs,storage,db}=await firebaseInit();
+    const path='gallery/'+Date.now()+'-'+file.name.replace(/[^\w.\-]/g,'_');
+    const ref=st.ref(storage,path);
+    await st.uploadBytes(ref,file);
+    const url=await st.getDownloadURL(ref);
+    await fs.addDoc(fs.collection(db,'gallery'),{
+        type:kind,name:file.name,size:file.size,url:url,path:path,
+        by:(authUser&&authUser.name)||'Member',addedAt:Date.now()
+    });
+}
+async function firebaseLoad(){
+    const {fs,db}=await firebaseInit();
+    const snap=await fs.getDocs(fs.query(fs.collection(db,'gallery'),fs.orderBy('addedAt','desc')));
+    galUploads=snap.docs.map(d=>Object.assign({id:d.id},d.data()));
+}
+
 /* ===== Church Gallery: Photos + Videos ===== */
 function galleryPhotos(){return (CHURCH.gallery&&CHURCH.gallery.photos)||[];}
 function galleryVideos(){return ((CHURCH.gallery&&CHURCH.gallery.videos)||[]).concat(CHURCH.videos||[]);}
@@ -2014,10 +2200,24 @@ function renderGallery(){
     const albums=galleryAlbums(), loose=galleryPhotos(), vids=galleryVideos();
     const photoTotal=albums.reduce((n,a)=>n+((a.photos||[]).length),0)+loose.length;
 
+    revokeGalUrls();
+    const upPhotos=galUploads.filter(u=>u.type==='photo');
+    const upVideos=galUploads.filter(u=>u.type==='video');
+    const photoAll=photoTotal+upPhotos.length, videoAll=vids.length+upVideos.length;
+
     let html=`<div class="gal-switch">
-        <button class="${galleryMode==='photos'?'active':''}" onclick="setGalleryMode('photos')">🖼️ Photos${photoTotal?' ('+photoTotal+')':''}</button>
-        <button class="${galleryMode==='videos'?'active':''}" onclick="setGalleryMode('videos')">🎥 Videos${vids.length?' ('+vids.length+')':''}</button>
+        <button class="${galleryMode==='photos'?'active':''}" onclick="setGalleryMode('photos')">🖼️ Photos${photoAll?' ('+photoAll+')':''}</button>
+        <button class="${galleryMode==='videos'?'active':''}" onclick="setGalleryMode('videos')">🎥 Videos${videoAll?' ('+videoAll+')':''}</button>
     </div>`;
+
+    // upload controls
+    html+=`<div class="up-bar">
+        <button class="up-btn" onclick="pickUploads('photo')">📷 Add Photos</button>
+        <button class="up-btn alt" onclick="pickUploads('video')">🎬 Add Videos</button>
+    </div>
+    <div class="up-prog" id="upProg"><i></i></div>
+    <div class="up-msg" id="upMsg"></div>
+    <div class="up-info" id="upInfo"></div>`;
 
     if(galleryMode==='photos'){
         if(openAlbum!==null&&albums[openAlbum]){
@@ -2046,16 +2246,43 @@ function renderGallery(){
                 html+='<div class="church-subhead">🖼️ Other photos</div>';
                 html+=photoGridHtml(loose);
             }
-            if(!albums.length&&!loose.length){
-                html+=churchEmpty('🖼️ No photos yet.<br>Upload them to the <b>docs/gallery</b> folder, then send me the file names.');
+            if(upPhotos.length){
+                html+='<div class="church-subhead">📷 Uploaded photos</div>';
+                html+='<div class="photo-feed">'+upPhotos.map((u,i)=>{
+                    const src=u.url||blobUrl(u.blob);
+                    return `<div class="photo-frame loaded" style="animation-delay:${i*60}ms">
+                        <img src="${src}" alt="" loading="lazy" decoding="async">
+                        <button class="up-del" onclick="deleteUpload('${u.id}')" aria-label="Remove">🗑</button>
+                        <span class="up-tag">${escapeHtml(u.by||'This device')}</span>
+                    </div>`;
+                }).join('')+'</div>';
+            }
+            if(!albums.length&&!loose.length&&!upPhotos.length){
+                html+=churchEmpty('🖼️ No photos yet.<br>Tap <b>Add Photos</b> above to put some in.');
             }
         }
     }else{
-        html+=vids.length
-            ? vids.map((v,i)=>galleryVideoCard(i,v)).join('')
-            : churchEmpty('🎥 No videos yet.<br>Upload them to <b>docs/gallery</b> or send YouTube links.');
+        if(vids.length)html+=vids.map((v,i)=>galleryVideoCard(i,v)).join('');
+        if(upVideos.length){
+            html+='<div class="church-subhead">🎬 Uploaded videos</div>';
+            html+=upVideos.map(u=>{
+                const src=u.url||blobUrl(u.blob);
+                return `<div class="video-card" style="position:relative;">
+                    <video src="${src}" controls playsinline preload="metadata"></video>
+                    <button class="up-del" onclick="deleteUpload('${u.id}')" aria-label="Remove">🗑</button>
+                    <div class="video-meta">
+                        <div class="video-title">${escapeHtml(u.name||'Video')}</div>
+                        <div class="res-desc" style="margin-top:3px;">${escapeHtml(u.by||'This device')} · ${fmtSize(u.size)}</div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+        if(!vids.length&&!upVideos.length){
+            html+=churchEmpty('🎥 No videos yet.<br>Tap <b>Add Videos</b> above, or send a YouTube link for long recordings.');
+        }
     }
     box.innerHTML=html;
+    paintStorageInfo();
 }
 
 function showAlbum(i){openAlbum=i;renderGallery();scrollChurchToTabs();}
