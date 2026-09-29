@@ -257,6 +257,12 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
 .video-title { font-size:14px; font-weight:700; color:#fff; text-shadow:0 2px 6px rgba(0,0,0,.2); }
 .church-empty { text-align:center; padding:26px 18px; color:rgba(255,255,255,.85); font-size:13px; line-height:1.6; }
 
+/* Hymn drafts — one block per detected hymn */
+.hy-draft { padding:14px; border-radius:16px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.14); margin-bottom:12px; }
+.hy-draft-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+.hy-draft-n { font-size:10.5px; font-weight:800; letter-spacing:1.2px; text-transform:uppercase; color:var(--accent); }
+.hy-draft-x { width:26px; height:26px; border-radius:50%; border:1px solid rgba(255,255,255,.26); background:rgba(255,255,255,.1); color:#fff; font-size:12px; cursor:pointer; }
+
 /* Gallery uploads */
 .up-bar { display:flex; gap:9px; margin-bottom:14px; }
 .up-btn { flex:1; display:flex; align-items:center; justify-content:center; gap:7px; padding:13px 10px; border-radius:14px; cursor:pointer; font-family:var(--font-ui);
@@ -622,6 +628,7 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
                 <button class="up-btn alt" onclick="pickHymnPhoto()">📷 Scan Hymn Photo</button>
                 <button class="up-btn" onclick="openHymnEditor({})">✍️ Add Hymn</button>
             </div>
+            <div class="up-msg" id="hymnSaveNote"></div>
             <div id="hymnsContainer"></div>
         </div>
 
@@ -887,20 +894,11 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
                     <div class="up-prog" id="hyProg"><i></i></div>
                     <div class="up-msg" id="hyStatus"></div>
 
-                    <div id="hyKnown" style="display:none;" class="ctx-near">
-                        <div style="margin-bottom:8px;">This looks like <b id="hyKnownName"></b>, which HYMNORA already has with accurate lyrics.</div>
-                        <button class="code-go" style="padding:9px 14px;" onclick="useKnownHymn()">Use accurate lyrics</button>
-                    </div>
+                    <div id="hyDrafts"></div>
 
-                    <div style="display:flex; gap:9px; margin-top:12px;">
-                        <input class="search-box" id="hyNum" placeholder="No." style="max-width:82px; margin-bottom:0; letter-spacing:1px;">
-                        <input class="search-box" id="hyTitle" placeholder="Hymn title" style="flex:1; margin-bottom:0;">
-                    </div>
-                    <input class="search-box" id="hyAuthor" placeholder="Author / composer (optional)" style="margin-top:9px; margin-bottom:9px;">
-                    <textarea class="search-box" id="hyLyrics" placeholder="Lyrics" style="height:190px; resize:vertical; font-family:var(--font-scripture); line-height:1.7;"></textarea>
-
-                    <button class="glass-btn" style="width:100%; background:linear-gradient(150deg,var(--accent),var(--accent-deep)); border:1px solid rgba(255,255,255,.35); box-shadow:0 6px 20px var(--accent-glow);" onclick="saveHymn()">💾 Save Hymn</button>
-                    <div class="ctx-note">Scanning uses on-device OCR, so it needs a connection the first time to fetch the reader. Camera text is never perfect — please check it before saving.</div>
+                    <button class="glass-btn" style="width:100%; margin-top:12px; background:rgba(255,255,255,.1);" onclick="addHymnDraft()">➕ Add another hymn</button>
+                    <button class="glass-btn" id="hySaveBtn" style="width:100%; background:linear-gradient(150deg,var(--accent),var(--accent-deep)); border:1px solid rgba(255,255,255,.35); box-shadow:0 6px 20px var(--accent-glow);" onclick="saveHymn()">💾 Save Hymn</button>
+                    <div class="ctx-note">One photo can hold several hymns — each one is listed separately above. Scanning uses on-device OCR and needs a connection the first time to fetch the reader. Camera text is never perfect, so please check it before saving.</div>
                 </div>
             </div>
         </div>
@@ -2070,14 +2068,73 @@ async function loadHymnUploads(){
     return uploadedHymns;
 }
 
+/* Every detected hymn becomes one editable draft, so a page with several hymns
+   saves as several separate entries. */
+let hymnDrafts=[];
+
 function openHymnEditor(data){
-    const d=data||{};
-    document.getElementById('hyNum').value=d.number||'';
-    document.getElementById('hyTitle').value=d.title||'';
-    document.getElementById('hyAuthor').value=d.author||'';
-    document.getElementById('hyLyrics').value=d.lyrics||'';
-    setHymnStatus(d.status||'', d.statusKind||'');
+    hymnDrafts=[Object.assign({number:'',title:'',author:'',lyrics:''},data||{})];
+    renderHymnDrafts();
+    setHymnStatus((data&&data.status)||'',(data&&data.statusKind)||'');
     document.getElementById('hyWrap').classList.add('show');
+}
+
+function openHymnDrafts(list,status,kind){
+    hymnDrafts=list.map(d=>Object.assign({number:'',title:'',author:'',lyrics:''},d));
+    renderHymnDrafts();
+    setHymnStatus(status||'',kind||'');
+    document.getElementById('hyWrap').classList.add('show');
+}
+
+function renderHymnDrafts(){
+    const box=document.getElementById('hyDrafts');
+    if(!box)return;
+    const many=hymnDrafts.length>1;
+    box.innerHTML=hymnDrafts.map((d,i)=>`
+        <div class="hy-draft">
+            ${many?`<div class="hy-draft-head">
+                <span class="hy-draft-n">Hymn ${i+1} of ${hymnDrafts.length}</span>
+                <button class="hy-draft-x" onclick="removeHymnDraft(${i})" aria-label="Remove">✕</button>
+            </div>`:''}
+            <div style="display:flex; gap:9px;">
+                <input class="search-box" data-f="number" data-i="${i}" placeholder="No." value="${escapeHtml(d.number||'')}" style="max-width:82px; margin-bottom:0; letter-spacing:1px;">
+                <input class="search-box" data-f="title" data-i="${i}" placeholder="Hymn title" value="${escapeHtml(d.title||'')}" style="flex:1; margin-bottom:0;">
+            </div>
+            <input class="search-box" data-f="author" data-i="${i}" placeholder="Author / composer (optional)" value="${escapeHtml(d.author||'')}" style="margin-top:9px; margin-bottom:9px;">
+            <textarea class="search-box" data-f="lyrics" data-i="${i}" placeholder="Lyrics" style="height:${many?150:190}px; resize:vertical; font-family:var(--font-scripture); line-height:1.7; margin-bottom:0;">${escapeHtml(d.lyrics||'')}</textarea>
+            ${d.knownTitle?`<div class="ctx-near" style="margin-top:10px;">
+                <div style="margin-bottom:8px;">This looks like <b>${escapeHtml(d.knownTitle)}</b>, which HYMNORA already has with accurate lyrics.</div>
+                <button class="code-go" style="padding:9px 14px;" onclick="useKnownFor(${i})">Use accurate lyrics</button>
+            </div>`:''}
+        </div>`).join('');
+    // keep the drafts in step with what is typed
+    box.querySelectorAll('[data-f]').forEach(el=>{
+        el.addEventListener('input',()=>{
+            const i=parseInt(el.getAttribute('data-i'),10);
+            hymnDrafts[i][el.getAttribute('data-f')]=el.value;
+        });
+    });
+    const btn=document.getElementById('hySaveBtn');
+    if(btn)btn.textContent=many?('💾 Save all '+hymnDrafts.length+' hymns'):'💾 Save Hymn';
+}
+
+function addHymnDraft(){
+    hymnDrafts.push({number:'',title:'',author:'',lyrics:''});
+    renderHymnDrafts();
+}
+function removeHymnDraft(i){
+    hymnDrafts.splice(i,1);
+    if(!hymnDrafts.length)hymnDrafts.push({number:'',title:'',author:'',lyrics:''});
+    renderHymnDrafts();
+}
+function useKnownFor(i){
+    const d=hymnDrafts[i];
+    if(!d||!d.knownTitle)return;
+    const h=HYMNS.filter(x=>x.title===d.knownTitle)[0];
+    if(!h)return;
+    d.title=h.title; d.lyrics=h.text; d.author=h.meta||'';
+    renderHymnDrafts();
+    setHymnStatus('Using the accurate lyrics already in HYMNORA.','ok');
 }
 function closeHymnEditor(){document.getElementById('hyWrap').classList.remove('show');}
 function setHymnStatus(msg,kind){
@@ -2099,26 +2156,25 @@ async function handleHymnPhoto(ev){
     if(prog)prog.classList.add('show');
     try{
         const text=await runOcr(file,p=>{if(bar)bar.style.width=Math.round(p*100)+'%';});
-        const parsed=parseHymn(text);
-        const known=matchKnownHymn(text);
-        if(known){
-            parsed.title=parsed.title||known.hymn.title;
-            document.getElementById('hyKnown').style.display='block';
-            document.getElementById('hyKnownName').textContent=known.hymn.title;
-            hymnKnownMatch=known.hymn;
-        }else{
-            document.getElementById('hyKnown').style.display='none';
-            hymnKnownMatch=null;
-        }
-        document.getElementById('hyNum').value=parsed.number||'';
-        document.getElementById('hyTitle').value=parsed.title||'';
-        document.getElementById('hyAuthor').value=parsed.author||'';
-        document.getElementById('hyLyrics').value=parsed.lyrics||text;
-        setHymnStatus(parsed.title
-            ? 'Detected — please check and correct anything the camera misread.'
-            : 'Text read, but the title was not clear. Please fill it in.','ok');
+        const blocks=splitHymns(text);
+        const drafts=blocks.map(b=>{
+            const parsed=parseHymn(b);
+            const known=matchKnownHymn(b);
+            if(known&&!parsed.title)parsed.title=known.hymn.title;
+            if(known)parsed.knownTitle=known.hymn.title;
+            if(!parsed.lyrics)parsed.lyrics=b;
+            return parsed;
+        }).filter(d=>d.title||d.lyrics);
+        if(!drafts.length)throw new Error('nothing usable');
+        const named=drafts.filter(d=>d.title).length;
+        openHymnDrafts(drafts,
+            drafts.length>1
+                ? ('Found '+drafts.length+' hymns on this page. Check each one, then save them all.')
+                : (named?'Detected — please check and correct anything the camera misread.'
+                        :'Text read, but the title was not clear. Please fill it in.'),
+            'ok');
     }catch(e){
-        setHymnStatus('Could not read the photo. You can still type the hymn in below.','bad');
+        openHymnEditor({status:'Could not read the photo. You can still type the hymn in below.',statusKind:'bad'});
     }
     if(prog)setTimeout(()=>{prog.classList.remove('show');if(bar)bar.style.width='0';},600);
     scanBusy=false;
@@ -2155,6 +2211,73 @@ async function runOcr(file,onProgress){
     return (r&&r.data&&r.data.text)||'';
 }
 
+/* A hymnal page often carries several hymns. Split the scan into one block per
+   hymn so each becomes its own entry, rather than one jumbled record.
+   Primary boundary is a hymn-number line, which is how hymn books mark them.
+   If the page has no numbers, fall back to splitting on recognised titles. */
+function splitHymns(raw){
+    const text=String(raw||'').replace(/\r/g,'');
+    const lines=text.split('\n');
+    const marks=[];
+    lines.forEach((l,i)=>{
+        const t=l.trim();
+        if(!t)return;
+        if(/^(?:hymn|no\.?|#)\s*\d{1,4}\b/i.test(t)||/^\d{1,4}[.)]?$/.test(t))marks.push(i);
+    });
+    if(marks.length>=2){
+        const blocks=[];
+        for(let i=0;i<marks.length;i++){
+            const s=marks[i], e=(i+1<marks.length)?marks[i+1]:lines.length;
+            const b=lines.slice(s,e).join('\n').trim();
+            if((b.match(/[A-Za-z]/g)||[]).length>=12)blocks.push(b);
+        }
+        if(blocks.length>=2)return blocks;
+    }
+    const hits=findKnownTitlePositions(text);
+    if(hits.length>=2){
+        const blocks=[];
+        for(let i=0;i<hits.length;i++){
+            const s=hits[i].index, e=(i+1<hits.length)?hits[i+1].index:text.length;
+            const b=text.slice(s,e).trim();
+            if((b.match(/[A-Za-z]/g)||[]).length>=12)blocks.push(b);
+        }
+        if(blocks.length>=2)return blocks;
+    }
+    return [text.trim()];
+}
+
+/* Where do titles we already know appear in the scan? Used to split a page
+   that prints several hymns without numbers. */
+function findKnownTitlePositions(text){
+    const low=String(text).toLowerCase();
+    const hits=[];
+    HYMNS.forEach(h=>{
+        const probe=h.title.toLowerCase().replace(/[?!,.']/g,'').slice(0,18);
+        if(probe.length<6)return;
+        const i=low.replace(/[?!,.']/g,'').indexOf(probe);
+        if(i>=0)hits.push({index:i,title:h.title});
+    });
+    hits.sort((a,b)=>a.index-b.index);
+    // drop near-duplicates so one hymn is not counted twice
+    return hits.filter((h,i)=>i===0||h.index-hits[i-1].index>40);
+}
+
+/* Hymn books print titles in capitals; store them the way they are written */
+function tidyTitle(s){
+    const t=String(s||'').trim();
+    if(!t)return '';
+    const letters=t.replace(/[^A-Za-z]/g,'');
+    const caps=t.replace(/[^A-Z]/g,'').length;
+    if(letters.length>=4&&caps/letters.length>0.7){
+        const small=['a','an','the','and','or','but','of','in','on','to','for','with','is','it','my','me','thou','thy'];
+        return t.toLowerCase().split(/\s+/).map((w,i)=>{
+            if(i>0&&small.indexOf(w)>=0)return w;
+            return w.charAt(0).toUpperCase()+w.slice(1);
+        }).join(' ');
+    }
+    return t;
+}
+
 /* Pull number, title, author and verses out of raw scanned text */
 function parseHymn(raw){
     const text=String(raw||'').replace(/\r/g,'');
@@ -2166,27 +2289,34 @@ function parseHymn(raw){
         const m=filled[i].match(/(?:hymn|no\.?|#)\s*(\d{1,4})/i)||filled[i].match(/^(\d{1,4})[.)\s]*$/);
         if(m){number=m[1];break;}
     }
-    for(let i=0;i<Math.min(8,filled.length);i++){
-        const l=filled[i];
+    // remember which line the title came from, so lyrics can start after it.
+    // Matching by text later fails once the title has been tidied, and can also
+    // swallow a real first line such as "Rock of Ages, cleft for me".
+    let titleLine=-1;
+    for(let i=0;i<Math.min(10,lines.length);i++){
+        const l=(lines[i]||'').trim();
+        if(!l)continue;
         if(/^\d{1,4}[.)\s]*$/.test(l))continue;
         if(/^(words|music|tune|meter|metre|author|composer)\b/i.test(l))continue;
         const cleaned=l.replace(/^(?:hymn|no\.?|#)\s*\d{1,4}[.)\s\-–—]*/i,'').trim();
         const words=cleaned.split(/\s+/);
-        // needs real letters, otherwise OCR noise becomes the title
         if((cleaned.match(/[A-Za-z]/g)||[]).length<3)continue;
-        if(cleaned.length>=3&&words.length<=12){title=cleaned.replace(/[.,;:]+$/,'');break;}
+        if(cleaned.length>=3&&words.length<=12){
+            title=tidyTitle(cleaned.replace(/[.,;:]+$/,''));
+            titleLine=i;
+            break;
+        }
     }
     const am=text.match(/(?:words|text|author|composer|music|by)\s*[:\-–—]\s*([^\n]{3,60})/i)
           ||text.match(/[—–]\s*([A-Z][A-Za-z.'\- ]{3,50})\s*(?:\n|$)/);
     if(am)author=am[1].trim().replace(/[.,;:]+$/,'');
 
-    // lyrics: skip the header lines we consumed, keep stanza breaks
-    let start=0;
-    for(let i=0;i<lines.length;i++){
-        const l=lines[i];
-        if(!l){continue;}
-        if(title&&l.indexOf(title.slice(0,Math.min(12,title.length)))>=0){start=i+1;break;}
-        if(/^\d{1,4}[.)\s]*$/.test(l)){start=i+1;}
+    // lyrics begin on the line after the title, keeping stanza breaks
+    let start=titleLine>=0?titleLine+1:0;
+    if(titleLine<0){
+        for(let i=0;i<lines.length;i++){
+            if(/^\d{1,4}[.)\s]*$/.test((lines[i]||'').trim()))start=i+1;
+        }
     }
     // drop credit lines so they do not sit at the top of the verses
     const isCredit=l=>/^(words|music|tune|meter|metre|author|composer|text|arr\.?|copyright|©)\b/i.test(l)
@@ -2214,25 +2344,44 @@ function matchKnownHymn(text){
     return bestScore>=0.65?{hymn:best,score:bestScore}:null;
 }
 
+/* Saves every draft, so one photo of several hymns creates several entries */
 async function saveHymn(){
-    const number=document.getElementById('hyNum').value.trim();
-    const title=document.getElementById('hyTitle').value.trim();
-    const author=document.getElementById('hyAuthor').value.trim();
-    const lyrics=document.getElementById('hyLyrics').value.trim();
-    if(!title){setHymnStatus('Please give the hymn a title.','bad');return;}
-    if(!lyrics){setHymnStatus('Please add the lyrics.','bad');return;}
-    const rec={id:'h'+Date.now()+Math.random().toString(36).slice(2,6),
-               number:number,title:title,author:author,lyrics:lyrics,
-               by:(authUser&&authUser.name)||'Member',addedAt:Date.now()};
-    try{
-        if(sbOn())await sbPutHymn(rec);
-        else await hymnPut(rec);
-    }catch(e){
-        try{await hymnPut(rec);}catch(e2){setHymnStatus('Could not save. Storage may be full.','bad');return;}
+    const ready=hymnDrafts.filter(d=>(d.title||'').trim()&&(d.lyrics||'').trim());
+    if(!ready.length){
+        setHymnStatus(hymnDrafts.some(d=>(d.title||'').trim())
+            ? 'Please add the lyrics.' : 'Please give the hymn a title.','bad');
+        return;
+    }
+    const skipped=hymnDrafts.length-ready.length;
+    let saved=0,failed=0;
+    for(const d of ready){
+        const rec={id:'h'+Date.now()+Math.random().toString(36).slice(2,6),
+                   number:(d.number||'').trim(),title:d.title.trim(),
+                   author:(d.author||'').trim(),lyrics:d.lyrics.trim(),
+                   by:(authUser&&authUser.name)||'Member',addedAt:Date.now()};
+        try{
+            if(sbOn())await sbPutHymn(rec);
+            else await hymnPut(rec);
+            saved++;
+        }catch(e){
+            try{await hymnPut(rec);saved++;}catch(e2){failed++;}
+        }
     }
     await loadHymnUploads();
     renderHymns();
+    if(failed){
+        setHymnStatus(saved+' saved, '+failed+' could not be saved.','bad');
+        return;
+    }
     closeHymnEditor();
+    const c=document.getElementById('hymnSaveNote');
+    if(c){
+        c.className='up-msg ok';
+        c.textContent=saved+(saved===1?' hymn added.':' hymns added.')
+                     +(skipped?' '+skipped+' left out for missing details.':'')
+                     +(sbOn()?' Shared with everyone.':' Saved on this device.');
+        setTimeout(()=>{c.textContent='';c.className='up-msg';},5000);
+    }
 }
 
 async function deleteHymnUpload(id){
