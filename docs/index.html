@@ -617,6 +617,11 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
         <!-- Hymns -->
         <div class="screen" id="hymnsScreen">
             <div class="section-title">🎵 Hymns</div>
+            <input type="file" id="hymnPhotoInput" accept="image/*" style="display:none" onchange="handleHymnPhoto(event)">
+            <div class="up-bar">
+                <button class="up-btn alt" onclick="pickHymnPhoto()">📷 Scan Hymn Photo</button>
+                <button class="up-btn" onclick="openHymnEditor({})">✍️ Add Hymn</button>
+            </div>
             <div id="hymnsContainer"></div>
         </div>
 
@@ -864,6 +869,39 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
                     <button class="gbtn no" onclick="skipMember()">No — continue to the app</button>
                 </div>
                 <div class="gate-note">Every part of HYMNORA is free for everyone. The code simply marks you as a fellowship member.</div>
+            </div>
+        </div>
+
+        <!-- Hymn editor / scan result -->
+        <div class="ctx-wrap" id="hyWrap" onclick="closeHymnEditor()">
+            <div class="ctx-card" onclick="event.stopPropagation()">
+                <div class="ctx-grip"></div>
+                <div class="ctx-head">
+                    <div>
+                        <div class="ctx-title">Add Hymn</div>
+                        <div class="ctx-ref" style="font-size:15px;">Check the details, then save</div>
+                    </div>
+                    <button class="ctx-close" onclick="closeHymnEditor()" aria-label="Close">✕</button>
+                </div>
+                <div class="ctx-body">
+                    <div class="up-prog" id="hyProg"><i></i></div>
+                    <div class="up-msg" id="hyStatus"></div>
+
+                    <div id="hyKnown" style="display:none;" class="ctx-near">
+                        <div style="margin-bottom:8px;">This looks like <b id="hyKnownName"></b>, which HYMNORA already has with accurate lyrics.</div>
+                        <button class="code-go" style="padding:9px 14px;" onclick="useKnownHymn()">Use accurate lyrics</button>
+                    </div>
+
+                    <div style="display:flex; gap:9px; margin-top:12px;">
+                        <input class="search-box" id="hyNum" placeholder="No." style="max-width:82px; margin-bottom:0; letter-spacing:1px;">
+                        <input class="search-box" id="hyTitle" placeholder="Hymn title" style="flex:1; margin-bottom:0;">
+                    </div>
+                    <input class="search-box" id="hyAuthor" placeholder="Author / composer (optional)" style="margin-top:9px; margin-bottom:9px;">
+                    <textarea class="search-box" id="hyLyrics" placeholder="Lyrics" style="height:190px; resize:vertical; font-family:var(--font-scripture); line-height:1.7;"></textarea>
+
+                    <button class="glass-btn" style="width:100%; background:linear-gradient(150deg,var(--accent),var(--accent-deep)); border:1px solid rgba(255,255,255,.35); box-shadow:0 6px 20px var(--accent-glow);" onclick="saveHymn()">💾 Save Hymn</button>
+                    <div class="ctx-note">Scanning uses on-device OCR, so it needs a connection the first time to fetch the reader. Camera text is never perfect — please check it before saving.</div>
+                </div>
             </div>
         </div>
 
@@ -1891,6 +1929,7 @@ function signOut(){
 }
 
 function init(){try{localStorage.removeItem('proUnlocked');localStorage.removeItem('proPromptAt');}catch(e){}
+    loadHymnUploads().then(renderHymns).catch(()=>{});
     buildBookIndex();renderBooks();updateVersionButtons();renderHymns();renderFavorites();loadBibleData();loadProfile();applyTheme();updateNavProfilePic();restoreNavState();routeGates();}
 
 function renderBooks(){
@@ -1928,11 +1967,22 @@ function updateVersionButtons(){
 }
 
 function renderHymns(){
-    document.getElementById('hymnsContainer').innerHTML=HYMNS.map((h,i)=>`<div class="hymn-card" onclick="toggleHymn(${i})">
+    let html=HYMNS.map((h,i)=>`<div class="hymn-card" onclick="toggleHymn(${i})">
         <div class="hymn-title">🎵 ${escapeHtml(h.title)}</div>
         <div class="hymn-meta">${escapeHtml(h.meta||'')} · tap for lyrics</div>
         <div class="hymn-lyrics" id="hymn${i}">${escapeHtml(h.text)}</div>
     </div>`).join('');
+
+    if(uploadedHymns.length){
+        html+='<div class="church-subhead">➕ Added by the fellowship</div>';
+        html+=uploadedHymns.map((h,i)=>`<div class="hymn-card" style="position:relative;" onclick="document.getElementById('uHymn${i}').classList.toggle('show')">
+            <button class="up-del" onclick="event.stopPropagation();deleteHymnUpload('${h.id}')" aria-label="Remove">🗑</button>
+            <div class="hymn-title" style="padding-right:34px;">🎵 ${h.number?escapeHtml(h.number)+'. ':''}${escapeHtml(h.title)}</div>
+            <div class="hymn-meta">${escapeHtml(h.author||h.by||'Member')} · tap for lyrics</div>
+            <div class="hymn-lyrics" id="uHymn${i}">${escapeHtml(h.lyrics||'')}</div>
+        </div>`).join('');
+    }
+    document.getElementById('hymnsContainer').innerHTML=html;
 }
 
 function toggleHymn(i){document.getElementById('hymn'+i).classList.toggle('show');}
@@ -1942,7 +1992,7 @@ function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;
 
 function renderChurch(){
     // pull in whatever has been uploaded before drawing
-    (FIREBASE_CONFIG?firebaseLoad().catch(()=>loadUploads()):loadUploads())
+    (sbOn()?loadSharedUploads().catch(()=>loadUploads()):loadUploads())
         .then(()=>showChurchTab(churchTab))
         .catch(()=>showChurchTab(churchTab));
     showChurchTab(churchTab);
@@ -1998,6 +2048,200 @@ function showChurchTab(kind){
 function churchEmpty(msg){return `<div class="church-empty">${msg}</div>`;}
 function churchNoLink(){alert('📄 This resource will be available soon.');}
 
+/* ==================== HYMN UPLOAD + PHOTO SCAN ====================
+   A hymn can be typed in, or photographed from a hymn book. The photo is read
+   with Tesseract.js, which is real OCR compiled to WebAssembly and runs inside
+   the browser, so no server and no API key are involved. It downloads its
+   engine and language data on first use, so the first scan needs a connection.
+
+   OCR on a phone photo is never perfect, so the result is always shown in an
+   editable form before saving rather than being trusted blindly. If the scanned
+   words clearly match a hymn the app already knows, the accurate stored lyrics
+   are offered instead of the OCR text.                                      */
+let uploadedHymns=[], scanBusy=false;
+
+async function loadHymnUploads(){
+    try{
+        if(sbOn()){uploadedHymns=(await sbListHymns()).sort((a,b)=>b.addedAt-a.addedAt);}
+        else{uploadedHymns=((await hymnAll())||[]).sort((a,b)=>b.addedAt-a.addedAt);}
+    }catch(e){
+        try{uploadedHymns=((await hymnAll())||[]).sort((a,b)=>b.addedAt-a.addedAt);}catch(e2){uploadedHymns=[];}
+    }
+    return uploadedHymns;
+}
+
+function openHymnEditor(data){
+    const d=data||{};
+    document.getElementById('hyNum').value=d.number||'';
+    document.getElementById('hyTitle').value=d.title||'';
+    document.getElementById('hyAuthor').value=d.author||'';
+    document.getElementById('hyLyrics').value=d.lyrics||'';
+    setHymnStatus(d.status||'', d.statusKind||'');
+    document.getElementById('hyWrap').classList.add('show');
+}
+function closeHymnEditor(){document.getElementById('hyWrap').classList.remove('show');}
+function setHymnStatus(msg,kind){
+    const el=document.getElementById('hyStatus');
+    if(!el)return;
+    el.textContent=msg||'';
+    el.className='up-msg'+(kind?' '+kind:'');
+}
+
+function pickHymnPhoto(){document.getElementById('hymnPhotoInput').click();}
+
+async function handleHymnPhoto(ev){
+    const file=(ev.target.files||[])[0];
+    ev.target.value='';
+    if(!file||scanBusy)return;
+    scanBusy=true;
+    openHymnEditor({status:'Reading the photo…',statusKind:''});
+    const prog=document.getElementById('hyProg'), bar=prog?prog.querySelector('i'):null;
+    if(prog)prog.classList.add('show');
+    try{
+        const text=await runOcr(file,p=>{if(bar)bar.style.width=Math.round(p*100)+'%';});
+        const parsed=parseHymn(text);
+        const known=matchKnownHymn(text);
+        if(known){
+            parsed.title=parsed.title||known.hymn.title;
+            document.getElementById('hyKnown').style.display='block';
+            document.getElementById('hyKnownName').textContent=known.hymn.title;
+            hymnKnownMatch=known.hymn;
+        }else{
+            document.getElementById('hyKnown').style.display='none';
+            hymnKnownMatch=null;
+        }
+        document.getElementById('hyNum').value=parsed.number||'';
+        document.getElementById('hyTitle').value=parsed.title||'';
+        document.getElementById('hyAuthor').value=parsed.author||'';
+        document.getElementById('hyLyrics').value=parsed.lyrics||text;
+        setHymnStatus(parsed.title
+            ? 'Detected — please check and correct anything the camera misread.'
+            : 'Text read, but the title was not clear. Please fill it in.','ok');
+    }catch(e){
+        setHymnStatus('Could not read the photo. You can still type the hymn in below.','bad');
+    }
+    if(prog)setTimeout(()=>{prog.classList.remove('show');if(bar)bar.style.width='0';},600);
+    scanBusy=false;
+}
+
+let hymnKnownMatch=null;
+function useKnownHymn(){
+    if(!hymnKnownMatch)return;
+    document.getElementById('hyTitle').value=hymnKnownMatch.title;
+    document.getElementById('hyLyrics').value=hymnKnownMatch.text;
+    document.getElementById('hyAuthor').value=hymnKnownMatch.meta||'';
+    setHymnStatus('Using the accurate lyrics already in HYMNORA.','ok');
+}
+
+/* Tesseract.js OCR, loaded from CDN on first use */
+let ocrLoader=null;
+function loadOcr(){
+    if(window.Tesseract)return Promise.resolve(true);
+    if(ocrLoader)return ocrLoader;
+    ocrLoader=new Promise((res,rej)=>{
+        const s=document.createElement('script');
+        s.src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';
+        s.onload=()=>res(true);
+        s.onerror=()=>rej(new Error('ocr script failed'));
+        document.head.appendChild(s);
+    });
+    return ocrLoader;
+}
+async function runOcr(file,onProgress){
+    await loadOcr();
+    const r=await Tesseract.recognize(file,'eng',{
+        logger:m=>{if(m.status==='recognizing text'&&onProgress)onProgress(m.progress||0);}
+    });
+    return (r&&r.data&&r.data.text)||'';
+}
+
+/* Pull number, title, author and verses out of raw scanned text */
+function parseHymn(raw){
+    const text=String(raw||'').replace(/\r/g,'');
+    const lines=text.split('\n').map(l=>l.trim());
+    const filled=lines.filter(Boolean);
+    let number='',title='',author='';
+
+    for(let i=0;i<Math.min(6,filled.length);i++){
+        const m=filled[i].match(/(?:hymn|no\.?|#)\s*(\d{1,4})/i)||filled[i].match(/^(\d{1,4})[.)\s]*$/);
+        if(m){number=m[1];break;}
+    }
+    for(let i=0;i<Math.min(8,filled.length);i++){
+        const l=filled[i];
+        if(/^\d{1,4}[.)\s]*$/.test(l))continue;
+        if(/^(words|music|tune|meter|metre|author|composer)\b/i.test(l))continue;
+        const cleaned=l.replace(/^(?:hymn|no\.?|#)\s*\d{1,4}[.)\s\-–—]*/i,'').trim();
+        const words=cleaned.split(/\s+/);
+        // needs real letters, otherwise OCR noise becomes the title
+        if((cleaned.match(/[A-Za-z]/g)||[]).length<3)continue;
+        if(cleaned.length>=3&&words.length<=12){title=cleaned.replace(/[.,;:]+$/,'');break;}
+    }
+    const am=text.match(/(?:words|text|author|composer|music|by)\s*[:\-–—]\s*([^\n]{3,60})/i)
+          ||text.match(/[—–]\s*([A-Z][A-Za-z.'\- ]{3,50})\s*(?:\n|$)/);
+    if(am)author=am[1].trim().replace(/[.,;:]+$/,'');
+
+    // lyrics: skip the header lines we consumed, keep stanza breaks
+    let start=0;
+    for(let i=0;i<lines.length;i++){
+        const l=lines[i];
+        if(!l){continue;}
+        if(title&&l.indexOf(title.slice(0,Math.min(12,title.length)))>=0){start=i+1;break;}
+        if(/^\d{1,4}[.)\s]*$/.test(l)){start=i+1;}
+    }
+    // drop credit lines so they do not sit at the top of the verses
+    const isCredit=l=>/^(words|music|tune|meter|metre|author|composer|text|arr\.?|copyright|©)\b/i.test(l)
+                    ||/^[—–-]\s*[A-Z][A-Za-z.'\- ]{2,50}$/.test(l);
+    let lyrics=lines.slice(start).filter(l=>!isCredit(l.trim())).join('\n')
+        .replace(/\n{3,}/g,'\n\n')
+        .replace(/^\s+|\s+$/g,'');
+    if(lyrics.length<20)lyrics=text.trim();
+    return {number:number,title:title,author:author,lyrics:lyrics};
+}
+
+/* Does the scan look like a hymn the app already has, spelled correctly? */
+function matchKnownHymn(text){
+    const norm=s=>String(s).toLowerCase().replace(/[^a-z\s]/g,' ').replace(/\s+/g,' ').trim();
+    const hay=norm(text);
+    if(!hay)return null;
+    let best=null,bestScore=0;
+    HYMNS.forEach(h=>{
+        const words=norm(h.title).split(' ').filter(w=>w.length>3);
+        if(!words.length)return;
+        const hits=words.filter(w=>hay.indexOf(w)>=0).length;
+        const score=hits/words.length;
+        if(score>bestScore){bestScore=score;best=h;}
+    });
+    return bestScore>=0.65?{hymn:best,score:bestScore}:null;
+}
+
+async function saveHymn(){
+    const number=document.getElementById('hyNum').value.trim();
+    const title=document.getElementById('hyTitle').value.trim();
+    const author=document.getElementById('hyAuthor').value.trim();
+    const lyrics=document.getElementById('hyLyrics').value.trim();
+    if(!title){setHymnStatus('Please give the hymn a title.','bad');return;}
+    if(!lyrics){setHymnStatus('Please add the lyrics.','bad');return;}
+    const rec={id:'h'+Date.now()+Math.random().toString(36).slice(2,6),
+               number:number,title:title,author:author,lyrics:lyrics,
+               by:(authUser&&authUser.name)||'Member',addedAt:Date.now()};
+    try{
+        if(sbOn())await sbPutHymn(rec);
+        else await hymnPut(rec);
+    }catch(e){
+        try{await hymnPut(rec);}catch(e2){setHymnStatus('Could not save. Storage may be full.','bad');return;}
+    }
+    await loadHymnUploads();
+    renderHymns();
+    closeHymnEditor();
+}
+
+async function deleteHymnUpload(id){
+    if(!confirm('Remove this hymn?'))return;
+    try{await hymnDel(id);}catch(e){}
+    await loadHymnUploads();
+    renderHymns();
+}
+
 /* ==================== GALLERY UPLOADS ====================
    Two storage modes:
 
@@ -2006,41 +2250,98 @@ function churchNoLink(){alert('📄 This resource will be available soon.');}
       photos and videos are fine. These are private to the person's own device.
 
    2. Shared with everyone. That genuinely needs storage outside the app, since
-      a static site has nowhere to put a file other people can read. Fill in
-      FIREBASE_CONFIG below and uploads go to Firebase Storage with their
-      details in Firestore, so the whole fellowship sees the same gallery.
+      a static site has nowhere to put a file other people can read. Fill in the
+      three SUPABASE_ constants below and every upload, from anyone, goes to
+      shared storage so the whole fellowship sees the same gallery.
 
    Note on "unlimited": no service is truly unlimited, and neither is a phone.
    Photos are light and fine in bulk. Long videos are not — a 600 MB service
    recording should go on YouTube as Unlisted and be added as a link, which the
    gallery already supports.                                                */
-const FIREBASE_CONFIG=null;   // paste your Firebase config object here to share uploads
-const GAL_DB='hymnora-gallery', GAL_STORE='uploads';
+/* Shared storage uses Supabase rather than Firebase: Cloud Storage for Firebase
+   now requires the paid Blaze plan, while Supabase still has a no-cost tier and
+   gives storage plus a database behind one publishable anon key, which is what a
+   static site needs. Fill these three in and every upload becomes shared. */
+const SUPABASE_URL='';        // e.g. https://abcdefgh.supabase.co
+const SUPABASE_ANON_KEY='';   // the public anon key
+const SUPABASE_BUCKET='gallery';
+const sbOn=()=>!!(SUPABASE_URL&&SUPABASE_ANON_KEY);
+
+const GAL_DB='hymnora-gallery', GAL_STORE='uploads', HYMN_STORE='hymns';
 let galUploads=[], galObjectUrls=[];
 
 function idb(){
     return new Promise((res,rej)=>{
-        const r=indexedDB.open(GAL_DB,1);
+        const r=indexedDB.open(GAL_DB,2);
         r.onupgradeneeded=()=>{
             const db=r.result;
-            if(!db.objectStoreNames.contains(GAL_STORE))
-                db.createObjectStore(GAL_STORE,{keyPath:'id'});
+            if(!db.objectStoreNames.contains(GAL_STORE))db.createObjectStore(GAL_STORE,{keyPath:'id'});
+            if(!db.objectStoreNames.contains(HYMN_STORE))db.createObjectStore(HYMN_STORE,{keyPath:'id'});
         };
         r.onsuccess=()=>res(r.result);
         r.onerror=()=>rej(r.error);
     });
 }
-function idbRun(mode,fn){
+function idbRun(store,mode,fn){
     return idb().then(db=>new Promise((res,rej)=>{
-        const tx=db.transaction(GAL_STORE,mode);
-        const out=fn(tx.objectStore(GAL_STORE));
+        const tx=db.transaction(store,mode);
+        const out=fn(tx.objectStore(store));
         tx.oncomplete=()=>res(out&&out.result!==undefined?out.result:out);
         tx.onerror=()=>rej(tx.error);
     }));
 }
-const idbPut=item=>idbRun('readwrite',st=>st.put(item));
-const idbAll=()=>idbRun('readonly',st=>st.getAll());
-const idbDel=id=>idbRun('readwrite',st=>st.delete(id));
+const idbPut=item=>idbRun(GAL_STORE,'readwrite',st=>st.put(item));
+const idbAll=()=>idbRun(GAL_STORE,'readonly',st=>st.getAll());
+const idbDel=id=>idbRun(GAL_STORE,'readwrite',st=>st.delete(id));
+const hymnPut=item=>idbRun(HYMN_STORE,'readwrite',st=>st.put(item));
+const hymnAll=()=>idbRun(HYMN_STORE,'readonly',st=>st.getAll());
+const hymnDel=id=>idbRun(HYMN_STORE,'readwrite',st=>st.delete(id));
+
+/* ---------- Supabase: shared uploads over plain REST, no SDK ---------- */
+function sbHeaders(extra){
+    return Object.assign({apikey:SUPABASE_ANON_KEY,Authorization:'Bearer '+SUPABASE_ANON_KEY},extra||{});
+}
+async function sbUpload(file,kind){
+    const path=Date.now()+'-'+file.name.replace(/[^\w.\-]/g,'_');
+    const up=await fetch(SUPABASE_URL+'/storage/v1/object/'+SUPABASE_BUCKET+'/'+encodeURIComponent(path),{
+        method:'POST',headers:sbHeaders({'Content-Type':file.type||'application/octet-stream'}),body:file
+    });
+    if(!up.ok)throw new Error('upload failed '+up.status);
+    const url=SUPABASE_URL+'/storage/v1/object/public/'+SUPABASE_BUCKET+'/'+encodeURIComponent(path);
+    const row=await fetch(SUPABASE_URL+'/rest/v1/uploads',{
+        method:'POST',headers:sbHeaders({'Content-Type':'application/json',Prefer:'return=minimal'}),
+        body:JSON.stringify({type:kind,name:file.name,size:file.size,url:url,path:path,
+                             by:(authUser&&authUser.name)||'Member',addedAt:Date.now()})
+    });
+    if(!row.ok)throw new Error('record failed '+row.status);
+}
+async function sbList(){
+    const r=await fetch(SUPABASE_URL+'/rest/v1/uploads?select=*&order=addedAt.desc',{headers:sbHeaders()});
+    if(!r.ok)throw new Error('list failed '+r.status);
+    return await r.json();
+}
+async function sbDelete(item){
+    if(item.path)await fetch(SUPABASE_URL+'/storage/v1/object/'+SUPABASE_BUCKET+'/'+encodeURIComponent(item.path),
+        {method:'DELETE',headers:sbHeaders()}).catch(()=>{});
+    await fetch(SUPABASE_URL+'/rest/v1/uploads?id=eq.'+encodeURIComponent(item.id),
+        {method:'DELETE',headers:sbHeaders()}).catch(()=>{});
+}
+async function sbPutHymn(h){
+    const r=await fetch(SUPABASE_URL+'/rest/v1/hymns',{
+        method:'POST',headers:sbHeaders({'Content-Type':'application/json',Prefer:'return=minimal'}),
+        body:JSON.stringify(h)});
+    if(!r.ok)throw new Error('hymn save failed '+r.status);
+}
+async function sbListHymns(){
+    const r=await fetch(SUPABASE_URL+'/rest/v1/hymns?select=*&order=addedAt.desc',{headers:sbHeaders()});
+    if(!r.ok)throw new Error('hymn list failed '+r.status);
+    return await r.json();
+}
+
+async function loadSharedUploads(){
+    galUploads=(await sbList()).sort((a,b)=>b.addedAt-a.addedAt);
+    return galUploads;
+}
 
 async function loadUploads(){
     try{
@@ -2071,8 +2372,8 @@ async function handleUploads(ev,kind){
     let done=0, failed=0;
     for(const f of files){
         try{
-            if(FIREBASE_CONFIG){
-                await firebaseUpload(f,kind);
+            if(sbOn()){
+                await sbUpload(f,kind);
             }else{
                 await idbPut({id:'u'+Date.now()+Math.random().toString(36).slice(2,7),
                               type:kind,name:f.name,size:f.size,mime:f.type,
@@ -2092,7 +2393,7 @@ async function handleUploads(ev,kind){
         note.className='up-msg '+(failed?'bad':'ok');
         note.textContent=failed
             ? (ok+' added, '+failed+' could not be saved — the device may be out of space.')
-            : (ok+(ok===1?' file added.':' files added.')+(FIREBASE_CONFIG?' Shared with everyone.':' Saved on this device.'));
+            : (ok+(ok===1?' file added.':' files added.')+(sbOn()?' Shared with everyone.':' Saved on this device.'));
         setTimeout(()=>{if(note.isConnected){note.textContent='';note.className='up-msg';}},5000);
     }
     const p=document.getElementById('upProg');
@@ -2101,8 +2402,12 @@ async function handleUploads(ev,kind){
 
 async function deleteUpload(id){
     if(!confirm('Remove this from the gallery?'))return;
-    try{await idbDel(id);}catch(e){}
-    await loadUploads();
+    const item=galUploads.filter(u=>String(u.id)===String(id))[0];
+    try{
+        if(sbOn()&&item&&item.url)await sbDelete(item);
+        else await idbDel(id);
+    }catch(e){}
+    try{await (sbOn()?loadSharedUploads():loadUploads());}catch(e){await loadUploads();}
     renderGallery();
 }
 
@@ -2127,35 +2432,6 @@ function fmtSize(b){
     return mb>=1024?(mb/1024).toFixed(1)+' GB':Math.max(1,Math.round(mb))+' MB';
 }
 
-/* Shared uploads via Firebase, active once FIREBASE_CONFIG is filled in */
-let fbReady=null;
-async function firebaseInit(){
-    if(fbReady)return fbReady;
-    fbReady=(async()=>{
-        const app=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js');
-        const st=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js');
-        const fs=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
-        const a=app.initializeApp(FIREBASE_CONFIG);
-        return {st,fs,storage:st.getStorage(a),db:fs.getFirestore(a)};
-    })();
-    return fbReady;
-}
-async function firebaseUpload(file,kind){
-    const {st,fs,storage,db}=await firebaseInit();
-    const path='gallery/'+Date.now()+'-'+file.name.replace(/[^\w.\-]/g,'_');
-    const ref=st.ref(storage,path);
-    await st.uploadBytes(ref,file);
-    const url=await st.getDownloadURL(ref);
-    await fs.addDoc(fs.collection(db,'gallery'),{
-        type:kind,name:file.name,size:file.size,url:url,path:path,
-        by:(authUser&&authUser.name)||'Member',addedAt:Date.now()
-    });
-}
-async function firebaseLoad(){
-    const {fs,db}=await firebaseInit();
-    const snap=await fs.getDocs(fs.query(fs.collection(db,'gallery'),fs.orderBy('addedAt','desc')));
-    galUploads=snap.docs.map(d=>Object.assign({id:d.id},d.data()));
-}
 
 /* ===== Church Gallery: Photos + Videos ===== */
 function galleryPhotos(){return (CHURCH.gallery&&CHURCH.gallery.photos)||[];}
