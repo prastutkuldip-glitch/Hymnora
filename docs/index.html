@@ -257,6 +257,11 @@ body.theme-light .verse-of-day-ref, body.theme-dark .verse-of-day-ref { color: #
 .video-title { font-size:14px; font-weight:700; color:#fff; text-shadow:0 2px 6px rgba(0,0,0,.2); }
 .church-empty { text-align:center; padding:26px 18px; color:rgba(255,255,255,.85); font-size:13px; line-height:1.6; }
 
+/* Sharing status */
+.share-note { font-size:11.5px; font-weight:600; line-height:1.5; padding:11px 13px; border-radius:13px; margin-bottom:12px; }
+.share-note.ok { color:#bbf7d0; background:rgba(52,211,153,.14); border:1px solid rgba(52,211,153,.4); }
+.share-note.warn { color:#fde68a; background:rgba(245,158,11,.14); border:1px solid rgba(245,158,11,.4); }
+
 /* Hymn drafts — one block per detected hymn */
 .hy-draft { padding:14px; border-radius:16px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.14); margin-bottom:12px; }
 .hy-draft-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
@@ -1990,7 +1995,7 @@ function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;
 
 function renderChurch(){
     // pull in whatever has been uploaded before drawing
-    (sbOn()?loadSharedUploads().catch(()=>loadUploads()):loadUploads())
+    (sharingOn()?loadSharedUploads().catch(()=>loadUploads()):loadUploads())
         .then(()=>showChurchTab(churchTab))
         .catch(()=>showChurchTab(churchTab));
     showChurchTab(churchTab);
@@ -2379,7 +2384,7 @@ async function saveHymn(){
         c.className='up-msg ok';
         c.textContent=saved+(saved===1?' hymn added.':' hymns added.')
                      +(skipped?' '+skipped+' left out for missing details.':'')
-                     +(sbOn()?' Shared with everyone.':' Saved on this device.');
+                     +(sharingOn()?' Everyone in the fellowship can see it.':' Saved on this phone only.');
         setTimeout(()=>{c.textContent='';c.className='up-msg';},5000);
     }
 }
@@ -2415,6 +2420,21 @@ const SUPABASE_URL='';        // e.g. https://abcdefgh.supabase.co
 const SUPABASE_ANON_KEY='';   // the public anon key
 const SUPABASE_BUCKET='gallery';
 const sbOn=()=>!!(SUPABASE_URL&&SUPABASE_ANON_KEY);
+
+/* Cloudinary is the simpler of the two: two public values, no tables, no SQL.
+   Unsigned uploads are designed to go straight from a browser with no API key,
+   and the list delivery type returns everything carrying a tag, so a shared
+   gallery works with no backend at all. Cloudinary does warn that unsigned
+   uploads can be abused, which is why the preset should be limited to images
+   and video and the tag kept private to the fellowship. */
+const CLOUDINARY_CLOUD='';    // your cloud name, from the Cloudinary dashboard
+const CLOUDINARY_PRESET='';   // an UNSIGNED upload preset name
+const CLOUDINARY_TAG='hymnora-gallery';
+const cldOn=()=>!!(CLOUDINARY_CLOUD&&CLOUDINARY_PRESET);
+
+/* Which storage is actually in force right now */
+function sharingMode(){return cldOn()?'cloudinary':(sbOn()?'supabase':'device');}
+function sharingOn(){return sharingMode()!=='device';}
 
 const GAL_DB='hymnora-gallery', GAL_STORE='uploads', HYMN_STORE='hymns';
 let galUploads=[], galObjectUrls=[];
@@ -2475,6 +2495,41 @@ async function sbDelete(item){
     await fetch(SUPABASE_URL+'/rest/v1/uploads?id=eq.'+encodeURIComponent(item.id),
         {method:'DELETE',headers:sbHeaders()}).catch(()=>{});
 }
+/* ---------- Cloudinary: unsigned upload + public tag listing ---------- */
+async function cldUpload(file,kind){
+    const fd=new FormData();
+    fd.append('file',file);
+    fd.append('upload_preset',CLOUDINARY_PRESET);
+    fd.append('tags',CLOUDINARY_TAG);
+    fd.append('context','by='+((authUser&&authUser.name)||'Member'));
+    const r=await fetch('https://api.cloudinary.com/v1_1/'+CLOUDINARY_CLOUD+'/auto/upload',{method:'POST',body:fd});
+    if(!r.ok)throw new Error('cloudinary upload failed '+r.status);
+    return await r.json();
+}
+async function cldList(){
+    const out=[];
+    for(const rt of ['image','video']){
+        try{
+            const r=await fetch('https://res.cloudinary.com/'+CLOUDINARY_CLOUD+'/'+rt+'/list/'+CLOUDINARY_TAG+'.json');
+            if(!r.ok)continue;
+            const d=await r.json();
+            (d.resources||[]).forEach(x=>{
+                out.push({
+                    id:x.public_id,
+                    type:rt==='image'?'photo':'video',
+                    name:String(x.public_id||'').split('/').pop(),
+                    size:x.bytes||0,
+                    url:'https://res.cloudinary.com/'+CLOUDINARY_CLOUD+'/'+rt+'/upload/v'+x.version+'/'+x.public_id+'.'+x.format,
+                    by:(x.context&&x.context.custom&&x.context.custom.by)||'Member',
+                    shared:true,
+                    addedAt:x.created_at?Date.parse(x.created_at):0
+                });
+            });
+        }catch(e){}
+    }
+    return out.sort((a,b)=>(b.addedAt||0)-(a.addedAt||0));
+}
+
 async function sbPutHymn(h){
     const r=await fetch(SUPABASE_URL+'/rest/v1/hymns',{
         method:'POST',headers:sbHeaders({'Content-Type':'application/json',Prefer:'return=minimal'}),
@@ -2488,7 +2543,7 @@ async function sbListHymns(){
 }
 
 async function loadSharedUploads(){
-    galUploads=(await sbList()).sort((a,b)=>b.addedAt-a.addedAt);
+    galUploads=cldOn()?await cldList():(await sbList()).sort((a,b)=>(b.addedAt||0)-(a.addedAt||0));
     return galUploads;
 }
 
@@ -2521,7 +2576,9 @@ async function handleUploads(ev,kind){
     let done=0, failed=0;
     for(const f of files){
         try{
-            if(sbOn()){
+            if(cldOn()){
+                await cldUpload(f,kind);
+            }else if(sbOn()){
                 await sbUpload(f,kind);
             }else{
                 await idbPut({id:'u'+Date.now()+Math.random().toString(36).slice(2,7),
@@ -2553,10 +2610,14 @@ async function deleteUpload(id){
     if(!confirm('Remove this from the gallery?'))return;
     const item=galUploads.filter(u=>String(u.id)===String(id))[0];
     try{
+        if(cldOn()&&item&&item.shared){
+            alert('Shared uploads are removed from the Cloudinary dashboard. Deleting them from inside the app would need a secret key, which cannot be shipped in a public page.');
+            return;
+        }
         if(sbOn()&&item&&item.url)await sbDelete(item);
         else await idbDel(id);
     }catch(e){}
-    try{await (sbOn()?loadSharedUploads():loadUploads());}catch(e){await loadUploads();}
+    try{await (sharingOn()?loadSharedUploads():loadUploads());}catch(e){await loadUploads();}
     renderGallery();
 }
 
@@ -2634,6 +2695,11 @@ function renderGallery(){
         <button class="${galleryMode==='photos'?'active':''}" onclick="setGalleryMode('photos')">🖼️ Photos${photoAll?' ('+photoAll+')':''}</button>
         <button class="${galleryMode==='videos'?'active':''}" onclick="setGalleryMode('videos')">🎥 Videos${videoAll?' ('+videoAll+')':''}</button>
     </div>`;
+
+    // be clear about whether an upload will reach the rest of the fellowship
+    html+=sharingOn()
+        ? `<div class="share-note ok">✅ Shared gallery — anything added here is visible to everyone</div>`
+        : `<div class="share-note warn">⚠️ Sharing is not switched on yet, so uploads stay on this phone and nobody else can see them. See SETUP-SHARING.md in the repo to turn it on.</div>`;
 
     // upload controls
     html+=`<div class="up-bar">
